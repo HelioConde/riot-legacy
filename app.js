@@ -161,6 +161,21 @@
       .trim() || 'TFT';
   }
 
+  function cleanTftSetName(value, setNumber = 0) {
+    const raw = String(value || '').trim();
+    const numeric = Number(setNumber || 0);
+    const technical = raw.match(/^TFTSet(\d+)$/i);
+    if (technical) return `Set ${technical[1]}`;
+    const compact = raw
+      .replace(/^TFTSet\d+[_ -]*/i, '')
+      .replace(/^TFT[_ -]*/i, '')
+      .replace(/_/g, ' ')
+      .trim();
+    if (compact && !/^Set\s*\d+$/i.test(compact)) return compact;
+    if (numeric > 0) return `Set ${numeric}`;
+    return raw || 'TFT';
+  }
+
   function currentSignatureEvidence() {
     const summaries = Array.isArray(live.lol?.championSummaries)
       ? live.lol.championSummaries.filter(item => item?.name)
@@ -531,7 +546,7 @@
     currentTftMatches().forEach(match => {
       const rawName = String(match?.setName || '').trim();
       const setNumber = Number(match?.setNumber || 0);
-      const key = rawName || (setNumber > 0 ? `Set ${setNumber}` : 'TFT');
+      const key = cleanTftSetName(rawName, setNumber);
       const placement = Number(match?.placement || 0);
       const current = groups.get(key) || { matches: 0, placements: [], top4: 0, firsts: 0 };
       current.matches += 1;
