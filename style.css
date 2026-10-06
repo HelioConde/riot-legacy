@@ -254,3 +254,36 @@ a{color:inherit}
   .tabs button:before{width:14px;height:14px;flex-basis:14px}
   .asset-action:before{width:16px;height:16px;flex-basis:16px}
 }
+
+
+/* Secondary Riot Legacy UI pack */
+.metric{position:relative;overflow:hidden;padding-right:52px}
+.metric:before{content:"";position:absolute;right:14px;top:14px;width:30px;height:30px;background:center/contain no-repeat;opacity:.72;filter:drop-shadow(0 0 9px rgba(216,179,95,.14))}
+.metrics .metric:nth-child(1):before{background-image:url("./assets/ui/icon-mastery-crown.png")}
+.metrics .metric:nth-child(2):before{background-image:url("./assets/ui/icon-stats-bars.png")}
+.metrics .metric:nth-child(3):before{background-image:url("./assets/ui/icon-calendar.png")}
+.metrics .metric:nth-child(4):before{background-image:url("./assets/ui/icon-trophy.png")}
+.pillar{position:relative;overflow:hidden}
+.pillar:before{content:"";position:absolute;right:18px;top:18px;width:34px;height:34px;background:center/contain no-repeat;opacity:.68}
+.pillars .pillar:nth-child(1):before{background-image:url("./assets/ui/icon-star.png")}
+.pillars .pillar:nth-child(2):before{background-image:url("./assets/ui/icon-calendar.png")}
+.pillars .pillar:nth-child(3):before{background-image:url("./assets/ui/icon-trophy.png")}
+.history-grid section{position:relative;overflow:hidden}
+.history-grid section:before{content:"";position:absolute;inset:0;background:center/cover no-repeat;opacity:.045;pointer-events:none}
+.history-grid section:nth-child(1):before{background-image:url("./assets/ui/bg-history-blue.png")}
+.history-grid section:nth-child(2):before{background-image:url("./assets/ui/bg-history-gold.png")}
+.history-grid section:nth-child(3):before{background-image:url("./assets/ui/bg-history-violet.png")}
+.history-grid section:nth-child(4):before{background-image:url("./assets/ui/bg-history-blue.png")}
+.history-grid section>*{position:relative;z-index:1}
+.league-card>h2:first-child,.tft-card>h2:first-child{display:flex;align-items:center;gap:10px}
+.league-card>h2:first-child:before,.tft-card>h2:first-child:before{content:"";width:28px;height:28px;flex:0 0 28px;background:center/contain no-repeat}
+.league-card>h2:first-child:before{background-image:url("./assets/ui/icon-league-round.png")}
+.tft-card>h2:first-child:before{background-image:url("./assets/ui/icon-tft-round.png")}
+.memory-title-row h3{display:flex;align-items:center;gap:7px}
+.memory-title-row h3:before{content:"";width:20px;height:20px;background:url("./assets/ui/icon-heart.png") center/contain no-repeat}
+@media(max-width:620px){
+  .metric{padding-right:44px}
+  .metric:before{right:10px;top:12px;width:25px;height:25px}
+  .pillar:before{width:28px;height:28px}
+  .league-card>h2:first-child:before,.tft-card>h2:first-child:before{width:24px;height:24px;flex-basis:24px}
+}
