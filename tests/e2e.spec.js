@@ -135,7 +135,9 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
   await expect(page.locator('#metric-years')).toHaveText('58%');
   await expect(page.locator('#metric-tft')).toHaveText('75%');
   await expect(page.locator('#tft-average')).toContainText('2,5');
+  await expect(page.locator('#placement-summary')).toHaveText('Top 4: 4/4 · 1º lugar: 1 · 8º lugar: 0');
   await expect(page.locator('#champion-list')).toContainText('Lux');
+  await expect(page.locator('#role-identity')).toContainText('Identidade recente: Mid · 67% de 6 partidas com posição');
   await expect(page.locator('#trait-list')).toContainText('Arcana');
   await expect(page.locator('#live-profile-facts')).toContainText('BR1');
   await expect(page.locator('#live-profile-facts')).toContainText('GOLD II · 42 LP');
