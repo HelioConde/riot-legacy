@@ -343,15 +343,79 @@
 
   function renderTraits() {
     const el = document.querySelector('#trait-list');
-    const latest = currentTftMatches()[0];
-    const traits = live.tft && Array.isArray(latest?.traits)
-      ? latest.traits
-        .filter(item => Number(item?.numUnits || 0) > 0 && (Number(item?.style || 0) > 0 || Number(item?.numUnits || 0) >= 2))
-        .sort((a, b) => Number(b.style || 0) - Number(a.style || 0) || Number(b.numUnits || 0) - Number(a.numUnits || 0))
-        .slice(0, 6)
-        .map(item => cleanTftName(item.name))
-      : demo.traits;
-    el.innerHTML = traits.map(name => `<span class="trait">${escapeHtml(name)}</span>`).join('');
+    const signature = document.querySelector('#tft-signature');
+
+    if (!live.tft) {
+      if (signature) signature.textContent = locale() === 'en'
+        ? 'Sample signatures: Arcana · Ahri'
+        : 'Assinaturas da amostra: Arcana · Ahri';
+      el.innerHTML = demo.traits.map(name => `<span class="trait">${escapeHtml(name)}</span>`).join('');
+      return;
+    }
+
+    const traitStats = new Map();
+    const unitStats = new Map();
+
+    currentTftMatches().forEach(match => {
+      const seenTraits = new Set();
+      (Array.isArray(match?.traits) ? match.traits : []).forEach(item => {
+        const numUnits = Number(item?.numUnits || 0);
+        const style = Number(item?.style || 0);
+        if (numUnits <= 0 || (style <= 0 && numUnits < 2)) return;
+        const name = cleanTftName(item.name);
+        if (!seenTraits.has(name)) {
+          const current = traitStats.get(name) || { appearances: 0, style: 0, units: 0 };
+          current.appearances += 1;
+          current.style += style;
+          current.units += numUnits;
+          traitStats.set(name, current);
+          seenTraits.add(name);
+        }
+      });
+
+      const seenUnits = new Set();
+      (Array.isArray(match?.units) ? match.units : []).forEach(unit => {
+        const name = cleanTftName(unit?.characterId);
+        if (!name || name === 'TFT' || seenUnits.has(name)) return;
+        const current = unitStats.get(name) || { appearances: 0, stars: 0 };
+        current.appearances += 1;
+        current.stars += Number(unit?.tier || 0);
+        unitStats.set(name, current);
+        seenUnits.add(name);
+      });
+    });
+
+    const traits = [...traitStats.entries()]
+      .sort((a, b) =>
+        b[1].appearances - a[1].appearances ||
+        b[1].style - a[1].style ||
+        b[1].units - a[1].units ||
+        a[0].localeCompare(b[0])
+      )
+      .slice(0, 6);
+
+    const units = [...unitStats.entries()]
+      .sort((a, b) =>
+        b[1].appearances - a[1].appearances ||
+        b[1].stars - a[1].stars ||
+        a[0].localeCompare(b[0])
+      )
+      .slice(0, 3);
+
+    el.innerHTML = traits.length
+      ? traits.map(([name, stat]) =>
+          `<span class="trait" title="${stat.appearances}x">${escapeHtml(name)} · ${stat.appearances}x</span>`
+        ).join('')
+      : `<span class="empty-inline">${locale() === 'en' ? 'No recurring traits in this sample.' : 'Sem traits recorrentes nesta amostra.'}</span>`;
+
+    if (signature) {
+      const traitName = traits[0]?.[0];
+      const unitName = units[0]?.[0];
+      const parts = [traitName, unitName].filter(Boolean);
+      signature.textContent = parts.length
+        ? (locale() === 'en' ? 'Recent signatures: ' : 'Assinaturas recentes: ') + parts.join(' · ')
+        : (locale() === 'en' ? 'Recent signatures: insufficient TFT data' : 'Assinaturas recentes: dados de TFT insuficientes');
+    }
   }
 
   function renderPlacementBars() {
