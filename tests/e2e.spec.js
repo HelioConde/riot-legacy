@@ -78,7 +78,7 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
     status: 200,
     contentType: 'application/json',
     body: JSON.stringify({
-      player: { gameName: 'RealPlayer', tagLine: 'BR1', level: 321, platform: 'BR1' },
+      player: { gameName: 'RealPlayer', tagLine: 'br1', level: 321, platform: 'BR1' },
       ranked: [
         { queue: 'FLEX', tier: 'SILVER', rank: 'III', lp: 11, wins: 8, losses: 10, winRate: 44 },
         { queue: 'SOLO/DUO', tier: 'GOLD', rank: 'II', lp: 42, wins: 20, losses: 15, winRate: 57 }
