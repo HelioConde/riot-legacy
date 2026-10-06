@@ -61,8 +61,10 @@ jobs:
           grep -qi 'retentionTelemetry' backend-config.js
           grep -qi 'publicProfiles: false' backend-config.js
           grep -qi 'ads: false' backend-config.js
-          grep -qi 'RIOT_LEGACY_ALLOW_SHARED_KEY' supabase/functions/riot-legacy-lol-profile/index.ts
-          grep -qi 'RIOT_LEGACY_ALLOW_SHARED_KEY' supabase/functions/riot-legacy-tft-profile/index.ts
+          grep -qi 'RIOT_LEGACY_LOL_API_KEY' supabase/functions/riot-legacy-lol-profile/index.ts
+          grep -qi 'RIOT_LEGACY_TFT_API_KEY' supabase/functions/riot-legacy-tft-profile/index.ts
+          grep -qi 'RIOT_API_KEY' supabase/functions/riot-legacy-lol-profile/index.ts
+          grep -qi 'RIOT_API_KEY' supabase/functions/riot-legacy-tft-profile/index.ts
           grep -qi 'postPublicFunction' app.js
           grep -qi 'DADOS RIOT' app.js
           grep -qi 'server' app.js
