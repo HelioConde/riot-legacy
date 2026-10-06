@@ -1255,6 +1255,60 @@
     trackEvent('profile_fallback');
   }
 
+  async function showPublicProfile(slug) {
+    if (!backend?.features?.publicProfiles || !backend?.publicProfile) {
+      showLanding();
+      return;
+    }
+
+    landing.hidden = true;
+    profile.hidden = false;
+    document.body.classList.add('profile-mode');
+    refreshButton.hidden = true;
+    setSourceState('loading');
+
+    try {
+      const result = await postPublicFunction(backend.publicProfile, { action: 'read', slug });
+      const publicProfile = result?.profile || {};
+      const snapshot = result?.snapshot || null;
+      const identity = publicProfile.gameName && publicProfile.tagLine
+        ? normalizedId(publicProfile.gameName, publicProfile.tagLine)
+        : `Riot Legacy · ${slug}`;
+
+      currentLookup = {
+        gameName: publicProfile.gameName || slug,
+        tagLine: publicProfile.tagLine || 'PUB',
+        platform: String(publicProfile.platform || 'br1').toLowerCase(),
+        publicSlug: slug
+      };
+      live = {
+        lol: snapshot?.lol && Object.keys(snapshot.lol).length ? snapshot.lol : null,
+        tft: snapshot?.tft && Object.keys(snapshot.tft).length ? snapshot.tft : null
+      };
+      legacyHistory = {
+        history: Array.isArray(result?.history) ? result.history : (snapshot ? [snapshot] : []),
+        comparison: null
+      };
+
+      setProfileIdentity(identity);
+      syncRobotsPolicy(publicProfile.indexingOptIn !== true);
+      renderDynamicCopy();
+      activateTab('legacy');
+      setSourceState(
+        'live',
+        locale() === 'en'
+          ? 'Verified public Riot Legacy profile. Historical data is shown from consented snapshots.'
+          : 'Perfil público verificado do Riot Legacy. O histórico exibido vem de snapshots publicados com consentimento.'
+      );
+    } catch {
+      showLanding();
+      feedback.textContent = locale() === 'en'
+        ? 'This public profile is unavailable.'
+        : 'Este perfil público não está disponível.';
+      feedback.hidden = false;
+    }
+  }
+
   function showLanding() {
     lookupSequence++;
     currentLookup = null;
@@ -1262,6 +1316,7 @@
     legacyHistory = { history: [], comparison: null };
     profile.hidden = true;
     landing.hidden = false;
+    refreshButton.hidden = false;
     document.body.classList.remove('profile-mode');
     syncRobotsPolicy(false);
     history.replaceState({}, '', location.pathname);
@@ -1569,8 +1624,11 @@
   }
 
   const params = new URLSearchParams(location.search);
+  const publicSlug = params.get('public');
   const deepId = params.get('riotId');
-  if (deepId && deepId.includes('#')) {
+  if (publicSlug && backend?.features?.publicProfiles) {
+    showPublicProfile(publicSlug);
+  } else if (deepId && deepId.includes('#')) {
     const index = deepId.lastIndexOf('#');
     const gameName = deepId.slice(0, index);
     const tagLine = deepId.slice(index + 1);
