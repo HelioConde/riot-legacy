@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Riot Legacy — Sua história de LoL + TFT</title>
+  <meta name="description" content="Transforme seu Riot ID em uma jornada visual por League of Legends e TFT.">
+  <meta name="theme-color" content="#071018">
+  <meta property="og:title" content="Riot Legacy — Sua história de LoL + TFT">
+  <meta property="og:description" content="Transforme seu Riot ID em uma jornada visual por League of Legends e TFT.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://helioconde.github.io/riot-legacy/">
+  <link rel="canonical" href="https://helioconde.github.io/riot-legacy/">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">Pular para o conteúdo principal</a>
+
+  <div id="landing-view">
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Riot Legacy">
+          <span class="brand-mark">R</span><span>Riot <em>Legacy</em></span>
+        </a>
+        <div class="top-actions">
+          <a class="nav-link" href="#concept" data-i18n="nav_about">O conceito</a>
+          <div class="language-switcher" role="group" aria-label="Idioma / Language">
+            <button type="button" data-language="pt-BR" class="active" aria-pressed="true">PT</button>
+            <button type="button" data-language="en" aria-pressed="false">EN</button>
+          </div>
+        </div>
+      </header>
+
+      <main id="main">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow" data-i18n="hero_eyebrow">LOL + TFT · SEU MUSEU PESSOAL</p>
+            <h1><span data-i18n="hero_title_a">Sua conta tem uma história.</span><span data-i18n="hero_title_b">Transforme em legado.</span></h1>
+            <p class="hero-text" data-i18n="hero_text">Digite seu Riot ID e veja uma experiência visual sobre identidade, trajetória, campeões, TFT e marcos que valem ser lembrados.</p>
+
+            <form id="riot-form" class="riot-form" novalidate>
+              <label class="field">
+                <span data-i18n="game_name">Game Name</span>
+                <input id="game-name" name="gameName" autocomplete="off" minlength="3" maxlength="16" placeholder="HelioConde" aria-describedby="riot-id-help">
+              </label>
+              <label class="field">
+                <span data-i18n="tag_line">Tag Line</span>
+                <input id="tag-line" name="tagLine" autocomplete="off" minlength="3" maxlength="5" placeholder="BR1" aria-describedby="riot-id-help">
+              </label>
+              <label class="field">
+                <span data-i18n="server">Servidor</span>
+                <select id="region" name="platform">
+                  <option value="br1">BR</option>
+                  <option value="na1">NA</option>
+                  <option value="la1">LAN</option>
+                  <option value="la2">LAS</option>
+                  <option value="euw1">EUW</option>
+                  <option value="eun1">EUNE</option>
+                  <option value="kr">KR</option>
+                  <option value="jp1">JP</option>
+                  <option value="oc1">OCE</option>
+                  <option value="tr1">TR</option>
+                  <option value="ru">RU</option>
+                  <option value="ph2">PH</option>
+                  <option value="sg2">SG</option>
+                  <option value="th2">TH</option>
+                  <option value="tw2">TW</option>
+                  <option value="vn2">VN</option>
+                </select>
+              </label>
+              <button id="lookup-submit" class="primary" type="submit" data-i18n="submit">Ver meu legado</button>
+            </form>
+            <p id="riot-id-help" class="field-help" data-i18n="riot_id_help">Game Name: 3–16 caracteres. Tag Line: 3–5 letras ou números.</p>
+            <p id="form-feedback" class="form-feedback" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+            <section id="recent-searches" class="recent-searches" aria-labelledby="recent-searches-title" hidden>
+              <div class="recent-searches-head">
+                <span id="recent-searches-title" data-i18n="recent_searches">Buscas recentes</span>
+                <button id="clear-recent-searches" type="button" data-i18n="clear_recent">Limpar</button>
+              </div>
+              <div id="recent-searches-list" class="recent-searches-list"></div>
+            </section>
+            <div class="hero-notes">
+              <span>🔒 <strong data-i18n="privacy">Nunca pedimos sua senha da Riot.</strong></span>
+              <span>◇ <span data-i18n="demo_note">A busca tenta carregar dados públicos reais da Riot. Quando indisponíveis, o fallback demonstrativo é identificado.</span></span>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <div class="orbit"></div>
+            <div class="legacy-core"><div class="core-glyph">R</div></div>
+            <div class="float-card card-a"><span data-i18n="visual_since">Uma história desde</span><strong>2018</strong><small>8 temporadas</small></div>
+            <div class="float-card card-b"><span data-i18n="visual_signature">Campeão assinatura</span><strong>Ahri</strong><small>684K mastery</small></div>
+            <div class="float-card card-c"><span data-i18n="visual_tft">Memória TFT</span><strong>Top 2</strong><small>melhor fase</small></div>
+          </div>
+        </section>
+
+        <aside class="ad-shell" data-ad-slot="legacy-top" data-ad-state="reserved">
+          <span data-i18n="ad_label">Publicidade futura · espaço reservado</span>
+        </aside>
+
+        <section class="concept" id="concept">
+          <div class="section-head">
+            <h2 data-i18n="concept_title">Não é outro tracker.</h2>
+            <p data-i18n="concept_text">O Riot Legacy organiza dados em memória, identidade e narrativa — para você querer rever a página e compartilhar o que conquistou.</p>
+          </div>
+          <div class="pillars">
+            <article class="pillar"><span class="pillar-index">01</span><h3 data-i18n="pillar_identity">Identidade</h3><p data-i18n="pillar_identity_text">Campeão assinatura, funções, estilo e escolhas que definem sua conta.</p></article>
+            <article class="pillar"><span class="pillar-index">02</span><h3 data-i18n="pillar_journey">Trajetória</h3><p data-i18n="pillar_journey_text">Marcos e fases organizados como uma linha do tempo, não como uma planilha.</p></article>
+            <article class="pillar"><span class="pillar-index">03</span><h3 data-i18n="pillar_share">Compartilhável</h3><p data-i18n="pillar_share_text">Cards pensados para mostrar uma história em segundos, sem exigir contexto de tracker.</p></article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <strong>Riot Legacy</strong> · <span data-i18n="footer_demo">Protótipo de validação · dados demonstrativos</span><br>
+        <span data-i18n="legal">Riot Legacy é um projeto independente e não é endossado pela Riot Games. Marcas e propriedades relacionadas pertencem à Riot Games, Inc.</span>
+      </footer>
+    </div>
+  </div>
+
+  <div id="profile-view" hidden>
+    <div class="profile-shell">
+      <header class="profile-top">
+        <button id="back-to-search" class="back-button" type="button">← <span data-i18n="back">Novo perfil</span></button>
+        <div class="language-switcher" role="group" aria-label="Idioma / Language">
+          <button type="button" data-language="pt-BR" class="active" aria-pressed="true">PT</button>
+          <button type="button" data-language="en" aria-pressed="false">EN</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="profile-hero">
+          <div class="profile-hero-bg"></div>
+          <div class="profile-hero-content">
+            <span id="demo-badge" class="demo-badge" data-source-state="demo">DADOS DEMONSTRATIVOS</span>
+            <div class="profile-id-row">
+              <div class="avatar" id="avatar-letter">H</div>
+              <div class="profile-identity">
+                <h1 id="profile-riot-id">HelioConde#BR1</h1>
+                <p id="profile-subtitle" data-i18n="legacy_since">Legado desde 2018</p>
+              </div>
+            </div>
+            <div class="profile-actions">
+              <button id="share-legacy" class="primary" type="button" data-i18n="share">Compartilhar legado</button>
+              <button id="copy-link" class="secondary" type="button" data-i18n="copy">Copiar link</button>
+              <button id="refresh-data" class="secondary" type="button" data-i18n="refresh_data">Atualizar dados</button>
+            </div>
+            <div id="live-profile-facts" class="live-profile-facts" aria-label="Resumo da conta" hidden></div>
+            <p id="data-source-note" class="demo-explain" aria-live="polite">O Riot ID personaliza esta prévia; estatísticas reais entram quando o backend Riot estiver conectado.</p>
+          </div>
+        </section>
+
+        <nav class="tabs" aria-label="Seções do legado">
+          <button class="active" type="button" data-tab="legacy" data-i18n="tab_legacy" aria-selected="true">Legado</button>
+          <button type="button" data-tab="league" data-i18n="tab_league" aria-selected="false">League</button>
+          <button type="button" data-tab="tft" data-i18n="tab_tft" aria-selected="false">TFT</button>
+          <button type="button" data-tab="share" data-i18n="tab_share" aria-selected="false">Compartilhar</button>
+        </nav>
+
+        <section class="panel" id="panel-legacy" data-panel="legacy">
+          <div class="profile-grid">
+            <article class="story-card signature">
+              <p class="eyebrow" data-i18n="signature_kicker">SUA ASSINATURA</p>
+              <h2 id="signature-title">Ahri define esta conta</h2>
+              <p id="signature-text">Anos de presença, maestria e recorrência transformaram a Raposa de Nove Caudas no rosto desta história.</p>
+              <span id="signature-chip" class="signature-chip">MID · 684K · AHRI</span>
+            </article>
+            <div class="metrics">
+              <article class="metric"><span data-i18n="mastery">Maestria</span><strong id="metric-mastery">684.210</strong></article>
+              <article class="metric"><span data-i18n="games">Partidas lembradas</span><strong id="metric-games">1.284</strong></article>
+              <article class="metric"><span id="metric-third-label" data-i18n="years">Anos de história</span><strong id="metric-years">8</strong></article>
+              <article class="metric"><span id="metric-tft-label" data-i18n="top_finish">Melhor fase TFT</span><strong id="metric-tft">Top 2</strong></article>
+            </div>
+
+            <article class="timeline-card">
+              <h2 id="timeline-title" data-i18n="timeline_title">Uma conta em capítulos</h2>
+              <div id="legacy-timeline" class="timeline">
+                <div class="timeline-item"><b>2018</b><h3 data-i18n="timeline_2018">O começo</h3><p data-i18n="timeline_2018_text">Primeiras temporadas registradas e descoberta da rota do meio.</p></div>
+                <div class="timeline-item"><b>2021</b><h3 data-i18n="timeline_2021">A identidade aparece</h3><p data-i18n="timeline_2021_text">Ahri se torna presença recorrente e concentra a maior parte da maestria.</p></div>
+                <div class="timeline-item"><b>2024</b><h3 data-i18n="timeline_2024">TFT vira segunda casa</h3><p data-i18n="timeline_2024_text">Comps e augments passam a fazer parte da memória da conta.</p></div>
+                <div class="timeline-item"><b>2026</b><h3 data-i18n="timeline_2026">Agora</h3><p data-i18n="timeline_2026_text">O legado passa a ser visto como história, não só como histórico de partidas.</p></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-league" data-panel="league" hidden>
+          <div class="league-layout">
+            <article class="league-card">
+              <h2 data-i18n="league_title">Seu DNA em League</h2>
+              <div id="champion-list" class="champion-row">
+                <div class="champion"><div class="portrait">A</div><h3>Ahri</h3><span>684K mastery</span></div>
+                <div class="champion"><div class="portrait">L</div><h3>Lux</h3><span>331K mastery</span></div>
+                <div class="champion"><div class="portrait">S</div><h3>Syndra</h3><span>208K mastery</span></div>
+              </div>
+            </article>
+            <article class="league-card">
+              <h2>Roles</h2>
+              <div id="role-stack" class="role-stack">
+                <div class="role-row"><span data-i18n="role_mid">Mid</span><div class="role-track"><div class="role-fill" style="width:68%"></div></div><b>68%</b></div>
+                <div class="role-row"><span data-i18n="role_support">Suporte</span><div class="role-track"><div class="role-fill" style="width:22%"></div></div><b>22%</b></div>
+                <div class="role-row"><span data-i18n="role_other">Outras</span><div class="role-track"><div class="role-fill" style="width:10%"></div></div><b>10%</b></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-tft" data-panel="tft" hidden>
+          <div class="tft-layout">
+            <article class="tft-card tft-board-wrap">
+              <h2 data-i18n="tft_title">Sua memória de TFT</h2>
+              <p id="board-label" class="eyebrow" data-i18n="board_label">Board assinatura</p>
+              <div id="tft-board" class="tft-board"></div>
+              <p class="eyebrow" style="margin-top:20px" data-i18n="traits_label">Traits recorrentes</p>
+              <div id="trait-list" class="trait-list">
+                <span class="trait">Arcana</span><span class="trait">Scholar</span><span class="trait">Bastion</span>
+              </div>
+            </article>
+            <article class="tft-card">
+              <h2 data-i18n="placement_label">Colocação média</h2>
+              <strong id="tft-average" style="font-size:54px;color:var(--gold-soft)">2,5</strong>
+              <div id="placement-bars" class="placement-bars"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-share" data-panel="share" hidden>
+          <article class="share-panel">
+            <h2 data-i18n="share_title">Uma história que cabe em um card</h2>
+            <p data-i18n="share_text">Transforme o perfil em algo que faça sentido mesmo para quem não abriu um tracker.</p>
+            <div class="share-card">
+              <span class="share-label" data-i18n="share_card_label">RIOT LEGACY · PERFIL</span>
+              <h3 id="share-riot-id">HelioConde#BR1</h3>
+              <p id="share-period">2018 → 2026 · LoL + TFT</p>
+              <div class="share-facts">
+                <span id="share-signature" data-i18n="share_card_signature">Ahri · campeã assinatura</span>
+                <span id="share-mastery">684K mastery</span>
+                <span id="share-tft" data-i18n="share_card_tft">TFT · melhor fase: Top 2</span>
+              </div>
+            </div>
+            <div class="share-actions">
+              <button id="share-card-action" class="primary" type="button" data-i18n="share_action">Compartilhar este card</button>
+              <button id="download-card" class="secondary" type="button" data-i18n="download_card">Baixar card PNG</button>
+            </div>
+          </article>
+        </section>
+
+        <aside class="ad-shell" data-ad-slot="legacy-profile-mid" data-ad-state="reserved">
+          <span data-i18n="ad_label">Publicidade futura · espaço reservado</span>
+        </aside>
+      </main>
+
+      <footer class="footer">
+        <span data-i18n="legal">Riot Legacy é um projeto independente e não é endossado pela Riot Games. Marcas e propriedades relacionadas pertencem à Riot Games, Inc.</span>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="./i18n.js"></script>
+  <script src="./backend-config.js"></script>
+  <script src="./app.js"></script>
+  <script src="live-update.js" defer></script>
+</body>
+</html>
