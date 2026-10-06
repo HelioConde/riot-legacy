@@ -48,7 +48,7 @@ Deno.serve(async(req:Request)=>{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify(body),
-      signal:AbortSignal.timeout(14000)
+      signal:AbortSignal.timeout(5500)
     });
     upstreamStatus=response.status;
     try{upstreamBody=await response.json()}catch{upstreamBody=null}
