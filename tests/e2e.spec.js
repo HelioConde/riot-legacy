@@ -11,6 +11,11 @@ test.beforeEach(async ({ page }) => {
     contentType: 'application/json',
     body: JSON.stringify({ error: 'player_not_found', message: 'demo fallback' })
   }));
+  await page.route('**/riot-legacy-snapshots', route => route.fulfill({
+    status: 409,
+    contentType: 'application/json',
+    body: JSON.stringify({ error: 'identity_not_cached' })
+  }));
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
@@ -62,6 +67,7 @@ test('mobile não cria overflow horizontal crítico', async ({ page }) => {
 test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async ({ page }) => {
   await page.unroute('**/public-lol-profile');
   await page.unroute('**/public-tft-profile');
+  await page.unroute('**/riot-legacy-snapshots');
 
   await page.route('**/public-lol-profile', route => route.fulfill({
     status: 200,
@@ -128,6 +134,54 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
     })
   }));
 
+  await page.route('**/riot-legacy-snapshots', route => route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({
+      history: [
+        {
+          snapshot_date: '2026-10-06',
+          summary: {
+            signatureChampion: 'Lux',
+            masteryPoints: 999999,
+            lolRank: 'GOLD II · 42 LP',
+            tftRank: 'PLATINUM IV · 33 LP',
+            lolWinRate: 58,
+            tftTop4Rate: 75,
+            tftAveragePlacement: 2.5
+          }
+        },
+        {
+          snapshot_date: '2026-09-10',
+          summary: {
+            signatureChampion: 'Ahri',
+            masteryPoints: 950000,
+            lolRank: 'SILVER I · 80 LP',
+            tftRank: 'GOLD I · 20 LP',
+            lolWinRate: 52,
+            tftTop4Rate: 60,
+            tftAveragePlacement: 3.2
+          }
+        }
+      ],
+      comparison: {
+        previousMonth: {
+          snapshotDate: '2026-09-10',
+          masteryPoints: 49999,
+          lolWinRate: 6,
+          tftTop4Rate: 15,
+          tftAveragePlacement: -0.7,
+          signatureBefore: 'Ahri',
+          signatureNow: 'Lux',
+          lolRankBefore: 'SILVER I · 80 LP',
+          lolRankNow: 'GOLD II · 42 LP',
+          tftRankBefore: 'GOLD I · 20 LP',
+          tftRankNow: 'PLATINUM IV · 33 LP'
+        }
+      }
+    })
+  }));
+
   await page.locator('#game-name').fill('RealPlayer');
   await page.locator('#tag-line').fill('BR1');
   await page.locator('#region').selectOption('br1');
@@ -164,6 +218,12 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
   await expect(page.locator('#legacy-timeline')).toContainText('Partida mais antiga disponível');
   await expect(page.locator('#share-period')).toHaveText('Amostra Riot recente · LoL + TFT');
   await expect(page.locator('#share-period')).not.toContainText('2018');
+  await expect(page.locator('#snapshot-count')).toHaveText('2 snapshots');
+  await expect(page.locator('#month-comparison')).toContainText('+49.999');
+  await expect(page.locator('#rank-milestones')).toContainText('GOLD II · 42 LP');
+  await expect(page.locator('#rank-milestones')).toContainText('SILVER I · 80 LP');
+  await expect(page.locator('#mastery-evolution')).toContainText('Lux');
+  await expect(page.locator('#wrapped-summary')).toContainText('2');
   await page.getByRole('button', { name: 'Atualizar dados' }).click();
   await expect(page.locator('#demo-badge')).toHaveText('DADOS RIOT · LOL + TFT');
   await expect(page).toHaveURL(/server=br1/);
