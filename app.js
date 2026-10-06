@@ -1255,6 +1255,38 @@
     trackEvent('profile_fallback');
   }
 
+  async function beginRsoVerification() {
+    if (!backend?.features?.publicProfiles || !backend?.rsoStart) return;
+    const status = document.querySelector('#public-profile-status');
+    const accessToken = await window.RiotLegacyAuth?.accessToken?.();
+    if (!accessToken) {
+      if (status) status.textContent = locale() === 'en'
+        ? 'Sign in before linking your Riot account.'
+        : 'Faça login antes de vincular sua conta Riot.';
+      return;
+    }
+
+    try {
+      const response = await fetch(backend.rsoStart, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({})
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok || !body?.authorizeUrl) {
+        throw new Error(body?.error || 'rso_unavailable');
+      }
+      location.assign(body.authorizeUrl);
+    } catch {
+      if (status) status.textContent = locale() === 'en'
+        ? 'Riot Sign On is not available until the production app and RSO client are approved.'
+        : 'O Riot Sign On só ficará disponível após aprovação da aplicação de produção e do RSO client.';
+    }
+  }
+
   async function showPublicProfile(slug) {
     if (!backend?.features?.publicProfiles || !backend?.publicProfile) {
       showLanding();
@@ -1579,6 +1611,7 @@
   document.querySelector('#share-card-action').addEventListener('click', shareLegacy);
   document.querySelector('#download-card').addEventListener('click', downloadShareCard);
   document.querySelector('#favorite-milestone')?.addEventListener('click', favoriteCurrentMilestone);
+  document.querySelector('#public-profile-verify')?.addEventListener('click', beginRsoVerification);
   refreshButton?.addEventListener('click', () => {
     if (!currentLookup) return;
     setSourceState('loading');
