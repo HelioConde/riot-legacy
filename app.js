@@ -433,6 +433,20 @@
       return;
     }
 
+    if (live.tft) {
+      label.textContent = locale() === 'en' ? 'Saved TFT summary' : 'Resumo TFT salvo';
+      const sets = Array.isArray(live.tft?.sets) ? live.tft.sets : [];
+      board.innerHTML = `
+        <div class="tft-cache-summary">
+          <strong>${locale() === 'en' ? 'Detailed board unavailable in this saved snapshot' : 'Board detalhado indisponível neste snapshot salvo'}</strong>
+          <span>${locale() === 'en'
+            ? 'Riot Legacy keeps the real ranked, placement summary and set history without inventing units.'
+            : 'O Riot Legacy mantém ranked, resumo de colocações e histórico de sets reais sem inventar unidades.'}</span>
+          ${sets.length ? `<div class="tft-cache-setline">${sets.slice(0,3).map(set => `<b>${escapeHtml(cleanTftSetName(set?.name || '', 0))}</b>`).join('')}</div>` : ''}
+        </div>`;
+      return;
+    }
+
     label.textContent = t('board_label');
     board.innerHTML = demo.board.flatMap((row, rowIndex) =>
       row.map((value, colIndex) => {
@@ -507,7 +521,9 @@
       ? traits.map(([name, stat]) =>
           `<span class="trait" title="${stat.appearances}x">${escapeHtml(name)} · ${stat.appearances}x</span>`
         ).join('')
-      : `<span class="empty-inline">${locale() === 'en' ? 'No recurring traits in this sample.' : 'Sem traits recorrentes nesta amostra.'}</span>`;
+      : `<span class="empty-inline">${currentTftMatches().length
+          ? (locale() === 'en' ? 'No recurring traits in this sample.' : 'Sem traits recorrentes nesta amostra.')
+          : (locale() === 'en' ? 'Detailed match traits were not stored in this snapshot.' : 'Os traits detalhados das partidas não foram armazenados neste snapshot.')}</span>`;
 
     if (signature) {
       const traitName = traits[0]?.[0];
@@ -589,7 +605,9 @@
             : `${pattern.count}x · média ${average} · Top 4 ${pattern.top4Rate ?? '—'}%`;
           return `<div class="comp-pattern"><strong>${escapeHtml(pattern.label)}</strong><span>${escapeHtml(detail)}</span></div>`;
         }).join('')
-      : `<p class="empty-inline">${locale() === 'en' ? 'No recurring comp archetypes in this sample.' : 'Sem arquétipos de comp recorrentes nesta amostra.'}</p>`;
+      : `<p class="empty-inline">${currentTftMatches().length
+          ? (locale() === 'en' ? 'No recurring comp archetypes in this sample.' : 'Sem arquétipos de comp recorrentes nesta amostra.')
+          : (locale() === 'en' ? 'Detailed compositions were not stored in this snapshot.' : 'As composições detalhadas não foram armazenadas neste snapshot.')}</p>`;
   }
 
   function renderPlacementBars() {
@@ -598,6 +616,23 @@
     const placements = live.tft
       ? currentTftMatches().map(match => Number(match.placement)).filter(value => value >= 1 && value <= 8)
       : demo.placements;
+    if (live.tft && placements.length === 0) {
+      const saved = live.tft?.summary || {};
+      if (summary) {
+        summary.textContent = locale() === 'en'
+          ? `Saved summary · Top 4 ${saved.top4Rate ?? '—'}% · 1st ${saved.firsts ?? '—'} · 8th ${saved.eighths ?? '—'}`
+          : `Resumo salvo · Top 4 ${saved.top4Rate ?? '—'}% · 1º lugar ${saved.firsts ?? '—'} · 8º lugar ${saved.eighths ?? '—'}`;
+      }
+      el.innerHTML = `
+        <div class="placement-cache-state">
+          <strong>${locale() === 'en' ? 'Placement distribution unavailable' : 'Distribuição por colocação indisponível'}</strong>
+          <span>${locale() === 'en'
+            ? 'The saved snapshot keeps the real average and Top 4 rate, but not every match placement.'
+            : 'O snapshot salvo mantém média e taxa de Top 4 reais, mas não cada colocação individual.'}</span>
+        </div>`;
+      return;
+    }
+
     const counts = Array.from({ length: 8 }, (_, index) =>
       placements.filter(value => value === index + 1).length
     );
@@ -625,6 +660,19 @@
       el.innerHTML = `
         <div class="set-chip"><strong>Set 14</strong><span>${locale() === 'en' ? 'Demo sample' : 'Amostra demo'}</span></div>
       `;
+      return;
+    }
+
+    const savedSets = Array.isArray(live.tft?.sets) ? live.tft.sets : [];
+    if (!currentTftMatches().length && savedSets.length) {
+      el.innerHTML = savedSets.slice(0, 5).map(set => {
+        const name = cleanTftSetName(set?.name || '', 0);
+        const average = Number(set?.averagePlacement);
+        const detail = locale() === 'en'
+          ? `${Number(set?.matches || 0)} matches · avg ${Number.isFinite(average) ? average.toLocaleString(locale(), { maximumFractionDigits: 2 }) : '—'} · Top 4 ${set?.top4Rate ?? '—'}% · ${Number(set?.wins || 0)} wins`
+          : `${Number(set?.matches || 0)} partidas · média ${Number.isFinite(average) ? average.toLocaleString(locale(), { maximumFractionDigits: 2 }) : '—'} · Top 4 ${set?.top4Rate ?? '—'}% · ${Number(set?.wins || 0)} vitórias`;
+        return `<div class="set-chip saved-set"><strong>${escapeHtml(name)}</strong><span>${escapeHtml(detail)}</span></div>`;
+      }).join('');
       return;
     }
 
