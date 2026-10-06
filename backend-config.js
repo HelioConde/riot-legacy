@@ -8,6 +8,7 @@
     functionsBase,
     lolProfile: existing.lolProfile || functionsBase + '/public-lol-profile',
     tftProfile: existing.tftProfile || functionsBase + '/public-tft-profile',
+    legacySnapshots: existing.legacySnapshots || functionsBase + '/riot-legacy-snapshots',
     source: 'zerotwo-gamer-supabase'
   });
 })();
