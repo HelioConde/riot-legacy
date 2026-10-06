@@ -87,7 +87,14 @@ jobs:
           grep -qi 'terms.html' index.html
           grep -qi 'public-profile-verify' index.html
           grep -qi 'beginRsoVerification' app.js
-          grep -qi 'riot-legacy.svg' manifest.webmanifest
+          grep -qi 'assets/ui/app-icon.png' manifest.webmanifest
+          test -f assets/ui/logo.png
+          test -f assets/ui/hero.png
+          test -f assets/ui/profile-header.png
+          test -f assets/ui/hud-lol.png
+          test -f assets/ui/hud-tft.png
+          test -f assets/ui/status-live.png
+          test -f assets/ui/status-cache.png
       - name: No secrets
         run: |
           ! grep -RniE 'RGAPI-[A-Za-z0-9_-]{20,}|SUPABASE_SERVICE_ROLE_KEY|service_role.*eyJ' . --exclude-dir=.git --include='*.js' --include='*.html' --include='*.json' --exclude='package*.json'
