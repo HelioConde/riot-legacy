@@ -34,6 +34,7 @@ jobs:
           test -f RIOT_API.md
           test -f RETENTION.md
           test -f PRODUCTION_FLAGS.md
+          test -f RIOT_POLICY_COMPLIANCE.md
           test -f ads-config.js
           test -f ads.js
           grep -qi 'lang="pt-BR"' index.html
@@ -55,6 +56,8 @@ jobs:
           grep -qi 'retentionTelemetry' backend-config.js
           grep -qi 'publicProfiles: false' backend-config.js
           grep -qi 'ads: false' backend-config.js
+          grep -qi 'RIOT_LEGACY_ALLOW_SHARED_KEY' supabase/functions/riot-legacy-lol-profile/index.ts
+          grep -qi 'RIOT_LEGACY_ALLOW_SHARED_KEY' supabase/functions/riot-legacy-tft-profile/index.ts
           grep -qi 'postPublicFunction' app.js
           grep -qi 'DADOS RIOT' app.js
           grep -qi 'server' app.js
