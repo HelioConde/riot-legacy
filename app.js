@@ -418,6 +418,79 @@
     }
   }
 
+  function renderCompPatterns() {
+    const el = document.querySelector('#comp-patterns');
+    if (!el) return;
+
+    if (!live.tft) {
+      el.innerHTML = `
+        <div class="comp-pattern"><strong>Arcana + Scholar</strong><span>${locale() === 'en' ? 'Demo archetype' : 'Arquétipo demo'}</span></div>
+      `;
+      return;
+    }
+
+    const patterns = new Map();
+
+    currentTftMatches().forEach(match => {
+      const activeTraits = (Array.isArray(match?.traits) ? match.traits : [])
+        .filter(item => Number(item?.numUnits || 0) > 0 && (Number(item?.style || 0) > 0 || Number(item?.numUnits || 0) >= 2))
+        .sort((a, b) =>
+          Number(b?.style || 0) - Number(a?.style || 0) ||
+          Number(b?.numUnits || 0) - Number(a?.numUnits || 0)
+        )
+        .slice(0, 2)
+        .map(item => cleanTftName(item?.name));
+
+      const coreUnits = (Array.isArray(match?.units) ? match.units : [])
+        .slice()
+        .sort((a, b) => Number(b?.tier || 0) - Number(a?.tier || 0))
+        .slice(0, 3)
+        .map(unit => cleanTftName(unit?.characterId))
+        .filter(name => name && name !== 'TFT');
+
+      const parts = activeTraits.length ? activeTraits : coreUnits;
+      if (!parts.length) return;
+
+      const label = parts.join(' + ');
+      const placement = Number(match?.placement || 0);
+      const current = patterns.get(label) || { count: 0, placements: [], top4: 0 };
+      current.count += 1;
+      if (placement >= 1 && placement <= 8) {
+        current.placements.push(placement);
+        if (placement <= 4) current.top4 += 1;
+      }
+      patterns.set(label, current);
+    });
+
+    const ranked = [...patterns.entries()]
+      .map(([label, stat]) => ({
+        label,
+        ...stat,
+        average: stat.placements.length
+          ? stat.placements.reduce((sum, value) => sum + value, 0) / stat.placements.length
+          : null,
+        top4Rate: stat.placements.length
+          ? Math.round(stat.top4 / stat.placements.length * 100)
+          : null
+      }))
+      .sort((a, b) =>
+        b.count - a.count ||
+        (a.average ?? 99) - (b.average ?? 99) ||
+        a.label.localeCompare(b.label)
+      )
+      .slice(0, 4);
+
+    el.innerHTML = ranked.length
+      ? ranked.map(pattern => {
+          const average = pattern.average == null ? '—' : pattern.average.toLocaleString(locale(), { maximumFractionDigits: 2 });
+          const detail = locale() === 'en'
+            ? `${pattern.count}x · avg ${average} · Top 4 ${pattern.top4Rate ?? '—'}%`
+            : `${pattern.count}x · média ${average} · Top 4 ${pattern.top4Rate ?? '—'}%`;
+          return `<div class="comp-pattern"><strong>${escapeHtml(pattern.label)}</strong><span>${escapeHtml(detail)}</span></div>`;
+        }).join('')
+      : `<p class="empty-inline">${locale() === 'en' ? 'No recurring comp archetypes in this sample.' : 'Sem arquétipos de comp recorrentes nesta amostra.'}</p>`;
+  }
+
   function renderPlacementBars() {
     const el = document.querySelector('#placement-bars');
     const summary = document.querySelector('#placement-summary');
@@ -754,6 +827,7 @@
     renderRoles();
     renderBoard();
     renderTraits();
+    renderCompPatterns();
     renderPlacementBars();
     renderSetRetrospective();
     renderTimeline();
