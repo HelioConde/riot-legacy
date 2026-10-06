@@ -287,3 +287,31 @@ a{color:inherit}
   .pillar:before{width:28px;height:28px}
   .league-card>h2:first-child:before,.tft-card>h2:first-child:before{width:24px;height:24px;flex-basis:24px}
 }
+
+
+/* Rank and role asset integration */
+.live-fact{position:relative;overflow:hidden}
+.live-fact-icon{display:none;width:22px;height:22px;flex:0 0 22px;background:center/contain no-repeat}
+.live-fact.rank-gold,.live-fact.rank-bronze{display:grid;grid-template-columns:24px 1fr;column-gap:8px;align-items:center}
+.live-fact.rank-gold .live-fact-icon,.live-fact.rank-bronze .live-fact-icon{display:block;grid-row:1/3}
+.live-fact.rank-gold .live-fact-icon{background-image:url("./assets/ui/rank-gold.png")}
+.live-fact.rank-bronze .live-fact-icon{background-image:url("./assets/ui/rank-bronze.png")}
+.live-fact.rank-gold small,.live-fact.rank-bronze small,
+.live-fact.rank-gold strong,.live-fact.rank-bronze strong{grid-column:2}
+.role-name{display:inline-flex;align-items:center;gap:7px;min-width:0}
+.role-icon{width:18px;height:18px;flex:0 0 18px;background:center/contain no-repeat;opacity:.9}
+.role-icon.role-top{background-image:url("./assets/ui/role-top.png")}
+.role-icon.role-jungle{background-image:url("./assets/ui/role-jungle.png")}
+.role-icon.role-mid{background-image:url("./assets/ui/role-mid.png")}
+.role-icon.role-adc{background-image:url("./assets/ui/role-adc.png")}
+.role-icon.role-support{background-image:url("./assets/ui/role-support.png")}
+.signature,.share-card,.league-card,.tft-card{position:relative}
+.signature:after,.share-card:after,.league-card:after,.tft-card:after{content:"";position:absolute;inset:6px;pointer-events:none;border-radius:inherit;background:center/100% 100% no-repeat;opacity:.06;z-index:0}
+.signature:after,.share-card:after{background-image:url("./assets/ui/card-frame.png")}
+.league-card:after,.tft-card:after{background-image:url("./assets/ui/panel-frame.png")}
+.signature>*,.share-card>*,.league-card>*,.tft-card>*{position:relative;z-index:1}
+@media(max-width:620px){
+  .live-fact.rank-gold,.live-fact.rank-bronze{grid-template-columns:20px 1fr;column-gap:6px}
+  .live-fact-icon{width:19px;height:19px;flex-basis:19px}
+  .role-icon{width:16px;height:16px;flex-basis:16px}
+}
