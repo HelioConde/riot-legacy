@@ -14,12 +14,12 @@ const targets = [
   },
   {
     name: 'profile-desktop',
-    url: baseUrl + '?riotId=VisualTest%23BR1&server=br1',
+    url: baseUrl + '?riotId=AlchemyFlames%23BR1&server=br1',
     viewport: { width: 1440, height: 1000 }
   },
   {
     name: 'profile-mobile',
-    url: baseUrl + '?riotId=VisualTest%23BR1&server=br1',
+    url: baseUrl + '?riotId=AlchemyFlames%23BR1&server=br1',
     viewport: { width: 390, height: 844 },
     isMobile: true
   }
@@ -50,8 +50,15 @@ try {
       timeout
     });
 
-    // Let fonts, async UI and the explicit demo fallback settle.
-    await page.waitForTimeout(2500);
+    // Let fonts and asynchronous profile hydration settle.
+    await page.waitForTimeout(1200);
+    if (target.name.startsWith('profile-')) {
+      await page.waitForFunction(() => {
+        const badge = document.querySelector('#demo-badge');
+        return badge && badge.dataset.sourceState !== 'loading';
+      }, { timeout: 18000 }).catch(() => {});
+      await page.waitForTimeout(700);
+    }
 
     // Prevent animations/caret from producing noisy diffs.
     await page.addStyleTag({
@@ -76,7 +83,7 @@ try {
     metadata.files.push({
       name: target.name,
       file,
-      url: target.url.replace('VisualTest%23BR1', 'demo-profile'),
+      url: target.url.replace('AlchemyFlames%23BR1', 'demo-profile'),
       viewport: target.viewport
     });
 
