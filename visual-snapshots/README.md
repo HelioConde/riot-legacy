@@ -5,11 +5,12 @@ Esta pasta é atualizada automaticamente pelo workflow **Visual Snapshots** depo
 Arquivos gerados:
 
 - `landing-desktop.png` — landing em desktop;
-- `profile-desktop.png` — perfil demonstrativo em desktop;
-- `profile-mobile.png` — perfil demonstrativo em mobile;
+- `profile-desktop.png` — perfil real/cacheado de `AlchemyFlames#BR1` em desktop;
+- `profile-mobile.png` — perfil real/cacheado de `AlchemyFlames#BR1` em mobile;
+- `review-*.jpg` — previews leves do primeiro viewport para revisão visual automática;
 - `metadata.json` — data, viewport e referência do snapshot.
 
-O perfil visual usa `VisualTest#BR1` apenas para abrir a experiência demonstrativa. Nenhum Riot ID pessoal é persistido nesse workflow.
+As capturas de perfil usam `AlchemyFlames#BR1` como conta de teste visual conhecida. O workflow grava somente as imagens públicas geradas e metadados de viewport; nenhuma credencial Riot é armazenada.
 
 Para gerar localmente:
 
