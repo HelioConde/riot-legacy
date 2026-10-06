@@ -19,6 +19,9 @@
   const clearRecentSearches = document.querySelector('#clear-recent-searches');
   const RECENT_SEARCHES_KEY = 'riot-legacy-recent-searches';
   const RECENT_SEARCHES_LIMIT = 5;
+  const CARD_COLLECTION_KEY = 'riot-legacy-card-collection';
+  const FAVORITE_MILESTONES_KEY = 'riot-legacy-favorite-milestones';
+  const LOCAL_MEMORY_LIMIT = 12;
 
   const demo = {
     mastery: 684210,
@@ -700,6 +703,91 @@
     ).join('');
   }
 
+
+  function applySignatureTheme(champion) {
+    const value = String(champion || 'Riot Legacy');
+    let hash = 0;
+    for (let index = 0; index < value.length; index++) {
+      hash = ((hash << 5) - hash + value.charCodeAt(index)) | 0;
+    }
+    const hue = Math.abs(hash) % 360;
+    document.documentElement.style.setProperty('--signature-accent', `hsl(${hue} 62% 58%)`);
+    document.documentElement.style.setProperty('--signature-soft', `hsl(${hue} 72% 78%)`);
+  }
+
+  function readLocalMemory(key) {
+    try {
+      const value = JSON.parse(localStorage.getItem(key) || '[]');
+      return Array.isArray(value) ? value.slice(0, LOCAL_MEMORY_LIMIT) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function writeLocalMemory(key, items) {
+    localStorage.setItem(key, JSON.stringify(items.slice(0, LOCAL_MEMORY_LIMIT)));
+  }
+
+  function currentMemoryEntry() {
+    return {
+      riotId: profileRiotId.textContent || '',
+      champion: currentSignatureChampion(),
+      mastery: Number(currentMasteryPoints() || 0),
+      lolRank: live.lol?.ranked?.[0]?.tier
+        ? `${live.lol.ranked[0].tier} ${live.lol.ranked[0].rank || ''}`.trim()
+        : null,
+      tftRank: live.tft?.ranked?.[0]?.tier
+        ? `${live.tft.ranked[0].tier} ${live.tft.ranked[0].rank || ''}`.trim()
+        : null,
+      savedAt: new Date().toISOString()
+    };
+  }
+
+  function saveCardCollection() {
+    const entry = currentMemoryEntry();
+    const key = `${entry.riotId}|${entry.champion}|${entry.savedAt.slice(0, 10)}`;
+    const next = [
+      entry,
+      ...readLocalMemory(CARD_COLLECTION_KEY).filter(item =>
+        `${item.riotId}|${item.champion}|${String(item.savedAt || '').slice(0, 10)}` !== key
+      )
+    ];
+    writeLocalMemory(CARD_COLLECTION_KEY, next);
+    renderLocalMemories();
+  }
+
+  function favoriteCurrentMilestone() {
+    const entry = currentMemoryEntry();
+    const next = [entry, ...readLocalMemory(FAVORITE_MILESTONES_KEY)];
+    writeLocalMemory(FAVORITE_MILESTONES_KEY, next);
+    renderLocalMemories();
+  }
+
+  function renderMemoryList(element, items, emptyText) {
+    if (!element) return;
+    element.innerHTML = items.length
+      ? items.map(item => {
+          const rank = [item.lolRank, item.tftRank].filter(Boolean).join(' · ');
+          const detail = [item.champion, rank].filter(Boolean).join(' · ');
+          const date = item.savedAt ? new Date(item.savedAt).toLocaleDateString(locale()) : '';
+          return `<div class="memory-item"><div><strong>${escapeHtml(item.riotId || 'Riot Legacy')}</strong><span>${escapeHtml(detail || 'Momento salvo')}</span></div><time>${escapeHtml(date)}</time></div>`;
+        }).join('')
+      : `<p class="empty-inline">${escapeHtml(emptyText)}</p>`;
+  }
+
+  function renderLocalMemories() {
+    renderMemoryList(
+      document.querySelector('#card-collection'),
+      readLocalMemory(CARD_COLLECTION_KEY),
+      'Baixe um card para adicioná-lo à coleção local.'
+    );
+    renderMemoryList(
+      document.querySelector('#favorite-list'),
+      readLocalMemory(FAVORITE_MILESTONES_KEY),
+      'Nenhum marco favorito salvo neste navegador.'
+    );
+  }
+
   function renderSignature() {
     const signature = currentSignatureEvidence();
     const champion = signature.name;
@@ -710,6 +798,7 @@
     const title = document.querySelector('#signature-title');
     const text = document.querySelector('#signature-text');
     const chip = document.querySelector('#signature-chip');
+    applySignatureTheme(champion);
 
     if (live.lol) {
       title.textContent = locale() === 'en'
@@ -962,6 +1051,7 @@
     renderTimeline();
     renderLiveProfileFacts();
     renderHistoryInsights();
+    renderLocalMemories();
   }
 
   function setProfileIdentity(riotId) {
@@ -1242,6 +1332,7 @@
       link.click();
       link.remove();
       window.setTimeout(() => URL.revokeObjectURL(url), 0);
+      saveCardCollection();
       showToast('downloaded_card');
     }, 'image/png');
   }
@@ -1312,6 +1403,7 @@
   document.querySelector('#share-legacy').addEventListener('click', shareLegacy);
   document.querySelector('#share-card-action').addEventListener('click', shareLegacy);
   document.querySelector('#download-card').addEventListener('click', downloadShareCard);
+  document.querySelector('#favorite-milestone')?.addEventListener('click', favoriteCurrentMilestone);
   refreshButton?.addEventListener('click', () => {
     if (!currentLookup) return;
     setSourceState('loading');
