@@ -80,10 +80,20 @@ try {
       animations: 'disabled'
     });
 
+    const reviewFile = path.join(outputDir, `review-${target.name}.jpg`);
+    await page.screenshot({
+      path: reviewFile,
+      fullPage: false,
+      type: 'jpeg',
+      quality: 72,
+      animations: 'disabled'
+    });
+
     metadata.files.push({
       name: target.name,
       file,
-      url: target.url.replace('AlchemyFlames%23BR1', 'demo-profile'),
+      reviewFile,
+      url: target.url,
       viewport: target.viewport
     });
 
