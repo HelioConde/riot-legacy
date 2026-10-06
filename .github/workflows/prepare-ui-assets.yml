@@ -1,0 +1,69 @@
+name: Prepare UI assets
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/prepare-ui-assets.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Prepare curated UI aliases
+        shell: bash
+        run: |
+          set -euo pipefail
+          src_dir="$(find img -maxdepth 1 -type d -name '*Fantasia*' | head -n1)"
+          test -n "$src_dir"
+          mkdir -p assets/ui
+          cp "$src_dir/element_001.png" assets/ui/hero.png
+          cp "$src_dir/element_002.png" assets/ui/hero-mobile.png
+          cp "$src_dir/element_003.png" assets/ui/logo.png
+          cp "$src_dir/element_005.png" assets/ui/app-icon.png
+          cp "$src_dir/element_006.png" assets/ui/favicon.png
+          cp "$src_dir/element_008.png" assets/ui/profile-header.png
+          cp "$src_dir/element_009.png" assets/ui/league-panel.png
+          cp "$src_dir/element_010.png" assets/ui/tft-panel.png
+          cp "$src_dir/element_011.png" assets/ui/share-bg.png
+          cp "$src_dir/element_014.png" assets/ui/hud-lol.png
+          cp "$src_dir/element_015.png" assets/ui/hud-tft.png
+          cp "$src_dir/element_017.png" assets/ui/hud-ranked.png
+          cp "$src_dir/element_019.png" assets/ui/hud-mastery.png
+          cp "$src_dir/element_024.png" assets/ui/icon-share.png
+          cp "$src_dir/element_025.png" assets/ui/icon-download.png
+          cp "$src_dir/element_026.png" assets/ui/icon-favorite.png
+          cp "$src_dir/element_028.png" assets/ui/icon-history.png
+          cp "$src_dir/element_029.png" assets/ui/icon-stats.png
+          cp "$src_dir/element_034.png" assets/ui/status-live.png
+          cp "$src_dir/element_035.png" assets/ui/status-cache.png
+          cp "$src_dir/element_045.png" assets/ui/rank-bronze.png
+          cp "$src_dir/element_047.png" assets/ui/rank-gold.png
+          cp "$src_dir/element_056.png" assets/ui/role-top.png
+          cp "$src_dir/element_057.png" assets/ui/role-jungle.png
+          cp "$src_dir/element_058.png" assets/ui/role-mid.png
+          cp "$src_dir/element_059.png" assets/ui/role-adc.png
+          cp "$src_dir/element_060.png" assets/ui/role-support.png
+          cp "$src_dir/element_064.png" assets/ui/card-frame.png
+          cp "$src_dir/element_065.png" assets/ui/panel-frame.png
+
+      - name: Commit aliases
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/ui
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "chore: prepare curated UI assets [skip ci]"
+          git push origin HEAD:main
