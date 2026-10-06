@@ -10,21 +10,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
-      - run: printf '{"sha":"%s","publishedAt":"%s"}\n' "$GITHUB_SHA" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > version.json
-      - run: |
-          if git diff --quiet -- version.json; then exit 0; fi
+      - name: Refresh live version safely
+        shell: bash
+        run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add version.json
-          git commit -m "chore: refresh live version"
+
           for attempt in 1 2 3 4; do
             git fetch origin main
-            git rebase origin/main
+            git reset --hard origin/main
+
+            latest_sha="$(git rev-parse HEAD)"
+            current_sha="$(node -e "try{process.stdout.write(JSON.parse(require('fs').readFileSync('version.json','utf8')).sha||'')}catch(e){}")"
+
+            if [ "$current_sha" = "$latest_sha" ]; then
+              echo "version.json already matches $latest_sha"
+              exit 0
+            fi
+
+            printf '{"sha":"%s","publishedAt":"%s"}\n' "$latest_sha" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > version.json
+            git add version.json
+            git commit -m "chore: refresh live version"
+
             if git push origin HEAD:main; then
               exit 0
             fi
-            echo "Push race on attempt $attempt; retrying..."
+
+            echo "Push race on attempt $attempt; regenerating from latest main..."
             sleep $((attempt * 2))
           done
-          echo "Could not push after retries."
+
+          echo "Could not update live version after retries."
           exit 1
