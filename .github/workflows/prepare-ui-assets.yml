@@ -49,8 +49,16 @@ jobs:
           cp "$src_dir/element_029.png" assets/ui/icon-stats.png
           cp "$src_dir/element_034.png" assets/ui/status-live.png
           cp "$src_dir/element_035.png" assets/ui/status-cache.png
+          cp "$src_dir/element_044.png" assets/ui/rank-iron.png
           cp "$src_dir/element_045.png" assets/ui/rank-bronze.png
+          cp "$src_dir/element_046.png" assets/ui/rank-silver.png
           cp "$src_dir/element_047.png" assets/ui/rank-gold.png
+          cp "$src_dir/element_048.png" assets/ui/rank-platinum.png
+          cp "$src_dir/element_049.png" assets/ui/rank-emerald.png
+          cp "$src_dir/element_050.png" assets/ui/rank-diamond.png
+          cp "$src_dir/element_051.png" assets/ui/rank-master.png
+          cp "$src_dir/element_052.png" assets/ui/rank-grandmaster.png
+          cp "$src_dir/element_053.png" assets/ui/rank-challenger.png
           cp "$src_dir/element_056.png" assets/ui/role-top.png
           cp "$src_dir/element_057.png" assets/ui/role-jungle.png
           cp "$src_dir/element_058.png" assets/ui/role-mid.png
