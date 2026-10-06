@@ -25,7 +25,7 @@ Atualizado em 06/10/2026.
 - [x] Criar repositório físico `HelioConde/riot-legacy`.
 - [x] Publicar GitHub Pages — deploy oficial ativo em `https://helioconde.github.io/riot-legacy/`.
 - [ ] Registrar proposta no Riot Developer Portal.
-- [ ] Definir Production API key própria do produto quando elegível.
+- [~] Definir Production API key própria do produto quando elegível — backends dedicados `riot-legacy-lol-profile`/`riot-legacy-tft-profile` já preferem `RIOT_LEGACY_API_KEY` e mantêm `RIOT_API_KEY` apenas como fallback; falta a chave aprovada pela Riot.
 - [x] Reutilizar backend gamer ZeroTwo.gg com Riot key server-side.
 - [x] Identificar `public-lol-profile` como backend inicial Riot ID → PUUID → League.
 - [x] Conectar o frontend do Riot Legacy à `public-lol-profile`.
@@ -54,7 +54,7 @@ Atualizado em 06/10/2026.
 - [x] TFT: distribuição de colocações — barras 1º–8º e resumo Top 4/1º/8º derivados da amostra recente.
 - [x] TFT: retrospectiva por set — partidas agrupadas por set com média de colocação, Top 4 e vitórias na amostra disponível.
 - [x] Cards exportáveis como imagem PNG gerada localmente no navegador.
-- [ ] Perfil público opcional — bloqueado até existir autenticação/prova de propriedade da conta; não publicar perfil de terceiros por simples Riot ID.
+- [~] Perfil público opcional — tabela, API, revogação, slug e trava server-side já implementados; publicação continua bloqueada até autenticação + prova de propriedade RSO.
 - [x] Tema visual baseado no campeão assinatura — acento visual determinístico e splash do campeão sem alterar a landing.
 
 ## P2 — retenção
@@ -67,7 +67,7 @@ Atualizado em 06/10/2026.
 - [x] Wrapped mensal/anual — resumo de snapshots do mês/ano, assinaturas e melhor Top 4 registrado.
 - [x] Coleção de cards compartilhados — coleção local adicionada ao baixar PNG, limitada a 12 itens.
 - [x] Favoritar marcos — persistência local no navegador para momentos escolhidos pelo usuário.
-- [ ] Página pública indexável somente com consentimento — perfis pesquisados agora recebem `noindex,nofollow`; opt-in indexável depende de autenticação/prova de propriedade.
+- [~] Página pública indexável somente com consentimento — banco/API já exigem perfil verificado e opt-in; perfis pesquisados recebem `noindex,nofollow`. Falta habilitar autenticação + RSO para liberar o fluxo.
 - [x] Web Share + download de imagem — Web Share com fallback para clipboard e PNG local.
 - [x] PWA básico — manifest completo, Service Worker e app shell offline; revisar ícones/instalação após validação de retenção.
 
@@ -75,12 +75,25 @@ Atualizado em 06/10/2026.
 
 - [x] Layout preparado para anúncios.
 - [ ] Registrar produto e validar política de monetização Riot.
-- [ ] Ativar rede apenas após aprovação/acknowledgement e IDs reais.
+- [~] Ativar rede apenas após aprovação/acknowledgement e IDs reais — loader AdSense, slots e feature flags implementados e desligados; falta aprovação Riot/AdSense e IDs reais.
 - [x] Validar CLS e distância dos controles — slots reservados com altura fixa/contain e E2E garantindo ausência de controles dentro do anúncio.
-- [ ] Medir retenção antes de aumentar inventário.
+- [x] Medir retenção antes de aumentar inventário — telemetria sanitizada, visitor hash SHA-256, métricas diárias e coortes D1/D7 implementadas; aguardar volume real antes de qualquer aumento de anúncios.
 
 ## Regra
 
 Não expandir para dezenas de estatísticas porque estão disponíveis na API. Cada dado precisa responder:
 
 **“Isso ajuda o jogador a lembrar, entender ou compartilhar a própria trajetória?”**
+
+
+## Infraestrutura pronta para desbloqueios externos
+
+- [x] Backends próprios de LoL/TFT para o Riot Legacy.
+- [x] Preferência automática por `RIOT_LEGACY_API_KEY`.
+- [x] Telemetria de retenção sem Riot ID/PUUID.
+- [x] Views diárias e coortes D1/D7.
+- [x] Perfil público server-side com publicação impossível sem ownership verification.
+- [x] Revogação de perfil público preparada.
+- [x] Loader de anúncios protegido por feature flags.
+- [x] Screenshots automáticos desktop/mobile versionados no GitHub.
+- [x] Testes garantindo que ads/perfil público continuam desligados antes da aprovação.
