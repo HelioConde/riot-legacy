@@ -1,4 +1,4 @@
-const CACHE_NAME = 'riot-legacy-v1';
+const CACHE_NAME = 'riot-legacy-v2';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,7 +6,17 @@ const APP_SHELL = [
   './app.js',
   './i18n.js',
   './backend-config.js',
-  './manifest.webmanifest'
+  './manifest.webmanifest',
+  './assets/ui/logo.png',
+  './assets/ui/app-icon.png',
+  './assets/ui/hero.png',
+  './assets/ui/hero-mobile.png',
+  './assets/ui/profile-header.png',
+  './assets/ui/hud-lol.png',
+  './assets/ui/hud-tft.png',
+  './assets/ui/status-live.png',
+  './assets/ui/status-cache.png',
+  './assets/ui/share-bg.png'
 ];
 
 self.addEventListener('install', event => {
