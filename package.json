@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "http-server . -p 4173 -c-1",
     "check": "node --check app.js && node --check i18n.js",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "screenshot": "node scripts/capture-page.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
