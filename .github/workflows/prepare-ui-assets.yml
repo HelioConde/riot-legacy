@@ -31,6 +31,7 @@ jobs:
           cp "$src_dir/element_001.png" assets/ui/hero.png
           cp "$src_dir/element_002.png" assets/ui/hero-mobile.png
           cp "$src_dir/element_003.png" assets/ui/logo.png
+          cp "$src_dir/element_004.png" assets/ui/logo-square.png
           cp "$src_dir/element_005.png" assets/ui/app-icon.png
           cp "$src_dir/element_006.png" assets/ui/favicon.png
           cp "$src_dir/element_008.png" assets/ui/profile-header.png
