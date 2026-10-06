@@ -419,6 +419,10 @@
     const label = document.querySelector('#board-label');
     const latest = currentTftMatches()[0];
     const liveUnits = Array.isArray(latest?.units) ? latest.units.slice(0, 12) : [];
+    const detailedSections = document.querySelector('#tft-detailed-sections');
+    const hasDetailedMatches = currentTftMatches().length > 0;
+    if (detailedSections) detailedSections.hidden = Boolean(live.tft && !hasDetailedMatches);
+    board.classList.toggle('summary-only', Boolean(live.tft && !hasDetailedMatches));
 
     if (live.tft && liveUnits.length) {
       label.textContent = locale() === 'en' ? 'Units from latest match' : 'Unidades da partida mais recente';
