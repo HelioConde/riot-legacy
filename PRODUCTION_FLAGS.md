@@ -6,10 +6,10 @@
 
 As funções dedicadas usam esta ordem:
 
-1. `RIOT_LEGACY_API_KEY`
+1. `RIOT_LEGACY_LOL_API_KEY` / `RIOT_LEGACY_TFT_API_KEY`
 2. fallback temporário: `RIOT_API_KEY`
 
-Quando a chave de produção própria do Riot Legacy for aprovada, basta cadastrar `RIOT_LEGACY_API_KEY` no projeto Supabase. Nenhuma alteração de frontend é necessária.
+Quando a chave de produção própria do Riot Legacy for aprovada, basta cadastrar `RIOT_LEGACY_LOL_API_KEY` / `RIOT_LEGACY_TFT_API_KEY` no projeto Supabase. Nenhuma alteração de frontend é necessária.
 
 ## Feature flags do frontend
 
