@@ -223,7 +223,7 @@ Deno.serve(async (req: Request) => {
 
   // Server-side refresh: never trust browser-submitted ranked/mastery/history values.
   const [liveLol, liveTft] = await Promise.all([
-    invokePublicProfile(url, "public-lol-profile", {
+    invokePublicProfile(url, "riot-legacy-lol-profile", {
       gameName,
       tagLine,
       platform,
@@ -231,7 +231,7 @@ Deno.serve(async (req: Request) => {
       limit: 20,
       matchLimit: 20,
     }),
-    invokePublicProfile(url, "public-tft-profile", {
+    invokePublicProfile(url, "riot-legacy-tft-profile", {
       gameName,
       tagLine,
       platform,
