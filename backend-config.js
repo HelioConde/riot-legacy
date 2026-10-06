@@ -6,8 +6,8 @@
 
   window.RIOT_LEGACY_BACKEND = Object.freeze({
     functionsBase,
-    lolProfile: existing.lolProfile || functionsBase + '/riot-legacy-lol-profile',
-    tftProfile: existing.tftProfile || functionsBase + '/riot-legacy-tft-profile',
+    lolProfile: existing.lolProfile || functionsBase + '/public-lol-profile',
+    tftProfile: existing.tftProfile || functionsBase + '/public-tft-profile',
     legacySnapshots: existing.legacySnapshots || functionsBase + '/riot-legacy-snapshots',
     legacyEvents: existing.legacyEvents || functionsBase + '/riot-legacy-events',
     publicProfile: existing.publicProfile || functionsBase + '/riot-legacy-public-profile',
