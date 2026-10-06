@@ -53,8 +53,8 @@ jobs:
           grep -qi 'riot-legacy-language' i18n.js
           grep -qi 'URLSearchParams' app.js
           grep -qi 'navigator.share' app.js
-          grep -qi 'riot-legacy-lol-profile' backend-config.js
-          grep -qi 'riot-legacy-tft-profile' backend-config.js
+          grep -qi 'public-lol-profile' backend-config.js
+          grep -qi 'public-tft-profile' backend-config.js
           grep -qi 'riot-legacy-events' backend-config.js
           grep -qi 'riot-legacy-public-profile' backend-config.js
           grep -qi 'riot-legacy-rso-start' backend-config.js
