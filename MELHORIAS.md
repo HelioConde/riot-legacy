@@ -25,7 +25,7 @@ Atualizado em 06/10/2026.
 - [x] Criar repositório físico `HelioConde/riot-legacy`.
 - [x] Publicar GitHub Pages — deploy oficial ativo em `https://helioconde.github.io/riot-legacy/`.
 - [ ] Registrar proposta no Riot Developer Portal.
-- [~] Definir Production API key própria do produto quando elegível — backends dedicados exigem `RIOT_LEGACY_API_KEY` em produção; fallback compartilhado só funciona com override explícito de desenvolvimento. Falta a chave emitida pela Riot.
+- [~] Definir Production API key própria do produto quando elegível — backends dedicados exigem chaves separadas `RIOT_LEGACY_LOL_API_KEY` e `RIOT_LEGACY_TFT_API_KEY` em produção; fallback compartilhado só funciona com override explícito de desenvolvimento. Faltam as duas applications/keys emitidas pela Riot.
 - [x] Reutilizar backend gamer ZeroTwo.gg com Riot key server-side.
 - [x] Backend inicial identificado e depois isolado em `riot-legacy-lol-profile` para o produto ter chave/política próprias.
 - [x] Conectar o frontend do Riot Legacy ao backend dedicado `riot-legacy-lol-profile`.
@@ -93,7 +93,7 @@ Não expandir para dezenas de estatísticas porque estão disponíveis na API. C
 - [x] Helper `npm run riot:verify` para gerar `riot.txt` com o token exato quando a Riot fornecer.
 
 - [x] Backends próprios de LoL/TFT para o Riot Legacy.
-- [x] Preferência automática por `RIOT_LEGACY_API_KEY`.
+- [x] Preferência automática por `RIOT_LEGACY_LOL_API_KEY` / `RIOT_LEGACY_TFT_API_KEY`.
 - [x] Telemetria de retenção sem Riot ID/PUUID.
 - [x] Views diárias e coortes D1/D7.
 - [x] Perfil público server-side com publicação impossível sem ownership verification.
