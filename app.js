@@ -782,6 +782,7 @@
     const total = entries.reduce((sum, [, count]) => sum + count, 0);
 
     if (identity) {
+      identity.hidden = false;
       if (entries.length && total > 0) {
         const [primaryPosition, primaryCount] = entries[0];
         const primaryPercent = Math.round(primaryCount / total * 100);
@@ -789,16 +790,8 @@
           ? `Recent identity: ${labels[primaryPosition] || primaryPosition} · ${primaryPercent}% of ${total} positioned matches`
           : `Identidade recente: ${labels[primaryPosition] || primaryPosition} · ${primaryPercent}% de ${total} partidas com posição`;
       } else {
-        const context = String(live.lol?.summary?.mainContext || '').toUpperCase();
-        if (context && !context.includes('RANKED') && !context.includes('NORMAL') && !context.includes('QUICKPLAY')) {
-          identity.textContent = english
-            ? `Recent sample: ${context}. Lane identity is not estimated from this mode.`
-            : `Amostra recente: ${context}. Não estimamos rota a partir deste modo.`;
-        } else {
-          identity.textContent = english
-            ? 'Recent identity: insufficient role data'
-            : 'Identidade recente: dados de função insuficientes';
-        }
+        identity.textContent = '';
+        identity.hidden = true;
       }
     }
 
