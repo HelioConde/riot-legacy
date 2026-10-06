@@ -1,7 +1,7 @@
 {
-  "capturedAt": "2026-10-06T21:28:10.834Z",
+  "capturedAt": "2026-10-06T21:29:07.573Z",
   "baseUrl": "https://helioconde.github.io/riot-legacy/",
-  "commit": "0e6bea959ce84fa6b0412964d7246740d574799f",
+  "commit": "423f91ee2f5a766b3606324febf34497c35a7d96",
   "files": [
     {
       "name": "landing-desktop",
@@ -12,6 +12,17 @@
       "viewport": {
         "width": 1440,
         "height": 1000
+      }
+    },
+    {
+      "name": "landing-mobile",
+      "file": "visual-snapshots/landing-mobile.png",
+      "reviewFile": "visual-snapshots/review-landing-mobile.jpg",
+      "tabReviews": [],
+      "url": "https://helioconde.github.io/riot-legacy/",
+      "viewport": {
+        "width": 390,
+        "height": 844
       }
     },
     {
