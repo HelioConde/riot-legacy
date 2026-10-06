@@ -13,6 +13,12 @@ const targets = [
     viewport: { width: 1440, height: 1000 }
   },
   {
+    name: 'landing-mobile',
+    url: baseUrl,
+    viewport: { width: 390, height: 844 },
+    isMobile: true
+  },
+  {
     name: 'profile-desktop',
     url: baseUrl + '?riotId=AlchemyFlames%23BR1&server=br1',
     viewport: { width: 1440, height: 1000 }
