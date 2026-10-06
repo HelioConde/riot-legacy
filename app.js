@@ -668,6 +668,17 @@
       : `<p class="empty-inline">${locale() === 'en' ? 'No set information in this TFT sample.' : 'Sem informação de set nesta amostra de TFT.'}</p>`;
   }
 
+  function championAssetName(name) {
+    const aliases = {
+      "Wukong": "MonkeyKing",
+      "Nunu & Willump": "Nunu",
+      "Renata Glasc": "Renata",
+      "K'Sante": "KSante",
+      "LeBlanc": "Leblanc"
+    };
+    return aliases[name] || String(name || '').replace(/[^A-Za-z0-9]/g, '');
+  }
+
   function renderChampions() {
     const el = document.querySelector('#champion-list');
     const champions = live.lol && Array.isArray(live.lol.championSummaries) && live.lol.championSummaries.length
@@ -680,7 +691,11 @@
       const detail = live.lol
         ? `${games} ${locale() === 'en' ? (games === 1 ? 'match' : 'matches') : (games === 1 ? 'partida' : 'partidas')}${champion.avgKda != null ? ' · KDA ' + Number(champion.avgKda).toLocaleString(locale(), { maximumFractionDigits: 2 }) : ''}`
         : `${formatNumber(champion.games === 42 ? demo.mastery : champion.games * 18000)} mastery`;
-      return `<div class="champion"><div class="portrait">${escapeHtml(name.slice(0, 1).toUpperCase())}</div><h3>${escapeHtml(name)}</h3><span>${escapeHtml(detail)}</span></div>`;
+      const asset = championAssetName(name);
+      const portrait = asset
+        ? `<div class="portrait"><span>${escapeHtml(name.slice(0, 1).toUpperCase())}</span><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${encodeURIComponent(asset)}_0.jpg" alt="" loading="lazy" onerror="this.remove()"></div>`
+        : `<div class="portrait"><span>${escapeHtml(name.slice(0, 1).toUpperCase())}</span></div>`;
+      return `<div class="champion">${portrait}<h3>${escapeHtml(name)}</h3><span>${escapeHtml(detail)}</span></div>`;
     }).join('');
   }
 
@@ -714,9 +729,16 @@
           ? `Recent identity: ${labels[primaryPosition] || primaryPosition} · ${primaryPercent}% of ${total} positioned matches`
           : `Identidade recente: ${labels[primaryPosition] || primaryPosition} · ${primaryPercent}% de ${total} partidas com posição`;
       } else {
-        identity.textContent = english
-          ? 'Recent identity: insufficient role data'
-          : 'Identidade recente: dados de função insuficientes';
+        const context = String(live.lol?.summary?.mainContext || '').toUpperCase();
+        if (context && !context.includes('RANKED') && !context.includes('NORMAL') && !context.includes('QUICKPLAY')) {
+          identity.textContent = english
+            ? `Recent sample: ${context}. Lane identity is not estimated from this mode.`
+            : `Amostra recente: ${context}. Não estimamos rota a partir deste modo.`;
+        } else {
+          identity.textContent = english
+            ? 'Recent identity: insufficient role data'
+            : 'Identidade recente: dados de função insuficientes';
+        }
       }
     }
 
@@ -725,7 +747,15 @@
           const percent = Math.round(count / total * 100);
           return `<div class="role-row"><span>${escapeHtml(labels[position] || position)}</span><div class="role-track"><div class="role-fill" style="width:${percent}%"></div></div><b>${percent}%</b></div>`;
         }).join('')
-      : `<p class="empty-inline">${english ? 'No Summoner’s Rift role sample available.' : 'Sem amostra de função em Summoner’s Rift.'}</p>`;
+      : (() => {
+          const context = String(live.lol?.summary?.mainContext || '').toUpperCase();
+          const message = context && !context.includes('RANKED') && !context.includes('NORMAL') && !context.includes('QUICKPLAY')
+            ? (english
+                ? `The recent sample is mostly ${context}; Riot Legacy avoids inventing a Summoner’s Rift lane from it.`
+                : `A amostra recente é majoritariamente ${context}; o Riot Legacy evita inventar uma rota de Summoner’s Rift a partir dela.`)
+            : (english ? 'No Summoner’s Rift role sample available.' : 'Sem amostra de função em Summoner’s Rift.');
+          return `<p class="role-empty-note">${escapeHtml(message)}</p>`;
+        })();
   }
 
   function renderLiveProfileFacts() {
