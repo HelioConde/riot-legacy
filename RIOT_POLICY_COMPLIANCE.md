@@ -43,9 +43,9 @@ A política oficial determina **um produto por Production API key**.
 Por isso:
 
 - `riot-legacy-lol-profile` e `riot-legacy-tft-profile` usam `RIOT_LEGACY_LOL_API_KEY` / `RIOT_LEGACY_TFT_API_KEY`;
-- o fallback para `RIOT_API_KEY` só existe quando `RIOT_LEGACY_ALLOW_SHARED_KEY=true`;
-- essa exceção é destinada exclusivamente a desenvolvimento controlado;
-- produção pública não deve habilitar esse override.
+- enquanto as chaves próprias ainda não existem, os backends usam `RIOT_API_KEY` como fallback temporário;
+- assim que `RIOT_LEGACY_LOL_API_KEY` e `RIOT_LEGACY_TFT_API_KEY` forem configuradas, elas têm prioridade automática;
+- o fallback compartilhado deve ser removido quando as applications próprias forem aprovadas.
 
 ## Segurança
 
