@@ -162,6 +162,30 @@ function buildSummary(lol: any, tft: any) {
   };
 }
 
+async function invokePublicProfile(
+  baseUrl: string,
+  slug: string,
+  body: Record<string, unknown>,
+) {
+  try {
+    const response = await fetch(`${baseUrl}/functions/v1/${slug}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(15000),
+    });
+    let data: any = null;
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
+    }
+    return response.ok && data && !data.error ? data : null;
+  } catch {
+    return null;
+  }
+}
+
 function monthKey(value: string) {
   return String(value || "").slice(0, 7);
 }
@@ -196,6 +220,28 @@ Deno.serve(async (req: Request) => {
 
   const db = createClient(url, service, { auth: { persistSession: false, autoRefreshToken: false } });
   const region = regionFor(platform);
+
+  // Server-side refresh: never trust browser-submitted ranked/mastery/history values.
+  const [liveLol, liveTft] = await Promise.all([
+    invokePublicProfile(url, "public-lol-profile", {
+      gameName,
+      tagLine,
+      platform,
+      region,
+      limit: 20,
+      matchLimit: 20,
+    }),
+    invokePublicProfile(url, "public-tft-profile", {
+      gameName,
+      tagLine,
+      platform,
+    }),
+  ]);
+
+  if (!liveLol && !liveTft) {
+    return json({ error: "live_profile_unavailable" }, 502);
+  }
+
   const cacheKey = `${region}:${platform}:${gameName.toLowerCase()}#${tagLine.toLowerCase()}`;
 
   const { data: cached, error: cacheError } = await db
@@ -212,8 +258,8 @@ Deno.serve(async (req: Request) => {
     }, 409);
   }
 
-  const lol = await compactLol(body?.lol);
-  const tft = compactTft(body?.tft);
+  const lol = await compactLol(liveLol);
+  const tft = compactTft(liveTft);
   const summary = buildSummary(lol, tft);
   const now = new Date().toISOString();
   const snapshotDate = now.slice(0, 10);
