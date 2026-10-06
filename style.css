@@ -202,3 +202,7 @@ a{color:inherit}
 
 .tft-board.summary-only{display:block}.tft-board.summary-only .tft-cache-summary{min-height:175px}.tft-board-wrap:has(.tft-board.summary-only){align-self:start}.placement-cache-state{height:115px}
 @media(max-width:620px){.tft-board.summary-only .tft-cache-summary{min-height:150px;padding:22px 18px}.placement-cache-state{height:105px}}
+
+.placement-bars:has(.placement-cache-state){height:auto;min-height:0;margin-top:12px;padding-top:0;border-bottom:1px solid var(--line)}
+.placement-bars:has(.placement-cache-state) .placement-cache-state{height:auto;min-height:88px;padding:18px 10px}
+@media(max-width:620px){.placement-bars:has(.placement-cache-state){margin-top:10px}.placement-bars:has(.placement-cache-state) .placement-cache-state{min-height:76px;padding:14px 8px}.set-retrospective-wrap{margin-top:16px}}
