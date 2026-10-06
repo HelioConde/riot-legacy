@@ -123,8 +123,14 @@ Antes de disponibilizar dados reais ao público, o produto deve ser registrado/a
 
 Aviso resumido visível no produto: Riot Legacy é um projeto independente e não é endossado pela Riot Games. Marcas e propriedades relacionadas pertencem à Riot Games, Inc.
 
+## Publicação
+
+- Repositório: `HelioConde/riot-legacy`.
+- GitHub Pages: `https://helioconde.github.io/riot-legacy/`.
+- Deploy automático pela branch `main` via `.github/workflows/pages.yml`.
+
 ## Destino
 
-Repositório planejado: `HelioConde/riot-legacy`.
+Repositório oficial: `HelioConde/riot-legacy`.
 
 Enquanto o conector não permite criar o repositório físico, esta branch standalone pode ser enviada como `main` para o destino sem carregar os arquivos do hub.
