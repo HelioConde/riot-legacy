@@ -41,6 +41,7 @@
   };
 
   let live = { lol: null, tft: null };
+  let legacyHistory = { history: [], comparison: null };
   let currentLookup = null;
   let lookupSequence = 0;
 
@@ -818,6 +819,103 @@
     ).join('');
   }
 
+
+  function deltaLabel(value, suffix = '') {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return '—';
+    const sign = number > 0 ? '+' : '';
+    return `${sign}${number.toLocaleString(locale(), { maximumFractionDigits: 2 })}${suffix}`;
+  }
+
+  function renderHistoryInsights() {
+    const countEl = document.querySelector('#snapshot-count');
+    const monthEl = document.querySelector('#month-comparison');
+    const rankEl = document.querySelector('#rank-milestones');
+    const masteryEl = document.querySelector('#mastery-evolution');
+    const wrappedEl = document.querySelector('#wrapped-summary');
+    if (!countEl || !monthEl || !rankEl || !masteryEl || !wrappedEl) return;
+
+    const history = Array.isArray(legacyHistory?.history) ? legacyHistory.history : [];
+    const comparison = legacyHistory?.comparison || {};
+    const current = history[0]?.summary || null;
+    const previousMonth = comparison?.previousMonth || null;
+
+    countEl.textContent = `${history.length} ${history.length === 1 ? 'snapshot' : 'snapshots'}`;
+
+    if (!current) {
+      monthEl.innerHTML = '<p class="empty-inline">O primeiro snapshot será criado ao carregar dados Riot.</p>';
+      rankEl.innerHTML = '<p class="empty-inline">Os próximos snapshots vão registrar mudanças de elo.</p>';
+      masteryEl.innerHTML = '<p class="empty-inline">A evolução aparecerá quando houver mais de um snapshot.</p>';
+      wrappedEl.innerHTML = '<p class="empty-inline">Resumo mensal e anual baseado nos snapshots acumulados.</p>';
+      return;
+    }
+
+    monthEl.innerHTML = previousMonth
+      ? [
+          ['Maestria', deltaLabel(previousMonth.masteryPoints)],
+          ['Win rate LoL', deltaLabel(previousMonth.lolWinRate, ' pp')],
+          ['Top 4 TFT', deltaLabel(previousMonth.tftTop4Rate, ' pp')],
+          ['Média TFT', deltaLabel(previousMonth.tftAveragePlacement)]
+        ].map(([label, value]) =>
+          `<div class="history-fact"><span>${escapeHtml(label)}</span><b>${escapeHtml(value)}</b></div>`
+        ).join('')
+      : '<p class="empty-inline">Ainda não existe snapshot de um mês anterior para comparar.</p>';
+
+    rankEl.innerHTML = `
+      <div class="history-fact"><span>LoL atual</span><b>${escapeHtml(current.lolRank || '—')}</b></div>
+      <div class="history-fact"><span>TFT atual</span><b>${escapeHtml(current.tftRank || '—')}</b></div>
+      ${previousMonth ? `
+        <div class="history-fact"><span>LoL mês anterior</span><b>${escapeHtml(previousMonth.lolRankBefore || '—')}</b></div>
+        <div class="history-fact"><span>TFT mês anterior</span><b>${escapeHtml(previousMonth.tftRankBefore || '—')}</b></div>
+      ` : ''}
+    `;
+
+    const first = history[history.length - 1]?.summary || current;
+    const masteryDelta = Number(current.masteryPoints || 0) - Number(first.masteryPoints || 0);
+    masteryEl.innerHTML = `
+      <div class="history-fact"><span>Maestria atual</span><b>${escapeHtml(formatNumber(current.masteryPoints || 0))}</b></div>
+      <div class="history-fact"><span>Desde o primeiro snapshot</span><b>${escapeHtml(deltaLabel(masteryDelta))}</b></div>
+      <div class="history-fact"><span>Assinatura atual</span><b>${escapeHtml(current.signatureChampion || '—')}</b></div>
+    `;
+
+    const signatures = [...new Set(history.map(item => item?.summary?.signatureChampion).filter(Boolean))];
+    const bestTop4 = history
+      .map(item => Number(item?.summary?.tftTop4Rate))
+      .filter(Number.isFinite)
+      .sort((a, b) => b - a)[0];
+    const oldestDate = history[history.length - 1]?.snapshot_date;
+    wrappedEl.innerHTML = `
+      <div class="history-fact"><span>Snapshots acumulados</span><b>${history.length}</b></div>
+      <div class="history-fact"><span>Campeões assinatura</span><b>${signatures.length}</b></div>
+      <div class="history-fact"><span>Melhor Top 4 TFT registrado</span><b>${Number.isFinite(bestTop4) ? bestTop4 + '%' : '—'}</b></div>
+      <div class="history-fact"><span>Histórico desde</span><b>${oldestDate ? new Date(oldestDate + 'T00:00:00').toLocaleDateString(locale()) : '—'}</b></div>
+    `;
+  }
+
+  async function captureLegacySnapshot(lookup, lol, tft) {
+    if (!backend.legacySnapshots || (!lol && !tft)) {
+      legacyHistory = { history: [], comparison: null };
+      renderHistoryInsights();
+      return;
+    }
+    try {
+      const result = await postPublicFunction(backend.legacySnapshots, {
+        gameName: lookup.gameName,
+        tagLine: lookup.tagLine,
+        platform: lookup.platform,
+        lol,
+        tft
+      });
+      legacyHistory = {
+        history: Array.isArray(result?.history) ? result.history : [],
+        comparison: result?.comparison || null
+      };
+    } catch {
+      legacyHistory = { history: [], comparison: null };
+    }
+    renderHistoryInsights();
+  }
+
   function renderDynamicCopy() {
     const mastery = currentMasteryPoints();
     const lolMatches = live.lol?.summary?.matches;
@@ -863,6 +961,7 @@
     renderSetRetrospective();
     renderTimeline();
     renderLiveProfileFacts();
+    renderHistoryInsights();
   }
 
   function setProfileIdentity(riotId) {
@@ -875,6 +974,7 @@
     const riotId = normalizedId(gameName, tagLine);
     currentLookup = { gameName: String(gameName).trim(), tagLine: String(tagLine).replace(/^#/, '').trim(), platform };
     live = { lol: null, tft: null };
+    legacyHistory = { history: [], comparison: null };
     setProfileIdentity(riotId);
     landing.hidden = true;
     profile.hidden = false;
@@ -922,6 +1022,7 @@
     }
 
     renderDynamicCopy();
+    await captureLegacySnapshot(lookup, lol, tft);
 
     const lolCount = Number(lol?.summary?.matches || 0);
     const tftCount = Number(tft?.summary?.matches || 0);
@@ -954,6 +1055,7 @@
     lookupSequence++;
     currentLookup = null;
     live = { lol: null, tft: null };
+    legacyHistory = { history: [], comparison: null };
     profile.hidden = true;
     landing.hidden = false;
     document.body.classList.remove('profile-mode');
