@@ -352,3 +352,10 @@ body.ads-disabled .ad-shell{font-size:0}
     margin:10px 0 24px
   }
 }
+
+
+/* Desktop landing rhythm */
+@media(min-width:621px){
+  body.ads-disabled #landing .ad-shell{margin-bottom:18px}
+  body.ads-disabled #landing .concept{padding-top:22px}
+}
