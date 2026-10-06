@@ -955,7 +955,8 @@
     const champion = signature.name;
     const games = signature.games;
     const position = live.lol?.summary?.primaryPosition || live.lol?.summary?.mainContext || 'MID';
-    const rank = live.lol?.ranked?.[0];
+    const ranked = Array.isArray(live.lol?.ranked) ? live.lol.ranked : [];
+    const rank = ranked.find(item => item?.queue === 'SOLO/DUO') || ranked[0];
     const rankLabel = rank?.tier ? `${rank.tier} ${rank.rank || ''}`.trim() : position;
     const title = document.querySelector('#signature-title');
     const text = document.querySelector('#signature-text');
