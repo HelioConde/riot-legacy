@@ -45,7 +45,7 @@ Deno.serve(async(req)=>{
   if(req.method!=="POST") return json({error:"method_not_allowed"},405);
 
   try{
-    const riotApiKey=(Deno.env.get("RIOT_LEGACY_API_KEY") || Deno.env.get("RIOT_API_KEY"));
+    const riotApiKey=(Deno.env.get("RIOT_LEGACY_API_KEY") || (Deno.env.get("RIOT_LEGACY_ALLOW_SHARED_KEY")==="true" ? Deno.env.get("RIOT_API_KEY") : null));
     if(!riotApiKey){
       console.error("[public-tft-profile] RIOT_API_KEY missing");
       return json({
