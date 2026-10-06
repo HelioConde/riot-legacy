@@ -16,6 +16,42 @@ const json = (body: unknown, status = 200) =>
     },
   });
 
+let championNameCache = new Map<number, string>();
+let championNameCacheAt = 0;
+
+async function championNames() {
+  if (championNameCache.size && Date.now() - championNameCacheAt < 6 * 60 * 60 * 1000) {
+    return championNameCache;
+  }
+  try {
+    const versionsRes = await fetch("https://ddragon.leagueoflegends.com/api/versions.json", {
+      signal: AbortSignal.timeout(4000),
+    });
+    const versions = versionsRes.ok ? await versionsRes.json() : [];
+    const version = Array.isArray(versions) ? String(versions[0] || "") : "";
+    if (!version) return championNameCache;
+    const championsRes = await fetch(
+      `https://ddragon.leagueoflegends.com/cdn/${encodeURIComponent(version)}/data/en_US/champion.json`,
+      { signal: AbortSignal.timeout(4000) },
+    );
+    if (!championsRes.ok) return championNameCache;
+    const payload = await championsRes.json();
+    const next = new Map<number, string>();
+    for (const champion of Object.values(payload?.data || {}) as any[]) {
+      const id = Number(champion?.key);
+      const name = safeText(champion?.name, 40);
+      if (Number.isFinite(id) && name) next.set(id, name);
+    }
+    if (next.size) {
+      championNameCache = next;
+      championNameCacheAt = Date.now();
+    }
+  } catch {
+    // Mastery names are enrichment only; snapshot capture must keep working.
+  }
+  return championNameCache;
+}
+
 const supportedPlatforms = new Set([
   "br1", "na1", "la1", "la2", "euw1", "eun1", "kr", "jp1",
   "oc1", "tr1", "ru", "ph2", "sg2", "th2", "tw2", "vn2",
@@ -32,12 +68,23 @@ function safeText(value: unknown, max = 32) {
   return String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, max);
 }
 
-function compactLol(value: any) {
+async function compactLol(value: any) {
   if (!value || typeof value !== "object") return {};
+  const names = await championNames();
+  const mastery = (Array.isArray(value.mastery) ? value.mastery.slice(0, 5) : []).map((item: any) => {
+    const championId = Number(item?.championId || 0);
+    return {
+      championId,
+      name: names.get(championId) || (championId ? `Champion #${championId}` : "Champion"),
+      level: Number(item?.level || 0),
+      points: Number(item?.points || 0),
+      lastPlayTime: Number(item?.lastPlayTime || 0),
+    };
+  });
   return {
     player: value.player ?? null,
     ranked: Array.isArray(value.ranked) ? value.ranked.slice(0, 4) : [],
-    mastery: Array.isArray(value.mastery) ? value.mastery.slice(0, 5) : [],
+    mastery,
     championSummaries: Array.isArray(value.championSummaries) ? value.championSummaries.slice(0, 5) : [],
     summary: value.summary ?? {},
   };
@@ -165,7 +212,7 @@ Deno.serve(async (req: Request) => {
     }, 409);
   }
 
-  const lol = compactLol(body?.lol);
+  const lol = await compactLol(body?.lol);
   const tft = compactTft(body?.tft);
   const summary = buildSummary(lol, tft);
   const now = new Date().toISOString();
