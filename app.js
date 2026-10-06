@@ -22,6 +22,7 @@
   const CARD_COLLECTION_KEY = 'riot-legacy-card-collection';
   const FAVORITE_MILESTONES_KEY = 'riot-legacy-favorite-milestones';
   const LOCAL_MEMORY_LIMIT = 12;
+  const RIOT_LEGACY_SESSION_KEY = 'riot-legacy-session-id';
 
   const demo = {
     mastery: 684210,
@@ -47,6 +48,40 @@
   let legacyHistory = { history: [], comparison: null };
   let currentLookup = null;
   let lookupSequence = 0;
+
+  function telemetrySessionId() {
+    try {
+      let value = sessionStorage.getItem(RIOT_LEGACY_SESSION_KEY);
+      if (!value) {
+        value = (crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`).slice(0, 80);
+        sessionStorage.setItem(RIOT_LEGACY_SESSION_KEY, value);
+      }
+      return value;
+    } catch {
+      return `session-${Date.now()}`;
+    }
+  }
+
+  function trackEvent(eventName, context = {}) {
+    if (!backend?.features?.retentionTelemetry || !backend?.legacyEvents) return;
+    const payload = {
+      eventName,
+      sessionId: telemetrySessionId(),
+      pagePath: location.pathname,
+      appVersion: String(window.RIOT_LEGACY_VERSION || ''),
+      context: {
+        sourceState: sourceBadge?.dataset?.sourceState || undefined,
+        platform: currentLookup?.platform || undefined,
+        ...context
+      }
+    };
+    fetch(backend.legacyEvents, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true
+    }).catch(() => {});
+  }
 
   function locale() {
     return window.RiotLegacyI18n?.locale?.() || 'pt-BR';
@@ -767,6 +802,7 @@
     const next = [entry, ...readLocalMemory(FAVORITE_MILESTONES_KEY)];
     writeLocalMemory(FAVORITE_MILESTONES_KEY, next);
     renderLocalMemories();
+    trackEvent('favorite_milestone');
   }
 
   function renderMemoryList(element, items, emptyText) {
@@ -1056,6 +1092,7 @@
         history: Array.isArray(result?.history) ? result.history : [],
         comparison: result?.comparison || null
       };
+      trackEvent('snapshot_loaded', { snapshotCount: legacyHistory.history.length });
     } catch {
       legacyHistory = { history: [], comparison: null };
     }
@@ -1120,6 +1157,7 @@
   function showProfile(gameName, tagLine, platform = 'br1', updateUrl = true) {
     const riotId = normalizedId(gameName, tagLine);
     currentLookup = { gameName: String(gameName).trim(), tagLine: String(tagLine).replace(/^#/, '').trim(), platform };
+    trackEvent('profile_lookup', { platform });
     live = { lol: null, tft: null };
     legacyHistory = { history: [], comparison: null };
     setProfileIdentity(riotId);
@@ -1179,6 +1217,7 @@
         ? `Riot data loaded: ${lolCount} recent LoL matches and ${tftCount} TFT matches. The legacy chapters below use this recent sample.`
         : `Dados Riot carregados: ${lolCount} partidas recentes de LoL e ${tftCount} partidas de TFT. Os capítulos abaixo usam esta amostra recente.`;
       setSourceState('live', detail);
+      trackEvent('profile_loaded', { snapshotCount: legacyHistory.history.length });
       return;
     }
 
@@ -1193,10 +1232,12 @@
         ? `Live ${available} data loaded. ${missing} is using the demonstrative fallback.${reason ? ' ' + reason : ''}`
         : `Dados reais de ${available} carregados. ${missing} usa o fallback demonstrativo.${reason ? ' ' + reason : ''}`;
       setSourceState('partial', detail);
+      trackEvent('profile_partial', { snapshotCount: legacyHistory.history.length });
       return;
     }
 
     setSourceState('demo', liveFailureMessage([lolResult, tftResult]));
+    trackEvent('profile_fallback');
   }
 
   function showLanding() {
@@ -1392,6 +1433,7 @@
       link.remove();
       window.setTimeout(() => URL.revokeObjectURL(url), 0);
       saveCardCollection();
+      trackEvent('download_card');
       showToast('downloaded_card');
     }, 'image/png');
   }
@@ -1414,6 +1456,7 @@
     if (navigator.share) {
       try {
         await navigator.share(payload);
+        trackEvent('share');
         return;
       } catch (error) {
         if (error?.name === 'AbortError') return;
@@ -1455,7 +1498,10 @@
   backButton.addEventListener('click', showLanding);
 
   document.querySelectorAll('[data-tab]').forEach(button => {
-    button.addEventListener('click', () => activateTab(button.dataset.tab));
+    button.addEventListener('click', () => {
+      activateTab(button.dataset.tab);
+      trackEvent('tab_open', { tab: button.dataset.tab });
+    });
   });
 
   document.querySelector('#copy-link').addEventListener('click', copyLink);
@@ -1492,6 +1538,14 @@
   });
 
   renderRecentSearches();
+  trackEvent('app_open');
+
+  window.addEventListener('beforeinstallprompt', () => {
+    trackEvent('install_prompt_available');
+  });
+  window.addEventListener('appinstalled', () => {
+    trackEvent('pwa_installed');
+  });
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
