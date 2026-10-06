@@ -25,7 +25,7 @@ Atualizado em 06/10/2026.
 - [x] Criar repositório físico `HelioConde/riot-legacy`.
 - [x] Publicar GitHub Pages — deploy oficial ativo em `https://helioconde.github.io/riot-legacy/`.
 - [ ] Registrar proposta no Riot Developer Portal.
-- [~] Definir Production API key própria do produto quando elegível — backends dedicados exigem chaves separadas `RIOT_LEGACY_LOL_API_KEY` e `RIOT_LEGACY_TFT_API_KEY` em produção; fallback compartilhado só funciona com override explícito de desenvolvimento. Faltam as duas applications/keys emitidas pela Riot.
+- [~] Definir Production API key própria do produto quando elegível — backends dedicados exigem chaves separadas `RIOT_LEGACY_LOL_API_KEY` e `RIOT_LEGACY_TFT_API_KEY` em produção; fallback compartilhado está temporariamente ativo enquanto as chaves próprias ainda não foram emitidas. Faltam as duas applications/keys emitidas pela Riot.
 - [x] Reutilizar backend gamer ZeroTwo.gg com Riot key server-side.
 - [x] Backend inicial identificado e depois isolado em `riot-legacy-lol-profile` para o produto ter chave/política próprias.
 - [x] Conectar o frontend do Riot Legacy ao backend dedicado `riot-legacy-lol-profile`.
