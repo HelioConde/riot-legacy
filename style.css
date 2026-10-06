@@ -363,8 +363,8 @@ body.ads-disabled .ad-shell{font-size:0}
 
 /* Brand crop refinement */
 .brand:has(.brand-pack-logo){
-  width:156px;
-  height:46px;
+  width:176px;
+  height:56px;
   overflow:hidden;
   border-radius:9px
 }
@@ -374,14 +374,14 @@ body.ads-disabled .ad-shell{font-size:0}
   max-height:none;
   object-fit:cover;
   object-position:center;
-  transform:scale(1.42)
+  transform:scale(1.24)
 }
 @media(max-width:620px){
   .brand:has(.brand-pack-logo){
-    width:132px;
-    height:40px
+    width:150px;
+    height:48px
   }
   .brand:has(.brand-pack-logo) .brand-pack-logo{
-    transform:scale(1.48)
+    transform:scale(1.28)
   }
 }
