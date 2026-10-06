@@ -104,6 +104,8 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
       matches: [
         {
           placement: 1,
+          setName: 'Into the Arcane',
+          setNumber: 13,
           units: [
             { characterId: 'TFT14_Ahri', tier: 2 },
             { characterId: 'TFT14_Lux', tier: 1 }
@@ -115,11 +117,13 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
         },
         {
           placement: 2,
+          setName: 'Into the Arcane',
+          setNumber: 13,
           units: [{ characterId: 'TFT14_Ahri', tier: 2 }],
           traits: [{ name: 'TFT14_Arcana', numUnits: 3, style: 1 }]
         },
-        { placement: 3, units: [], traits: [] },
-        { placement: 4, units: [], traits: [] }
+        { placement: 3, setName: 'Cyber City', setNumber: 14, units: [], traits: [] },
+        { placement: 4, setName: 'Cyber City', setNumber: 14, units: [], traits: [] }
       ]
     })
   }));
@@ -145,6 +149,9 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
   await expect(page.locator('#trait-list')).toContainText('Arcana');
   await expect(page.locator('#trait-list')).toContainText('Arcana · 2x');
   await expect(page.locator('#tft-signature')).toContainText('Assinaturas recentes: Arcana · Ahri');
+  await expect(page.locator('#set-retrospective')).toContainText('Into the Arcane');
+  await expect(page.locator('#set-retrospective')).toContainText('Cyber City');
+  await expect(page.locator('#set-retrospective')).toContainText('2 partidas · média 1,5 · Top 4 100% · 1 vitórias');
   await expect(page.locator('#live-profile-facts')).toContainText('BR1');
   await expect(page.locator('#live-profile-facts')).toContainText('GOLD II · 42 LP');
   await expect(page.locator('#live-profile-facts')).toContainText('PLATINUM IV · 33 LP');
