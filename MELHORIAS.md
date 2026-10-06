@@ -25,7 +25,7 @@ Atualizado em 06/10/2026.
 - [x] Criar repositório físico `HelioConde/riot-legacy`.
 - [x] Publicar GitHub Pages — deploy oficial ativo em `https://helioconde.github.io/riot-legacy/`.
 - [ ] Registrar proposta no Riot Developer Portal.
-- [~] Definir Production API key própria do produto quando elegível — backends dedicados `riot-legacy-lol-profile`/`riot-legacy-tft-profile` já preferem `RIOT_LEGACY_API_KEY` e mantêm `RIOT_API_KEY` apenas como fallback; falta a chave aprovada pela Riot.
+- [~] Definir Production API key própria do produto quando elegível — backends dedicados exigem `RIOT_LEGACY_API_KEY` em produção; fallback compartilhado só funciona com override explícito de desenvolvimento. Falta a chave emitida pela Riot.
 - [x] Reutilizar backend gamer ZeroTwo.gg com Riot key server-side.
 - [x] Identificar `public-lol-profile` como backend inicial Riot ID → PUUID → League.
 - [x] Conectar o frontend do Riot Legacy à `public-lol-profile`.
@@ -74,7 +74,7 @@ Atualizado em 06/10/2026.
 ## Monetização
 
 - [x] Layout preparado para anúncios.
-- [ ] Registrar produto e validar política de monetização Riot.
+- [~] Registrar produto e validar política de monetização Riot — política pública revisada e gates técnicos implementados; falta registrar/submeter o produto no Developer Portal e obter status Approved/Acknowledged.
 - [~] Ativar rede apenas após aprovação/acknowledgement e IDs reais — loader AdSense, slots e feature flags implementados e desligados; falta aprovação Riot/AdSense e IDs reais.
 - [x] Validar CLS e distância dos controles — slots reservados com altura fixa/contain e E2E garantindo ausência de controles dentro do anúncio.
 - [x] Medir retenção antes de aumentar inventário — telemetria sanitizada, visitor hash SHA-256, métricas diárias e coortes D1/D7 implementadas; aguardar volume real antes de qualquer aumento de anúncios.
