@@ -356,6 +356,7 @@
 
   function renderPlacementBars() {
     const el = document.querySelector('#placement-bars');
+    const summary = document.querySelector('#placement-summary');
     const placements = live.tft
       ? currentTftMatches().map(match => Number(match.placement)).filter(value => value >= 1 && value <= 8)
       : demo.placements;
@@ -363,8 +364,18 @@
       placements.filter(value => value === index + 1).length
     );
     const max = Math.max(...counts, 1);
+    const top4 = placements.filter(value => value <= 4).length;
+    const firsts = counts[0] || 0;
+    const eighths = counts[7] || 0;
+
+    if (summary) {
+      summary.textContent = locale() === 'en'
+        ? `Top 4: ${top4}/${placements.length} · 1st: ${firsts} · 8th: ${eighths}`
+        : `Top 4: ${top4}/${placements.length} · 1º lugar: ${firsts} · 8º lugar: ${eighths}`;
+    }
+
     el.innerHTML = counts.map((count, index) =>
-      `<div class="placement-bar"><span style="height:${Math.max(8, Math.round((count / max) * 100))}%"></span><small>${index + 1}</small></div>`
+      `<div class="placement-bar" title="${count} ${locale() === 'en' ? 'matches' : 'partidas'}"><span style="height:${Math.max(8, Math.round((count / max) * 100))}%"></span><small>${index + 1}</small></div>`
     ).join('');
   }
 
@@ -386,7 +397,10 @@
 
   function renderRoles() {
     const stack = document.querySelector('#role-stack');
+    const identity = document.querySelector('#role-identity');
+    const english = locale() === 'en';
     if (!live.lol) {
+      if (identity) identity.textContent = english ? 'Primary identity: Mid · 68%' : 'Identidade principal: Mid · 68%';
       stack.innerHTML = `
         <div class="role-row"><span>${t('role_mid')}</span><div class="role-track"><div class="role-fill" style="width:68%"></div></div><b>68%</b></div>
         <div class="role-row"><span>${t('role_support')}</span><div class="role-track"><div class="role-fill" style="width:22%"></div></div><b>22%</b></div>
@@ -394,20 +408,35 @@
       return;
     }
 
-    const labels = { TOP: 'Top', JUNGLE: 'Jungle', MID: 'Mid', ADC: 'ADC', SUPPORT: locale() === 'en' ? 'Support' : 'Suporte' };
+    const labels = { TOP: 'Top', JUNGLE: 'Jungle', MID: 'Mid', ADC: 'ADC', SUPPORT: english ? 'Support' : 'Suporte' };
     const counts = {};
     currentLolMatches().forEach(match => {
-      const position = String(match.position || '');
+      const position = String(match.position || '').toUpperCase();
       if (position) counts[position] = (counts[position] || 0) + 1;
     });
     const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
-    const total = entries.reduce((sum, [, count]) => sum + count, 0) || 1;
-    stack.innerHTML = entries.length
+    const total = entries.reduce((sum, [, count]) => sum + count, 0);
+
+    if (identity) {
+      if (entries.length && total > 0) {
+        const [primaryPosition, primaryCount] = entries[0];
+        const primaryPercent = Math.round(primaryCount / total * 100);
+        identity.textContent = english
+          ? `Recent identity: ${labels[primaryPosition] || primaryPosition} · ${primaryPercent}% of ${total} positioned matches`
+          : `Identidade recente: ${labels[primaryPosition] || primaryPosition} · ${primaryPercent}% de ${total} partidas com posição`;
+      } else {
+        identity.textContent = english
+          ? 'Recent identity: insufficient role data'
+          : 'Identidade recente: dados de função insuficientes';
+      }
+    }
+
+    stack.innerHTML = entries.length && total > 0
       ? entries.map(([position, count]) => {
           const percent = Math.round(count / total * 100);
           return `<div class="role-row"><span>${escapeHtml(labels[position] || position)}</span><div class="role-track"><div class="role-fill" style="width:${percent}%"></div></div><b>${percent}%</b></div>`;
         }).join('')
-      : `<p class="empty-inline">${locale() === 'en' ? 'No Summoner’s Rift role sample available.' : 'Sem amostra de função em Summoner’s Rift.'}</p>`;
+      : `<p class="empty-inline">${english ? 'No Summoner’s Rift role sample available.' : 'Sem amostra de função em Summoner’s Rift.'}</p>`;
   }
 
   function renderLiveProfileFacts() {
