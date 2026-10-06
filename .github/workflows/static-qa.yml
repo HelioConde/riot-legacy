@@ -35,6 +35,7 @@ jobs:
           test -f RETENTION.md
           test -f PRODUCTION_FLAGS.md
           test -f RIOT_POLICY_COMPLIANCE.md
+          test -f RSO_INTEGRATION.md
           test -f ads-config.js
           test -f ads.js
           test -f privacy.html
@@ -56,6 +57,7 @@ jobs:
           grep -qi 'riot-legacy-tft-profile' backend-config.js
           grep -qi 'riot-legacy-events' backend-config.js
           grep -qi 'riot-legacy-public-profile' backend-config.js
+          grep -qi 'riot-legacy-rso-start' backend-config.js
           grep -qi 'retentionTelemetry' backend-config.js
           grep -qi 'publicProfiles: false' backend-config.js
           grep -qi 'ads: false' backend-config.js
@@ -80,6 +82,8 @@ jobs:
           grep -qi 'renderLiveProfileFacts' app.js
           grep -qi 'privacy.html' index.html
           grep -qi 'terms.html' index.html
+          grep -qi 'public-profile-verify' index.html
+          grep -qi 'beginRsoVerification' app.js
           grep -qi 'riot-legacy.svg' manifest.webmanifest
       - name: No secrets
         run: |
