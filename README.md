@@ -134,3 +134,18 @@ Aviso resumido visível no produto: Riot Legacy é um projeto independente e nã
 Repositório oficial: `HelioConde/riot-legacy`.
 
 Enquanto o conector não permite criar o repositório físico, esta branch standalone pode ser enviada como `main` para o destino sem carregar os arquivos do hub.
+
+
+## Validação real
+
+Em 06/10/2026 o fluxo de produção foi validado com uma conta real BR1, cobrindo:
+
+- resolução de Riot ID via ACCOUNT-V1;
+- perfil League of Legends;
+- histórico League of Legends;
+- perfil Teamfight Tactics;
+- histórico Teamfight Tactics;
+- cache server-side;
+- GitHub Pages publicado.
+
+O Riot ID usado no teste não é persistido nesta documentação para manter o repositório desacoplado de uma conta pessoal.
