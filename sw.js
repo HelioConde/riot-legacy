@@ -1,4 +1,4 @@
-const CACHE_NAME = 'riot-legacy-v4';
+const CACHE_NAME = 'riot-legacy-v5';
 const APP_SHELL = [
   './',
   './index.html',
@@ -28,8 +28,16 @@ const APP_SHELL = [
   './assets/ui/bg-history-blue.png',
   './assets/ui/bg-history-gold.png',
   './assets/ui/bg-history-violet.png',
-  './assets/ui/rank-gold.png',
+  './assets/ui/rank-iron.png',
   './assets/ui/rank-bronze.png',
+  './assets/ui/rank-silver.png',
+  './assets/ui/rank-gold.png',
+  './assets/ui/rank-platinum.png',
+  './assets/ui/rank-emerald.png',
+  './assets/ui/rank-diamond.png',
+  './assets/ui/rank-master.png',
+  './assets/ui/rank-grandmaster.png',
+  './assets/ui/rank-challenger.png',
   './assets/ui/role-top.png',
   './assets/ui/role-jungle.png',
   './assets/ui/role-mid.png',
