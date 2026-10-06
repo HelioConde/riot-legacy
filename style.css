@@ -331,3 +331,24 @@ a{color:inherit}
   .profile-actions{align-items:stretch}
   .profile-actions .primary,.profile-actions .secondary{flex:1 1 auto}
 }
+
+
+/* Compact placeholders while advertising is disabled */
+body.ads-disabled .ad-shell{
+  min-height:64px;
+  margin:12px 0 34px;
+  border-style:dashed;
+  opacity:.72
+}
+body.ads-disabled .ad-shell:before{
+  content:"Publicidade futura";
+  font-size:9px;
+  letter-spacing:.12em
+}
+body.ads-disabled .ad-shell{font-size:0}
+@media(max-width:620px){
+  body.ads-disabled .ad-shell{
+    min-height:54px;
+    margin:10px 0 24px
+  }
+}
