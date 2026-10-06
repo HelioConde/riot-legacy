@@ -35,7 +35,7 @@ Atualizado em 06/10/2026.
 - [x] Mensagens distintas para Riot ID inexistente, rate limit, credencial server-side indisponível e timeout.
 - [x] Validar um Riot ID real de LoL — conta BR1 validada em produção, com perfil e histórico reais.
 - [x] Validar um Riot ID real de TFT — conta BR1 validada em produção, com histórico real disponível.
-- [x] Criar snapshot/cache — snapshot diário server-side por PUUID/servidor, RLS fechado para browser e histórico de até 36 snapshots.
+- [x] Criar snapshot/cache — snapshot diário server-side por PUUID/servidor, RLS fechado para browser, histórico de até 36 snapshots e fallback para último snapshot real quando a Riot/chave estiver indisponível.
 
 ## P1 — experiência
 
