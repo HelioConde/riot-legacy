@@ -111,8 +111,8 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
             { characterId: 'TFT14_Lux', tier: 1 }
           ],
           traits: [
-            { name: 'TFT14_Arcana', numUnits: 4, style: 2 },
-            { name: 'TFT14_Scholar', numUnits: 2, style: 1 }
+            { name: 'DA_18_Coven', numUnits: 4, style: 2 },
+            { name: 'DA_18_Vanguard', numUnits: 2, style: 1 }
           ]
         },
         {
@@ -120,7 +120,7 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
           setName: 'TFTSet13',
           setNumber: 13,
           units: [{ characterId: 'TFT14_Ahri', tier: 2 }],
-          traits: [{ name: 'TFT14_Arcana', numUnits: 3, style: 1 }]
+          traits: [{ name: 'DA_18_Coven', numUnits: 3, style: 1 }]
         },
         { placement: 3, setName: 'TFTSet14', setNumber: 14, units: [], traits: [] },
         { placement: 4, setName: 'TFTSet14', setNumber: 14, units: [], traits: [] }
@@ -146,10 +146,10 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
   await expect(page.locator('#placement-summary')).toHaveText('Top 4: 4/4 · 1º lugar: 1 · 8º lugar: 0');
   await expect(page.locator('#champion-list')).toContainText('Lux');
   await expect(page.locator('#role-identity')).toContainText('Identidade recente: Mid · 67% de 6 partidas com posição');
-  await expect(page.locator('#trait-list')).toContainText('Arcana');
-  await expect(page.locator('#trait-list')).toContainText('Arcana · 2x');
-  await expect(page.locator('#tft-signature')).toContainText('Assinaturas recentes: Arcana · Ahri');
-  await expect(page.locator('#comp-patterns')).toContainText('Arcana + Scholar');
+  await expect(page.locator('#trait-list')).toContainText('Coven');
+  await expect(page.locator('#trait-list')).toContainText('Coven · 2x');
+  await expect(page.locator('#tft-signature')).toContainText('Assinaturas recentes: Coven · Ahri');
+  await expect(page.locator('#comp-patterns')).toContainText('Coven + Vanguard');
   await expect(page.locator('#comp-patterns')).toContainText('1x · média 1 · Top 4 100%');
   await expect(page.locator('#set-retrospective')).toContainText('Set 13');
   await expect(page.locator('#set-retrospective')).toContainText('Set 14');
