@@ -50,7 +50,7 @@ Atualizado em 06/10/2026.
 - [x] Identidade por função — função dominante e percentual derivados das partidas recentes com posição conhecida.
 - [ ] Marcos de ranked sem criar ranking alternativo.
 - [ ] TFT: comps mais recorrentes.
-- [ ] TFT: unidades/traits assinatura.
+- [x] TFT: unidades/traits assinatura — recorrência derivada de toda a amostra recente, com desempate por força/estrelas.
 - [x] TFT: distribuição de colocações — barras 1º–8º e resumo Top 4/1º/8º derivados da amostra recente.
 - [ ] TFT: retrospectiva por set.
 - [x] Cards exportáveis como imagem PNG gerada localmente no navegador.
