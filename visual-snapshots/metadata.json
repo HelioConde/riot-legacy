@@ -1,12 +1,13 @@
 {
-  "capturedAt": "2026-10-06T16:32:15.182Z",
+  "capturedAt": "2026-10-06T16:35:41.367Z",
   "baseUrl": "https://helioconde.github.io/riot-legacy/",
-  "commit": "d5e2829e1f873d3c8e6834e477057acd42188ae9",
+  "commit": "4271c79a5a3fcf96924a70fcf864272961b2ee21",
   "files": [
     {
       "name": "landing-desktop",
       "file": "visual-snapshots/landing-desktop.png",
       "reviewFile": "visual-snapshots/review-landing-desktop.jpg",
+      "tabReviews": [],
       "url": "https://helioconde.github.io/riot-legacy/",
       "viewport": {
         "width": 1440,
@@ -17,6 +18,20 @@
       "name": "profile-desktop",
       "file": "visual-snapshots/profile-desktop.png",
       "reviewFile": "visual-snapshots/review-profile-desktop.jpg",
+      "tabReviews": [
+        {
+          "tab": "league",
+          "file": "visual-snapshots/review-profile-desktop-league.jpg"
+        },
+        {
+          "tab": "tft",
+          "file": "visual-snapshots/review-profile-desktop-tft.jpg"
+        },
+        {
+          "tab": "share",
+          "file": "visual-snapshots/review-profile-desktop-share.jpg"
+        }
+      ],
       "url": "https://helioconde.github.io/riot-legacy/?riotId=AlchemyFlames%23BR1&server=br1",
       "viewport": {
         "width": 1440,
@@ -27,6 +42,20 @@
       "name": "profile-mobile",
       "file": "visual-snapshots/profile-mobile.png",
       "reviewFile": "visual-snapshots/review-profile-mobile.jpg",
+      "tabReviews": [
+        {
+          "tab": "league",
+          "file": "visual-snapshots/review-profile-mobile-league.jpg"
+        },
+        {
+          "tab": "tft",
+          "file": "visual-snapshots/review-profile-mobile-tft.jpg"
+        },
+        {
+          "tab": "share",
+          "file": "visual-snapshots/review-profile-mobile-share.jpg"
+        }
+      ],
       "url": "https://helioconde.github.io/riot-legacy/?riotId=AlchemyFlames%23BR1&server=br1",
       "viewport": {
         "width": 390,
