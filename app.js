@@ -766,9 +766,9 @@
     if (!live.lol) {
       if (identity) identity.textContent = english ? 'Primary identity: Mid · 68%' : 'Identidade principal: Mid · 68%';
       stack.innerHTML = `
-        <div class="role-row"><span>${t('role_mid')}</span><div class="role-track"><div class="role-fill" style="width:68%"></div></div><b>68%</b></div>
-        <div class="role-row"><span>${t('role_support')}</span><div class="role-track"><div class="role-fill" style="width:22%"></div></div><b>22%</b></div>
-        <div class="role-row"><span>${t('role_other')}</span><div class="role-track"><div class="role-fill" style="width:10%"></div></div><b>10%</b></div>`;
+        <div class="role-row"><span class="role-name"><i class="role-icon role-mid"></i>${t('role_mid')}</span><div class="role-track"><div class="role-fill" style="width:68%"></div></div><b>68%</b></div>
+        <div class="role-row"><span class="role-name"><i class="role-icon role-support"></i>${t('role_support')}</span><div class="role-track"><div class="role-fill" style="width:22%"></div></div><b>22%</b></div>
+        <div class="role-row"><span class="role-name">${t('role_other')}</span><div class="role-track"><div class="role-fill" style="width:10%"></div></div><b>10%</b></div>`;
       return;
     }
 
@@ -805,7 +805,10 @@
     stack.innerHTML = entries.length && total > 0
       ? entries.map(([position, count]) => {
           const percent = Math.round(count / total * 100);
-          return `<div class="role-row"><span>${escapeHtml(labels[position] || position)}</span><div class="role-track"><div class="role-fill" style="width:${percent}%"></div></div><b>${percent}%</b></div>`;
+          const roleClass = ['TOP','JUNGLE','MID','ADC','SUPPORT'].includes(position)
+            ? 'role-' + position.toLowerCase()
+            : '';
+          return `<div class="role-row"><span class="role-name"><i class="role-icon ${roleClass}"></i>${escapeHtml(labels[position] || position)}</span><div class="role-track"><div class="role-fill" style="width:${percent}%"></div></div><b>${percent}%</b></div>`;
         }).join('')
       : (() => {
           const context = String(live.lol?.summary?.mainContext || '').toUpperCase();
@@ -837,25 +840,34 @@
       ? (live.tft.ranked.find(item => String(item?.queueType || '').toUpperCase().includes('RANKED')) || live.tft.ranked[0])
       : null;
 
+    const rankClass = tier => {
+      const value = String(tier || '').toUpperCase();
+      if (value === 'GOLD') return 'rank-gold';
+      if (value === 'BRONZE') return 'rank-bronze';
+      return '';
+    };
+
     const facts = [];
-    if (platform) facts.push({ label: english ? 'Server' : 'Servidor', value: platform });
-    if (level > 0) facts.push({ label: english ? 'Account level' : 'Nível da conta', value: formatNumber(level) });
+    if (platform) facts.push({ label: english ? 'Server' : 'Servidor', value: platform, kind: 'fact-server' });
+    if (level > 0) facts.push({ label: english ? 'Account level' : 'Nível da conta', value: formatNumber(level), kind: 'fact-level' });
     if (lolRank?.tier) {
       facts.push({
         label: 'LoL',
-        value: `${lolRank.tier} ${lolRank.rank || ''}${Number.isFinite(Number(lolRank.lp)) ? ' · ' + Number(lolRank.lp) + ' LP' : ''}`.trim()
+        value: `${lolRank.tier} ${lolRank.rank || ''}${Number.isFinite(Number(lolRank.lp)) ? ' · ' + Number(lolRank.lp) + ' LP' : ''}`.trim(),
+        kind: rankClass(lolRank.tier)
       });
     }
     if (tftRank?.tier) {
       facts.push({
         label: 'TFT',
-        value: `${tftRank.tier} ${tftRank.rank || ''}${Number.isFinite(Number(tftRank.leaguePoints)) ? ' · ' + Number(tftRank.leaguePoints) + ' LP' : ''}`.trim()
+        value: `${tftRank.tier} ${tftRank.rank || ''}${Number.isFinite(Number(tftRank.leaguePoints)) ? ' · ' + Number(tftRank.leaguePoints) + ' LP' : ''}`.trim(),
+        kind: rankClass(tftRank.tier)
       });
     }
 
     el.hidden = facts.length === 0;
     el.innerHTML = facts.map(fact =>
-      `<span class="live-fact"><small>${escapeHtml(fact.label)}</small><strong>${escapeHtml(fact.value)}</strong></span>`
+      `<span class="live-fact ${escapeHtml(fact.kind || '')}"><i class="live-fact-icon" aria-hidden="true"></i><small>${escapeHtml(fact.label)}</small><strong>${escapeHtml(fact.value)}</strong></span>`
     ).join('');
   }
 
