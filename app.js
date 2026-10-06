@@ -1331,7 +1331,11 @@
 
     const canonical = lol?.player || tft?.player;
     if (canonical?.gameName && canonical?.tagLine) {
-      setProfileIdentity(normalizedId(canonical.gameName, canonical.tagLine));
+      const sameName = String(canonical.gameName).toLowerCase() === String(lookup.gameName).toLowerCase();
+      const sameTag = String(canonical.tagLine).toLowerCase() === String(lookup.tagLine).toLowerCase();
+      const displayName = sameName ? lookup.gameName : canonical.gameName;
+      const displayTag = sameTag ? lookup.tagLine : canonical.tagLine;
+      setProfileIdentity(normalizedId(displayName, displayTag));
     }
 
     renderDynamicCopy();
