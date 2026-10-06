@@ -223,7 +223,9 @@
     if (/^Riftbeast\d*$/i.test(name)) name = 'Riftbeast';
 
     name = name
-      .replace(/UniqueTrait$/i, '')
+      .replace(/\bUnique\s*Trait\d*\b/gi, '')
+      .replace(/\bTrait\d+\b/gi, '')
+      .replace(/UniqueTrait\d*$/i, '')
       .replace(/([a-z])([A-Z])/g, '$1 $2')
       .replace(/([A-Z]{2,})([A-Z][a-z])/g, '$1 $2')
       .replace(/_/g, ' ')
@@ -426,10 +428,16 @@
         const name = cleanTftName(unit.characterId);
         return { short: name.slice(0, 1).toUpperCase(), name, tier: Number(unit.tier || 0) };
       });
-      board.innerHTML = cells.map((unit, index) => {
+      const grid = cells.map((unit, index) => {
         if (!unit) return `<span class="hex-cell" aria-label="Empty" data-cell="${index}"></span>`;
         return `<span class="hex-cell filled" title="${escapeHtml(unit.name)}" aria-label="${escapeHtml(unit.name)}" data-cell="${index}">${escapeHtml(unit.short)}<small>${unit.tier ? '★'.repeat(Math.min(3, unit.tier)) : ''}</small></span>`;
       }).join('');
+      const legend = liveUnits.map(unit => {
+        const name = cleanTftName(unit.characterId);
+        const stars = Number(unit.tier || 0) ? '★'.repeat(Math.min(3, Number(unit.tier || 0))) : '';
+        return `<span class="tft-unit-chip"><strong>${escapeHtml(name)}</strong><small>${escapeHtml(stars)}</small></span>`;
+      }).join('');
+      board.innerHTML = grid + `<div class="tft-unit-legend" aria-label="${locale() === 'en' ? 'Unit legend' : 'Legenda das unidades'}">${legend}</div>`;
       return;
     }
 
