@@ -835,9 +835,19 @@
 
     const rankClass = tier => {
       const value = String(tier || '').toUpperCase();
-      if (value === 'GOLD') return 'rank-gold';
-      if (value === 'BRONZE') return 'rank-bronze';
-      return '';
+      const map = {
+        IRON: 'rank-iron',
+        BRONZE: 'rank-bronze',
+        SILVER: 'rank-silver',
+        GOLD: 'rank-gold',
+        PLATINUM: 'rank-platinum',
+        EMERALD: 'rank-emerald',
+        DIAMOND: 'rank-diamond',
+        MASTER: 'rank-master',
+        GRANDMASTER: 'rank-grandmaster',
+        CHALLENGER: 'rank-challenger'
+      };
+      return map[value] || '';
     };
 
     const facts = [];
