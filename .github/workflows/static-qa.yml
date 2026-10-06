@@ -18,6 +18,8 @@ jobs:
           node --check app.js
           node --check i18n.js
           node --check backend-config.js
+          node --check ads-config.js
+          node --check ads.js
       - name: Required product markers
         run: |
           test -f index.html
@@ -30,6 +32,10 @@ jobs:
           test -f MELHORIAS.md
           test -f ADS_SETUP.md
           test -f RIOT_API.md
+          test -f RETENTION.md
+          test -f PRODUCTION_FLAGS.md
+          test -f ads-config.js
+          test -f ads.js
           grep -qi 'lang="pt-BR"' index.html
           grep -qi 'data-language="en"' index.html
           grep -qi 'id="riot-form"' index.html
@@ -42,8 +48,13 @@ jobs:
           grep -qi 'riot-legacy-language' i18n.js
           grep -qi 'URLSearchParams' app.js
           grep -qi 'navigator.share' app.js
-          grep -qi 'public-lol-profile' backend-config.js
-          grep -qi 'public-tft-profile' backend-config.js
+          grep -qi 'riot-legacy-lol-profile' backend-config.js
+          grep -qi 'riot-legacy-tft-profile' backend-config.js
+          grep -qi 'riot-legacy-events' backend-config.js
+          grep -qi 'riot-legacy-public-profile' backend-config.js
+          grep -qi 'retentionTelemetry' backend-config.js
+          grep -qi 'publicProfiles: false' backend-config.js
+          grep -qi 'ads: false' backend-config.js
           grep -qi 'postPublicFunction' app.js
           grep -qi 'DADOS RIOT' app.js
           grep -qi 'server' app.js
