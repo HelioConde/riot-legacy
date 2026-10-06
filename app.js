@@ -1350,9 +1350,12 @@
     if (lol && tft) {
       if (staleLol || staleTft) {
         const snapshotDate = lol?.cacheMeta?.snapshotDate || tft?.cacheMeta?.snapshotDate || '';
+        const displaySnapshotDate = snapshotDate
+          ? new Date(snapshotDate + 'T00:00:00').toLocaleDateString(locale())
+          : '';
         const detail = locale() === 'en'
-          ? `Live Riot access is temporarily unavailable. Showing the latest real saved snapshot${snapshotDate ? ' from ' + snapshotDate : ''}.`
-          : `O acesso ao vivo da Riot está temporariamente indisponível. Exibindo o último snapshot real salvo${snapshotDate ? ' de ' + snapshotDate : ''}.`;
+          ? `Cached data${displaySnapshotDate ? ' · snapshot ' + displaySnapshotDate : ''}. Live Riot access is unavailable.`
+          : `Dados em cache${displaySnapshotDate ? ' · snapshot ' + displaySnapshotDate : ''}. O acesso ao vivo da Riot está indisponível.`;
         setSourceState('cached', detail);
         trackEvent('profile_partial', { snapshotCount: legacyHistory.history.length });
         return;
