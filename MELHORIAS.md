@@ -27,9 +27,9 @@ Atualizado em 06/10/2026.
 - [ ] Registrar proposta no Riot Developer Portal.
 - [~] Definir Production API key própria do produto quando elegível — backends dedicados exigem `RIOT_LEGACY_API_KEY` em produção; fallback compartilhado só funciona com override explícito de desenvolvimento. Falta a chave emitida pela Riot.
 - [x] Reutilizar backend gamer ZeroTwo.gg com Riot key server-side.
-- [x] Identificar `public-lol-profile` como backend inicial Riot ID → PUUID → League.
-- [x] Conectar o frontend do Riot Legacy à `public-lol-profile`.
-- [x] Conectar também `public-tft-profile` e substituir os blocos recentes de LoL/TFT por payload real, mantendo fallback explícito.
+- [x] Backend inicial identificado e depois isolado em `riot-legacy-lol-profile` para o produto ter chave/política próprias.
+- [x] Conectar o frontend do Riot Legacy ao backend dedicado `riot-legacy-lol-profile`.
+- [x] Conectar também `riot-legacy-tft-profile` e substituir os blocos recentes de LoL/TFT por payload real, mantendo fallback explícito.
 - [x] Garantir que a timeline ao vivo usa capítulos da amostra recente, sem misturar datas demonstrativas com o selo de dados Riot.
 - [x] Tratar conta inexistente, API indisponível, timeout e dados parciais com fallback identificado.
 - [x] Mensagens distintas para Riot ID inexistente, rate limit, credencial server-side indisponível e timeout.
@@ -54,7 +54,7 @@ Atualizado em 06/10/2026.
 - [x] TFT: distribuição de colocações — barras 1º–8º e resumo Top 4/1º/8º derivados da amostra recente.
 - [x] TFT: retrospectiva por set — partidas agrupadas por set com média de colocação, Top 4 e vitórias na amostra disponível.
 - [x] Cards exportáveis como imagem PNG gerada localmente no navegador.
-- [~] Perfil público opcional — tabela, API, revogação, slug e trava server-side já implementados; publicação continua bloqueada até autenticação + prova de propriedade RSO.
+- [~] Perfil público opcional — tabela, API, revogação, slug, rota `?public=slug`, histórico e trava server-side já implementados; publicação continua bloqueada até autenticação + prova de propriedade RSO.
 - [x] Tema visual baseado no campeão assinatura — acento visual determinístico e splash do campeão sem alterar a landing.
 
 ## P2 — retenção
@@ -67,7 +67,7 @@ Atualizado em 06/10/2026.
 - [x] Wrapped mensal/anual — resumo de snapshots do mês/ano, assinaturas e melhor Top 4 registrado.
 - [x] Coleção de cards compartilhados — coleção local adicionada ao baixar PNG, limitada a 12 itens.
 - [x] Favoritar marcos — persistência local no navegador para momentos escolhidos pelo usuário.
-- [~] Página pública indexável somente com consentimento — banco/API já exigem perfil verificado e opt-in; perfis pesquisados recebem `noindex,nofollow`. Falta habilitar autenticação + RSO para liberar o fluxo.
+- [~] Página pública indexável somente com consentimento — rota pública já respeita `indexingOptIn`; perfis comuns recebem `noindex,nofollow`. Falta habilitar autenticação + RSO para o usuário conseguir verificar e publicar.
 - [x] Web Share + download de imagem — Web Share com fallback para clipboard e PNG local.
 - [x] PWA básico — manifest completo, Service Worker e app shell offline; revisar ícones/instalação após validação de retenção.
 
@@ -87,6 +87,10 @@ Não expandir para dezenas de estatísticas porque estão disponíveis na API. C
 
 
 ## Infraestrutura pronta para desbloqueios externos
+
+- [x] Privacidade e Termos públicos, ligados no footer e sitemap.
+- [x] Pacote de submissão Riot pronto para copiar no Developer Portal.
+- [x] Helper `npm run riot:verify` para gerar `riot.txt` com o token exato quando a Riot fornecer.
 
 - [x] Backends próprios de LoL/TFT para o Riot Legacy.
 - [x] Preferência automática por `RIOT_LEGACY_API_KEY`.
