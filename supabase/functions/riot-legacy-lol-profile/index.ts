@@ -13,7 +13,7 @@ const tops=(arr:any[],k:string,n=3)=>{const f:any={};arr.forEach((x:any)=>{const
 Deno.serve(async(req:Request)=>{
  if(req.method==="OPTIONS")return new Response("ok",{headers:H});
  if(req.method!=="POST")return out({error:"method"},405);
- const key=(Deno.env.get("RIOT_LEGACY_API_KEY") || Deno.env.get("RIOT_API_KEY")),url=Deno.env.get("SUPABASE_URL"),service=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+ const key=(Deno.env.get("RIOT_LEGACY_API_KEY") || (Deno.env.get("RIOT_LEGACY_ALLOW_SHARED_KEY")==="true" ? Deno.env.get("RIOT_API_KEY") : null)),url=Deno.env.get("SUPABASE_URL"),service=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
  if(!key||!url||!service)return out({error:"unavailable",message:"Consulta temporariamente indisponível."},503);
  let b:any={};try{b=await req.json()}catch{return out({error:"json"},400)}
  const gn=String(b.gameName||"").trim(),tl=String(b.tagLine||"").replace(/^#/,"").trim(),reg=String(b.region||"americas").toLowerCase(),plat=String(b.platform||"br1").toLowerCase();
