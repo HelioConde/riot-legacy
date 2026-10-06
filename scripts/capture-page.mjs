@@ -93,6 +93,11 @@ try {
     if (target.name.startsWith('profile-')) {
       for (const tab of ['league', 'tft', 'share']) {
         await page.locator(`[data-tab="${tab}"]`).click();
+        const panel = page.locator(`#panel-${tab}`);
+        await panel.evaluate(element => {
+          const top = element.getBoundingClientRect().top + window.scrollY - 86;
+          window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+        });
         await page.waitForTimeout(250);
         const tabFile = path.join(outputDir, `review-${target.name}-${tab}.jpg`);
         await page.screenshot({
