@@ -333,8 +333,8 @@ test('reserva espaço estável para anúncios sem controles internos', async ({ 
   await expect(slots).toHaveCount(2);
   for (let index = 0; index < await slots.count(); index++) {
     const slot = slots.nth(index);
-    const box = await slot.boundingBox();
-    expect(box.height).toBeGreaterThanOrEqual(110);
+    const minHeight = await slot.evaluate(element => parseFloat(getComputedStyle(element).minHeight));
+    expect(minHeight).toBeGreaterThanOrEqual(110);
     await expect(slot.locator('button,input,select,a')).toHaveCount(0);
   }
 });
