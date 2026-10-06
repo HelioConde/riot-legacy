@@ -427,3 +427,34 @@ body.ads-disabled .ad-shell{font-size:0}
   .brand-copy strong{font-size:13px}
   .brand-copy em{font-size:10px}
 }
+
+
+/* Compact mobile champion cards */
+@media(max-width:620px){
+  #champion-list.champion-row{
+    grid-template-columns:1fr;
+    gap:8px
+  }
+  #champion-list .champion{
+    display:grid;
+    grid-template-columns:108px minmax(0,1fr);
+    grid-template-rows:auto auto;
+    column-gap:13px;
+    align-items:center;
+    padding:10px 12px
+  }
+  #champion-list .champion .portrait{
+    grid-row:1/3;
+    width:108px;
+    height:76px;
+    border-radius:10px
+  }
+  #champion-list .champion h3{
+    margin:0 0 3px;
+    align-self:end
+  }
+  #champion-list .champion>span{
+    align-self:start;
+    line-height:1.45
+  }
+}
