@@ -1281,7 +1281,16 @@
 
   function setProfileIdentity(riotId) {
     profileRiotId.textContent = riotId;
-    shareRiotId.textContent = riotId;
+
+    const splitIndex = riotId.lastIndexOf('#');
+    if (splitIndex > 0) {
+      const gameName = riotId.slice(0, splitIndex);
+      const tagLine = riotId.slice(splitIndex);
+      shareRiotId.innerHTML = `<span class="share-riot-name">${escapeHtml(gameName)}</span><wbr><span class="share-riot-tag">${escapeHtml(tagLine)}</span>`;
+    } else {
+      shareRiotId.textContent = riotId;
+    }
+
     document.querySelector('#avatar-letter').textContent = riotId.charAt(0).toUpperCase();
   }
 
