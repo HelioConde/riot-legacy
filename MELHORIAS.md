@@ -23,7 +23,7 @@ Atualizado em 06/10/2026.
 ## P0 — próximo
 
 - [x] Criar repositório físico `HelioConde/riot-legacy`.
-- [ ] Publicar GitHub Pages.
+- [~] Publicar GitHub Pages — workflow oficial adicionado; aguardando confirmação do primeiro deploy em `https://helioconde.github.io/riot-legacy/`.
 - [ ] Registrar proposta no Riot Developer Portal.
 - [ ] Definir Production API key própria do produto quando elegível.
 - [x] Reutilizar backend gamer ZeroTwo.gg com Riot key server-side.
@@ -49,7 +49,7 @@ Atualizado em 06/10/2026.
 - [ ] Top campeões com evolução de maestria.
 - [x] Identidade por função — função dominante e percentual derivados das partidas recentes com posição conhecida.
 - [ ] Marcos de ranked sem criar ranking alternativo.
-- [ ] TFT: comps mais recorrentes.
+- [x] TFT: comps mais recorrentes — arquétipos derivados dos dois traits ativos mais fortes, com fallback para núcleo de unidades.
 - [x] TFT: unidades/traits assinatura — recorrência derivada de toda a amostra recente, com desempate por força/estrelas.
 - [x] TFT: distribuição de colocações — barras 1º–8º e resumo Top 4/1º/8º derivados da amostra recente.
 - [x] TFT: retrospectiva por set — partidas agrupadas por set com média de colocação, Top 4 e vitórias na amostra disponível.
