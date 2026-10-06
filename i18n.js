@@ -14,6 +14,7 @@
       server: 'Servidor',
       submit: 'Ver meu legado',
       privacy: 'Nunca pedimos sua senha da Riot.',
+      riot_id_help: 'Game Name: 3–16 caracteres. Tag Line: 3–5 letras ou números.',
       recent_searches: 'Buscas recentes',
       clear_recent: 'Limpar',
       demo_note: 'A busca tenta carregar dados públicos reais da Riot. Quando indisponíveis, o fallback demonstrativo é identificado.',
@@ -77,7 +78,7 @@
       share_ready: 'Resumo pronto para compartilhar.',
       invalid_id: 'Use Game Name com 3–16 caracteres e Tag Line com 3–5 letras ou números.',
       legal: 'Riot Legacy é um projeto independente e não é endossado pela Riot Games. Marcas e propriedades relacionadas pertencem à Riot Games, Inc.',
-      footer_demo: 'Protótipo de validação · dados demonstrativos'
+      footer_demo: 'Museu visual de League of Legends + TFT'
     },
     en: {
       recent_searches: 'Recent searches',
@@ -94,6 +95,7 @@
       server: 'Server',
       submit: 'View my legacy',
       privacy: 'We never ask for your Riot password.',
+      riot_id_help: 'Game Name: 3–16 characters. Tag Line: 3–5 letters or numbers.',
       demo_note: 'Search tries to load real public Riot data. When unavailable, the demonstrative fallback is clearly identified.',
       visual_since: 'A story since',
       visual_signature: 'Signature champion',
@@ -155,7 +157,7 @@
       share_ready: 'Summary ready to share.',
       invalid_id: 'Use a 3–16 character Game Name and a 3–5 letter/number Tag Line.',
       legal: 'Riot Legacy is an independent community project and is not endorsed by Riot Games. Riot Games and related properties are trademarks of Riot Games, Inc.',
-      footer_demo: 'Validation prototype · demonstrative data'
+      footer_demo: 'A visual museum for League of Legends + TFT'
     }
   };
 
