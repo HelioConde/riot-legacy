@@ -153,12 +153,28 @@
   }
 
   function cleanTftName(value) {
-    return String(value || '')
+    let name = String(value || '').trim();
+    name = name
+      .replace(/^TFT_Item_/i, '')
       .replace(/^TFT\d+_/i, '')
       .replace(/^Set\d+_/i, '')
-      .replace(/^TFT_Item_/i, '')
+      .replace(/^DA_(?:\d+_)?/i, '');
+
+    if (/^Riftbeast\d*$/i.test(name)) name = 'Riftbeast';
+
+    name = name
+      .replace(/UniqueTrait$/i, '')
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/([A-Z]{2,})([A-Z][a-z])/g, '$1 $2')
       .replace(/_/g, ' ')
-      .trim() || 'TFT';
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (/^[A-Z]{2,}Trait$/i.test(name)) {
+      name = name.replace(/Trait$/i, ' Trait');
+    }
+
+    return name || 'TFT';
   }
 
   function cleanTftSetName(value, setNumber = 0) {
