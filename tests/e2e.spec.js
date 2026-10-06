@@ -336,10 +336,16 @@ test('salva marco favorito localmente e mantém coleção de cards', async ({ pa
 test('reserva espaço estável para anúncios sem controles internos', async ({ page }) => {
   const slots = page.locator('.ad-shell');
   await expect(slots).toHaveCount(2);
+  const adsDisabled = await page.locator('body').evaluate(body => body.classList.contains('ads-disabled'));
   for (let index = 0; index < await slots.count(); index++) {
     const slot = slots.nth(index);
     const minHeight = await slot.evaluate(element => parseFloat(getComputedStyle(element).minHeight));
-    expect(minHeight).toBeGreaterThanOrEqual(110);
+    if (adsDisabled) {
+      expect(minHeight).toBeGreaterThanOrEqual(50);
+      expect(minHeight).toBeLessThan(110);
+    } else {
+      expect(minHeight).toBeGreaterThanOrEqual(110);
+    }
     await expect(slot.locator('button,input,select,a')).toHaveCount(0);
   }
 });
