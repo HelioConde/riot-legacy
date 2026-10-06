@@ -3,6 +3,10 @@ on:
   push:
     branches: [main]
     paths-ignore: [version.json]
+concurrency:
+  group: live-version-main
+  cancel-in-progress: true
+
 permissions: { contents: write }
 jobs:
   version:
