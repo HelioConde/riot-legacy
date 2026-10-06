@@ -309,6 +309,7 @@
     }
     sourceBadge.classList.toggle('live', state === 'live');
     sourceBadge.classList.toggle('partial', state === 'partial');
+    sourceBadge.classList.toggle('cached', state === 'cached');
     sourceBadge.classList.toggle('loading', state === 'loading');
 
     const english = locale() === 'en';
@@ -325,6 +326,14 @@
       sourceNote.textContent = english
         ? detail || 'League and TFT use recent Riot-backed data. Historical snapshots will expand the legacy over time.'
         : detail || 'League e TFT usam dados recentes vindos da Riot. Snapshots históricos ampliarão o legado ao longo do tempo.';
+      return;
+    }
+
+    if (state === 'cached') {
+      sourceBadge.textContent = english ? 'CACHED RIOT DATA' : 'DADOS RIOT EM CACHE';
+      sourceNote.textContent = detail || (english
+        ? 'The live Riot API is unavailable, so Riot Legacy is showing the latest real snapshot saved for this account.'
+        : 'A API ao vivo da Riot está indisponível; o Riot Legacy está mostrando o último snapshot real salvo para esta conta.');
       return;
     }
 
@@ -390,10 +399,11 @@
       });
       let data = null;
       try { data = await response.json(); } catch {}
-      if (!response.ok || data?.error) {
-        const error = new Error(data?.message || 'riot_lookup_failed');
-        error.code = data?.error || String(response.status);
-        error.status = response.status;
+      if (!response.ok || data?.error || data?._transportError) {
+        const transport = data?._transportError || null;
+        const error = new Error(transport?.message || data?.message || 'riot_lookup_failed');
+        error.code = transport?.code || data?.error || String(response.status);
+        error.status = Number(transport?.status || response.status);
         throw error;
       }
       return data;
@@ -1215,6 +1225,12 @@
 
     const lol = lolResult.status === 'fulfilled' ? lolResult.value : null;
     const tft = tftResult.status === 'fulfilled' ? tftResult.value : null;
+    const staleLol = Boolean(lol?.cacheMeta?.stale);
+    const staleTft = Boolean(tft?.cacheMeta?.stale);
+    const cachedHistory = lol?.cacheMeta?.history || tft?.cacheMeta?.history || null;
+    if (Array.isArray(cachedHistory) && cachedHistory.length) {
+      legacyHistory = { history: cachedHistory, comparison: null };
+    }
     live = { lol, tft };
 
     const canonical = lol?.player || tft?.player;
@@ -1223,11 +1239,24 @@
     }
 
     renderDynamicCopy();
-    await captureLegacySnapshot(lookup, lol, tft);
+    if (!staleLol && !staleTft) {
+      await captureLegacySnapshot(lookup, lol, tft);
+    } else {
+      renderHistoryInsights();
+    }
 
     const lolCount = Number(lol?.summary?.matches || 0);
     const tftCount = Number(tft?.summary?.matches || 0);
     if (lol && tft) {
+      if (staleLol || staleTft) {
+        const snapshotDate = lol?.cacheMeta?.snapshotDate || tft?.cacheMeta?.snapshotDate || '';
+        const detail = locale() === 'en'
+          ? `Live Riot access is temporarily unavailable. Showing the latest real saved snapshot${snapshotDate ? ' from ' + snapshotDate : ''}.`
+          : `O acesso ao vivo da Riot está temporariamente indisponível. Exibindo o último snapshot real salvo${snapshotDate ? ' de ' + snapshotDate : ''}.`;
+        setSourceState('cached', detail);
+        trackEvent('profile_partial', { snapshotCount: legacyHistory.history.length });
+        return;
+      }
       const detail = locale() === 'en'
         ? `Riot data loaded: ${lolCount} recent LoL matches and ${tftCount} TFT matches. The legacy chapters below use this recent sample.`
         : `Dados Riot carregados: ${lolCount} partidas recentes de LoL e ${tftCount} partidas de TFT. Os capítulos abaixo usam esta amostra recente.`;
