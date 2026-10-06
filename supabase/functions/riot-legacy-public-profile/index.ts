@@ -60,7 +60,7 @@ Deno.serve(async(req:Request)=>{
 
     const {data:profile,error}=await db
       .from("riot_legacy_public_profiles")
-      .select("public_slug,platform,ownership_verified_at,published_at,puuid")
+      .select("public_slug,platform,indexing_opt_in,ownership_verified_at,published_at,puuid")
       .eq("public_slug",slug)
       .eq("is_public",true)
       .not("ownership_verified_at","is",null)
@@ -68,23 +68,38 @@ Deno.serve(async(req:Request)=>{
 
     if(error||!profile) return out({error:"not_found"},404);
 
-    const {data:snapshot}=await db
-      .from("riot_legacy_snapshots")
-      .select("snapshot_date,summary,lol,tft")
-      .eq("puuid",profile.puuid)
-      .eq("platform",profile.platform)
-      .order("snapshot_date",{ascending:false})
-      .limit(1)
-      .maybeSingle();
+    const [{data:historyRows},{data:identity}]=await Promise.all([
+      db
+        .from("riot_legacy_snapshots")
+        .select("snapshot_date,captured_at,summary,lol,tft")
+        .eq("puuid",profile.puuid)
+        .eq("platform",profile.platform)
+        .order("snapshot_date",{ascending:false})
+        .limit(12),
+      db
+        .from("riot_player_cache")
+        .select("game_name,tag_line")
+        .eq("puuid",profile.puuid)
+        .eq("platform",profile.platform)
+        .order("fetched_at",{ascending:false})
+        .limit(1)
+        .maybeSingle()
+    ]);
+
+    const history=Array.isArray(historyRows)?historyRows:[];
 
     return out({
       profile:{
         slug:profile.public_slug,
         platform:profile.platform,
         publishedAt:profile.published_at,
-        verified:true
+        indexingOptIn:profile.indexing_opt_in===true,
+        verified:true,
+        gameName:identity?.game_name||null,
+        tagLine:identity?.tag_line||null
       },
-      snapshot:snapshot||null
+      snapshot:history[0]||null,
+      history
     });
   }
 
