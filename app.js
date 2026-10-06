@@ -1025,8 +1025,14 @@
       .filter(Number.isFinite)
       .sort((a, b) => b - a)[0];
     const oldestDate = history[history.length - 1]?.snapshot_date;
+    const now = new Date();
+    const yearKey = String(now.getFullYear());
+    const monthKey = `${yearKey}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const yearSnapshots = history.filter(item => String(item?.snapshot_date || '').startsWith(yearKey)).length;
+    const monthSnapshots = history.filter(item => String(item?.snapshot_date || '').startsWith(monthKey)).length;
     wrappedEl.innerHTML = `
-      <div class="history-fact"><span>Snapshots acumulados</span><b>${history.length}</b></div>
+      <div class="history-fact"><span>Wrapped do mês</span><b>${monthSnapshots} snapshots</b></div>
+      <div class="history-fact"><span>Wrapped do ano</span><b>${yearSnapshots} snapshots</b></div>
       <div class="history-fact"><span>Campeões assinatura</span><b>${signatures.length}</b></div>
       <div class="history-fact"><span>Melhor Top 4 TFT registrado</span><b>${Number.isFinite(bestTop4) ? bestTop4 + '%' : '—'}</b></div>
       <div class="history-fact"><span>Histórico desde</span><b>${oldestDate ? new Date(oldestDate + 'T00:00:00').toLocaleDateString(locale()) : '—'}</b></div>
