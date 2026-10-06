@@ -113,7 +113,11 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
             { name: 'TFT14_Scholar', numUnits: 2, style: 1 }
           ]
         },
-        { placement: 2, units: [], traits: [] },
+        {
+          placement: 2,
+          units: [{ characterId: 'TFT14_Ahri', tier: 2 }],
+          traits: [{ name: 'TFT14_Arcana', numUnits: 3, style: 1 }]
+        },
         { placement: 3, units: [], traits: [] },
         { placement: 4, units: [], traits: [] }
       ]
@@ -139,6 +143,8 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
   await expect(page.locator('#champion-list')).toContainText('Lux');
   await expect(page.locator('#role-identity')).toContainText('Identidade recente: Mid · 67% de 6 partidas com posição');
   await expect(page.locator('#trait-list')).toContainText('Arcana');
+  await expect(page.locator('#trait-list')).toContainText('Arcana · 2x');
+  await expect(page.locator('#tft-signature')).toContainText('Assinaturas recentes: Arcana · Ahri');
   await expect(page.locator('#live-profile-facts')).toContainText('BR1');
   await expect(page.locator('#live-profile-facts')).toContainText('GOLD II · 42 LP');
   await expect(page.locator('#live-profile-facts')).toContainText('PLATINUM IV · 33 LP');
