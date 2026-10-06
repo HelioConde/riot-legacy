@@ -23,7 +23,7 @@ Atualizado em 06/10/2026.
 ## P0 — próximo
 
 - [x] Criar repositório físico `HelioConde/riot-legacy`.
-- [~] Publicar GitHub Pages — workflow oficial adicionado; aguardando confirmação do primeiro deploy em `https://helioconde.github.io/riot-legacy/`.
+- [x] Publicar GitHub Pages — deploy oficial ativo em `https://helioconde.github.io/riot-legacy/`.
 - [ ] Registrar proposta no Riot Developer Portal.
 - [ ] Definir Production API key própria do produto quando elegível.
 - [x] Reutilizar backend gamer ZeroTwo.gg com Riot key server-side.
@@ -33,8 +33,8 @@ Atualizado em 06/10/2026.
 - [x] Garantir que a timeline ao vivo usa capítulos da amostra recente, sem misturar datas demonstrativas com o selo de dados Riot.
 - [x] Tratar conta inexistente, API indisponível, timeout e dados parciais com fallback identificado.
 - [x] Mensagens distintas para Riot ID inexistente, rate limit, credencial server-side indisponível e timeout.
-- [ ] Validar um Riot ID real de LoL.
-- [ ] Validar um Riot ID real de TFT.
+- [x] Validar um Riot ID real de LoL — conta BR1 validada em produção, com perfil e histórico reais.
+- [x] Validar um Riot ID real de TFT — conta BR1 validada em produção, com histórico real disponível.
 - [ ] Criar snapshot/cache para não consultar toda a história a cada visita.
 
 ## P1 — experiência
