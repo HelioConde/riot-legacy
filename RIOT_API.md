@@ -8,7 +8,7 @@ O Riot Legacy reutiliza o Supabase gamer do ZeroTwo.gg:
 
 - ref `bieihhaobdztjyoweewa`;
 - `RIOT_API_KEY` já configurada como secret de Edge Function;
-- `public-lol-profile` já implementa Riot ID → PUUID → Summoner/Ranked/Mastery/Match-V5;
+- `riot-legacy-lol-profile` já implementa Riot ID → PUUID → Summoner/Ranked/Mastery/Match-V5;
 - `riot_player_cache` e `lol_match_cache` já reduzem chamadas repetidas;
 - o frontend usa apenas credenciais públicas do Supabase.
 
@@ -73,8 +73,8 @@ Antes do uso público de dados reais, registrar o produto no Riot Developer Port
 
 O frontend já consome:
 
-- `public-lol-profile`;
-- `public-tft-profile`.
+- `riot-legacy-lol-profile`;
+- `riot-legacy-tft-profile`.
 
 A seleção passou a ser por servidor/plataforma (`br1`, `na1`, `euw1`, etc.) e o frontend deriva o routing regional necessário ao LoL.
 
