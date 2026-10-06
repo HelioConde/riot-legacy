@@ -1764,6 +1764,7 @@
     if (!feedback.hidden) feedback.textContent = t('invalid_id');
   });
 
+  document.body.classList.toggle('ads-disabled', backend?.features?.ads !== true);
   renderRecentSearches();
   trackEvent('app_open');
 
