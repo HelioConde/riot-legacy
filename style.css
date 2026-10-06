@@ -68,7 +68,7 @@ a{color:inherit}
 .float-card{position:absolute;min-width:155px;padding:14px 16px;border:1px solid rgba(255,255,255,.08);border-radius:15px;background:rgba(11,19,29,.88);box-shadow:0 18px 50px rgba(0,0,0,.28);backdrop-filter:blur(18px)}
 .float-card span,.float-card small{display:block}.float-card span{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.8px}.float-card strong{display:block;margin-top:5px;font-size:18px}.float-card small{margin-top:3px;color:var(--gold);font-size:10px}
 .card-a{top:16%;left:-2%}.card-b{right:-3%;top:38%}.card-c{left:8%;bottom:8%}
-.ad-shell{display:grid;place-items:center;min-height:92px;margin:10px 0 70px;border:1px dashed rgba(145,160,178,.2);border-radius:14px;color:#627082;font-size:9px;letter-spacing:.9px;text-transform:uppercase}
+.ad-shell{display:grid;place-items:center;min-height:120px;margin:18px 0 76px;border:1px dashed rgba(145,160,178,.2);border-radius:14px;color:#627082;font-size:9px;letter-spacing:.9px;text-transform:uppercase;contain:layout;overflow:hidden}
 .concept{padding:45px 0 100px}
 .section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:28px}
 .section-head h2{max-width:700px;margin:0;font-size:clamp(34px,5vw,58px);letter-spacing:-2.6px}
