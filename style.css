@@ -209,3 +209,48 @@ a{color:inherit}
 
 /* asset-pack-test */
 .hero-visual{outline-color:transparent}
+
+
+/* Riot Legacy curated UI pack */
+.brand-pack-logo{display:block;width:168px;max-height:48px;object-fit:contain;object-position:left center}
+.hero-visual:before{content:"";position:absolute;z-index:0;inset:34px 20px;border-radius:34px;background:
+  linear-gradient(180deg,rgba(5,10,16,.08),rgba(5,10,16,.58)),
+  url("./assets/ui/hero.png") center/cover no-repeat;opacity:.5;filter:saturate(.86) contrast(1.05)}
+.hero-visual>*{z-index:1}
+.profile-hero:after{content:"";position:absolute;z-index:1;inset:0;pointer-events:none;background:
+  linear-gradient(90deg,rgba(5,10,16,.15),transparent 55%),
+  url("./assets/ui/profile-header.png") center/cover no-repeat;opacity:.12;mix-blend-mode:screen}
+.tabs button{display:flex;align-items:center;justify-content:center;gap:7px}
+.tabs button:before{content:"";width:18px;height:18px;flex:0 0 18px;background:center/contain no-repeat;opacity:.68;filter:saturate(.9)}
+.tabs button[data-tab="legacy"]:before{background-image:url("./assets/ui/icon-history.png")}
+.tabs button[data-tab="league"]:before{background-image:url("./assets/ui/hud-lol.png")}
+.tabs button[data-tab="tft"]:before{background-image:url("./assets/ui/hud-tft.png")}
+.tabs button[data-tab="share"]:before{background-image:url("./assets/ui/icon-share.png")}
+.tabs button.active:before{opacity:1;filter:saturate(1.08) drop-shadow(0 0 7px rgba(216,179,95,.26))}
+.demo-badge.live,.demo-badge.cached{display:inline-flex;align-items:center;gap:6px}
+.demo-badge.live:before,.demo-badge.cached:before{content:"";width:15px;height:15px;background:center/contain no-repeat}
+.demo-badge.live:before{background-image:url("./assets/ui/status-live.png")}
+.demo-badge.cached:before{background-image:url("./assets/ui/status-cache.png")}
+.league-card,.tft-card{position:relative;overflow:hidden}
+.league-card:first-child:before,.tft-board-wrap:before{content:"";position:absolute;inset:0;pointer-events:none;background:center/cover no-repeat;opacity:.055}
+.league-card:first-child:before{background-image:url("./assets/ui/league-panel.png")}
+.tft-board-wrap:before{background-image:url("./assets/ui/tft-panel.png")}
+.league-card>*,
+.tft-board-wrap>*{position:relative;z-index:1}
+.share-card{background:
+  linear-gradient(90deg,rgba(7,13,20,.93),rgba(7,13,20,.72)),
+  url("./assets/ui/share-bg.png") center/cover no-repeat}
+.asset-action{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.asset-action:before{content:"";width:18px;height:18px;flex:0 0 18px;background:center/contain no-repeat}
+.asset-share:before{background-image:url("./assets/ui/icon-share.png")}
+.asset-download:before{background-image:url("./assets/ui/icon-download.png")}
+.asset-favorite:before{background-image:url("./assets/ui/icon-favorite.png")}
+.history-head h2{display:flex;align-items:center;gap:8px}
+.history-head h2:before{content:"";width:24px;height:24px;background:url("./assets/ui/icon-history.png") center/contain no-repeat;opacity:.9}
+@media(max-width:620px){
+  .brand-pack-logo{width:138px;max-height:40px}
+  .hero-visual:before{background-image:linear-gradient(180deg,rgba(5,10,16,.08),rgba(5,10,16,.58)),url("./assets/ui/hero-mobile.png");inset:28px 8px}
+  .tabs button{gap:3px}
+  .tabs button:before{width:14px;height:14px;flex-basis:14px}
+  .asset-action:before{width:16px;height:16px;flex-basis:16px}
+}
