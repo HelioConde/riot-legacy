@@ -66,7 +66,7 @@ Fontes candidatas:
 - infraestrutura compartilhada pelos produtos gamer;
 - `RIOT_API_KEY` já existe como secret server-side;
 - cache Riot já existe em `riot_player_cache` e `lol_match_cache`;
-- Edge Function existente `public-lol-profile` já resolve Riot ID → PUUID e consulta League;
+- Edge Function existente `riot-legacy-lol-profile` já resolve Riot ID → PUUID e consulta League;
 - Edge Function existente `riot-lol-player` atende o fluxo autenticado do ZeroTwo.
 
 **Não usar `pizzaria-db` e não criar outro Supabase para o Riot Legacy.**
@@ -75,7 +75,7 @@ A reutilização é da infraestrutura gamer, não da chave no navegador. O front
 
 Regras:
 - nunca copiar `RIOT_API_KEY` para `app.js`, HTML, GitHub Pages, localStorage ou Git;
-- reutilizar `public-lol-profile` antes de criar nova função;
+- reutilizar `riot-legacy-lol-profile` antes de criar nova função;
 - criar uma Edge Function nova apenas quando a narrativa do Riot Legacy exigir payload que a função existente não possa fornecer de forma limpa;
 - reutilizar cache por Riot ID/PUUID e partidas;
 - rate limiting e chamadas Riot continuam server-side;
@@ -155,8 +155,8 @@ A branch atual é standalone e será promovida para a `main` do repositório fí
 
 O frontend usa chamadas públicas HTTPS para:
 
-- `public-lol-profile` — Riot ID → PUUID → Summoner/Ranked/Mastery/Match-V5;
-- `public-tft-profile` — Riot ID → PUUID → TFT Summoner/League/Match.
+- `riot-legacy-lol-profile` — Riot ID → PUUID → Summoner/Ranked/Mastery/Match-V5;
+- `riot-legacy-tft-profile` — Riot ID → PUUID → TFT Summoner/League/Match.
 
 Ambas estão ativas no Supabase gamer com `verify_jwt=false` e mantêm a `RIOT_API_KEY` exclusivamente no servidor.
 
