@@ -1050,9 +1050,7 @@
       const result = await postPublicFunction(backend.legacySnapshots, {
         gameName: lookup.gameName,
         tagLine: lookup.tagLine,
-        platform: lookup.platform,
-        lol,
-        tft
+        platform: lookup.platform
       });
       legacyHistory = {
         history: Array.isArray(result?.history) ? result.history : [],
