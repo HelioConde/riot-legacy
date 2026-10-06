@@ -1,12 +1,12 @@
 const { test, expect } = require('@playwright/test');
 
 test.beforeEach(async ({ page }) => {
-  await page.route('**/public-lol-profile', route => route.fulfill({
+  await page.route('**/riot-legacy-lol-profile', route => route.fulfill({
     status: 404,
     contentType: 'application/json',
     body: JSON.stringify({ error: 'player', message: 'demo fallback' })
   }));
-  await page.route('**/public-tft-profile', route => route.fulfill({
+  await page.route('**/riot-legacy-tft-profile', route => route.fulfill({
     status: 404,
     contentType: 'application/json',
     body: JSON.stringify({ error: 'player_not_found', message: 'demo fallback' })
@@ -65,11 +65,11 @@ test('mobile não cria overflow horizontal crítico', async ({ page }) => {
 
 
 test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async ({ page }) => {
-  await page.unroute('**/public-lol-profile');
-  await page.unroute('**/public-tft-profile');
+  await page.unroute('**/riot-legacy-lol-profile');
+  await page.unroute('**/riot-legacy-tft-profile');
   await page.unroute('**/riot-legacy-snapshots');
 
-  await page.route('**/public-lol-profile', route => route.fulfill({
+  await page.route('**/riot-legacy-lol-profile', route => route.fulfill({
     status: 200,
     contentType: 'application/json',
     body: JSON.stringify({
@@ -100,7 +100,7 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
     })
   }));
 
-  await page.route('**/public-tft-profile', route => route.fulfill({
+  await page.route('**/riot-legacy-tft-profile', route => route.fulfill({
     status: 200,
     contentType: 'application/json',
     body: JSON.stringify({
@@ -250,10 +250,10 @@ test('baixa o card compartilhável como PNG', async ({ page }) => {
 
 
 test('explica rate limit e mantém fallback demonstrativo', async ({ page }) => {
-  await page.unroute('**/public-lol-profile');
-  await page.unroute('**/public-tft-profile');
+  await page.unroute('**/riot-legacy-lol-profile');
+  await page.unroute('**/riot-legacy-tft-profile');
 
-  for (const endpoint of ['public-lol-profile', 'public-tft-profile']) {
+  for (const endpoint of ['riot-legacy-lol-profile', 'riot-legacy-tft-profile']) {
     await page.route('**/' + endpoint, route => route.fulfill({
       status: 429,
       contentType: 'application/json',
