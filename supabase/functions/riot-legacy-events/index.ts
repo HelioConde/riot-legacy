@@ -26,6 +26,12 @@ function clean(value:unknown,max:number){
   return String(value??"").replace(/[\u0000-\u001f\u007f]/g," ").trim().slice(0,max);
 }
 
+async function sha256Hex(value:string){
+  const bytes=new TextEncoder().encode(value);
+  const digest=await crypto.subtle.digest("SHA-256",bytes);
+  return Array.from(new Uint8Array(digest)).map(x=>x.toString(16).padStart(2,"0")).join("");
+}
+
 function out(body:unknown,status=200){
   return new Response(JSON.stringify(body),{status,headers:H});
 }
@@ -46,6 +52,8 @@ Deno.serve(async(req:Request)=>{
   if(!url||!service) return out({error:"backend_not_configured"},503);
 
   const context:any={};
+  const visitorKey=clean(body?.visitorKey,80);
+  if(visitorKey.length>=16) context.visitorHash=await sha256Hex(visitorKey);
   const sourceState=clean(body?.context?.sourceState,20);
   const platform=clean(body?.context?.platform,8).toLowerCase();
   const tab=clean(body?.context?.tab,20);
