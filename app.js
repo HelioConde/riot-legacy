@@ -62,6 +62,12 @@
     })[char]);
   }
 
+  function syncRobotsPolicy(profileOpen) {
+    const meta = document.querySelector('#robots-meta');
+    if (!meta) return;
+    meta.setAttribute('content', profileOpen ? 'noindex,nofollow' : 'index,follow');
+  }
+
   function showToast(messageKey) {
     toast.textContent = t(messageKey);
     toast.classList.add('show');
@@ -916,6 +922,43 @@
     return `${sign}${number.toLocaleString(locale(), { maximumFractionDigits: 2 })}${suffix}`;
   }
 
+  function renderYearTimeline() {
+    const el = document.querySelector('#year-timeline');
+    if (!el) return;
+
+    const years = new Map();
+    const bump = (year, key) => {
+      if (!year || year < 2010 || year > 2100) return;
+      const current = years.get(year) || { lol: 0, tft: 0, snapshots: 0 };
+      current[key] += 1;
+      years.set(year, current);
+    };
+
+    currentLolMatches().forEach(match => {
+      const date = new Date(Number(match?.playedAt || 0));
+      if (!Number.isNaN(date.getTime())) bump(date.getFullYear(), 'lol');
+    });
+    currentTftMatches().forEach(match => {
+      const date = new Date(Number(match?.playedAt || 0));
+      if (!Number.isNaN(date.getTime())) bump(date.getFullYear(), 'tft');
+    });
+    (Array.isArray(legacyHistory?.history) ? legacyHistory.history : []).forEach(item => {
+      const year = Number(String(item?.snapshot_date || '').slice(0, 4));
+      bump(year, 'snapshots');
+    });
+
+    const rows = [...years.entries()].sort((a, b) => a[0] - b[0]);
+    el.innerHTML = rows.length
+      ? rows.map(([year, stat]) => {
+          const parts = [];
+          if (stat.lol) parts.push(`LoL: ${stat.lol}`);
+          if (stat.tft) parts.push(`TFT: ${stat.tft}`);
+          if (stat.snapshots) parts.push(`snapshots: ${stat.snapshots}`);
+          return `<div class="year-pill"><strong>${year}</strong><span>${escapeHtml(parts.join(' · '))}</span></div>`;
+        }).join('')
+      : '<p class="empty-inline">Os anos aparecem conforme partidas e snapshots reais ficam disponíveis.</p>';
+  }
+
   function renderHistoryInsights() {
     const countEl = document.querySelector('#snapshot-count');
     const monthEl = document.querySelector('#month-comparison');
@@ -961,7 +1004,16 @@
 
     const first = history[history.length - 1]?.summary || current;
     const masteryDelta = Number(current.masteryPoints || 0) - Number(first.masteryPoints || 0);
-    masteryEl.innerHTML = `
+    const currentMasteries = Array.isArray(history[0]?.lol?.mastery) ? history[0].lol.mastery.slice(0, 3) : [];
+    const oldestMasteries = Array.isArray(history[history.length - 1]?.lol?.mastery)
+      ? history[history.length - 1].lol.mastery
+      : [];
+    const masteryRows = currentMasteries.map(item => {
+      const old = oldestMasteries.find(candidate => Number(candidate?.championId) === Number(item?.championId));
+      const change = old ? Number(item?.points || 0) - Number(old?.points || 0) : null;
+      return `<div class="history-fact"><span>${escapeHtml(item?.name || 'Campeão')}</span><b>${escapeHtml(formatNumber(item?.points || 0))}${change == null ? '' : ' · ' + deltaLabel(change)}</b></div>`;
+    }).join('');
+    masteryEl.innerHTML = masteryRows || `
       <div class="history-fact"><span>Maestria atual</span><b>${escapeHtml(formatNumber(current.masteryPoints || 0))}</b></div>
       <div class="history-fact"><span>Desde o primeiro snapshot</span><b>${escapeHtml(deltaLabel(masteryDelta))}</b></div>
       <div class="history-fact"><span>Assinatura atual</span><b>${escapeHtml(current.signatureChampion || '—')}</b></div>
@@ -979,6 +1031,7 @@
       <div class="history-fact"><span>Melhor Top 4 TFT registrado</span><b>${Number.isFinite(bestTop4) ? bestTop4 + '%' : '—'}</b></div>
       <div class="history-fact"><span>Histórico desde</span><b>${oldestDate ? new Date(oldestDate + 'T00:00:00').toLocaleDateString(locale()) : '—'}</b></div>
     `;
+    renderYearTimeline();
   }
 
   async function captureLegacySnapshot(lookup, lol, tft) {
@@ -1069,6 +1122,7 @@
     landing.hidden = true;
     profile.hidden = false;
     document.body.classList.add('profile-mode');
+    syncRobotsPolicy(true);
     setSourceState('loading');
     renderDynamicCopy();
     activateTab('legacy');
@@ -1149,6 +1203,7 @@
     profile.hidden = true;
     landing.hidden = false;
     document.body.classList.remove('profile-mode');
+    syncRobotsPolicy(false);
     history.replaceState({}, '', location.pathname);
     window.scrollTo({ top: 0, behavior: 'instant' });
     gameNameInput.focus();
