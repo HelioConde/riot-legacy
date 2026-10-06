@@ -141,6 +141,7 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
       history: [
         {
           snapshot_date: '2026-10-06',
+          lol: { mastery: [{ championId: 99, name: 'Lux', level: 7, points: 999999 }] },
           summary: {
             signatureChampion: 'Lux',
             masteryPoints: 999999,
@@ -153,6 +154,7 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
         },
         {
           snapshot_date: '2026-09-10',
+          lol: { mastery: [{ championId: 99, name: 'Lux', level: 7, points: 950000 }] },
           summary: {
             signatureChampion: 'Ahri',
             masteryPoints: 950000,
@@ -224,6 +226,9 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
   await expect(page.locator('#rank-milestones')).toContainText('SILVER I · 80 LP');
   await expect(page.locator('#mastery-evolution')).toContainText('Lux');
   await expect(page.locator('#wrapped-summary')).toContainText('2');
+  await expect(page.locator('#mastery-evolution')).toContainText('Lux');
+  await expect(page.locator('#mastery-evolution')).toContainText('+49.999');
+  await expect(page.locator('#year-timeline')).toContainText('2026');
   await page.getByRole('button', { name: 'Atualizar dados' }).click();
   await expect(page.locator('#demo-badge')).toHaveText('DADOS RIOT · LOL + TFT');
   await expect(page).toHaveURL(/server=br1/);
@@ -305,4 +310,31 @@ test('servidores SEA suportados mantêm o routing correto no deep link', async (
   await page.getByRole('button', { name: /Novo perfil/i }).click();
   await page.locator('#recent-searches-list .recent-search').click();
   await expect(page).toHaveURL(/server=sg2/);
+});
+
+
+test('salva marco favorito localmente e mantém coleção de cards', async ({ page }) => {
+  await page.locator('#game-name').fill('MemoryPlayer');
+  await page.locator('#tag-line').fill('BR1');
+  await page.getByRole('button', { name: /Ver meu legado/i }).click();
+  await page.getByRole('button', { name: 'Compartilhar', exact: true }).click();
+
+  await page.locator('#favorite-milestone').click();
+  await expect(page.locator('#favorite-list')).toContainText('MemoryPlayer#BR1');
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Baixar card PNG' }).click();
+  await downloadPromise;
+  await expect(page.locator('#card-collection')).toContainText('MemoryPlayer#BR1');
+});
+
+test('reserva espaço estável para anúncios sem controles internos', async ({ page }) => {
+  const slots = page.locator('.ad-shell');
+  await expect(slots).toHaveCount(2);
+  for (let index = 0; index < await slots.count(); index++) {
+    const slot = slots.nth(index);
+    const box = await slot.boundingBox();
+    expect(box.height).toBeGreaterThanOrEqual(110);
+    await expect(slot.locator('button,input,select,a')).toHaveCount(0);
+  }
 });
