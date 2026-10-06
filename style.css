@@ -212,10 +212,10 @@ a{color:inherit}
 
 
 /* Riot Legacy curated UI pack */
-.brand-pack-logo{display:block;width:168px;max-height:48px;object-fit:contain;object-position:left center}
+.brand-pack-logo{display:block;width:220px;max-height:56px;object-fit:contain;object-position:left center}
 .hero-visual:before{content:"";position:absolute;z-index:0;inset:34px 20px;border-radius:34px;background:
   linear-gradient(180deg,rgba(5,10,16,.08),rgba(5,10,16,.58)),
-  url("./assets/ui/hero.png") center/cover no-repeat;opacity:.5;filter:saturate(.86) contrast(1.05)}
+  url("./assets/ui/hero.png") center/cover no-repeat;opacity:.62;filter:saturate(.9) contrast(1.06)}
 .hero-visual>*{z-index:1}
 .profile-hero:after{content:"";position:absolute;z-index:1;inset:0;pointer-events:none;background:
   linear-gradient(90deg,rgba(5,10,16,.15),transparent 55%),
@@ -248,7 +248,7 @@ a{color:inherit}
 .history-head h2{display:flex;align-items:center;gap:8px}
 .history-head h2:before{content:"";width:24px;height:24px;background:url("./assets/ui/icon-history.png") center/contain no-repeat;opacity:.9}
 @media(max-width:620px){
-  .brand-pack-logo{width:138px;max-height:40px}
+  .brand-pack-logo{width:176px;max-height:44px}
   .hero-visual:before{background-image:linear-gradient(180deg,rgba(5,10,16,.08),rgba(5,10,16,.58)),url("./assets/ui/hero-mobile.png");inset:28px 8px}
   .tabs button{gap:3px}
   .tabs button:before{width:14px;height:14px;flex-basis:14px}
