@@ -10,6 +10,7 @@
     tftProfile: existing.tftProfile || functionsBase + '/riot-legacy-tft-profile',
     legacySnapshots: existing.legacySnapshots || functionsBase + '/riot-legacy-snapshots',
     legacyEvents: existing.legacyEvents || functionsBase + '/riot-legacy-events',
+    publicProfile: existing.publicProfile || functionsBase + '/riot-legacy-public-profile',
     features: {
       publicProfiles: false,
       ads: false,
