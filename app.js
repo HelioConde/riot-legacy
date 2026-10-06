@@ -443,6 +443,57 @@
     ).join('');
   }
 
+  function renderSetRetrospective() {
+    const el = document.querySelector('#set-retrospective');
+    if (!el) return;
+
+    if (!live.tft) {
+      el.innerHTML = `
+        <div class="set-chip"><strong>Set 14</strong><span>${locale() === 'en' ? 'Demo sample' : 'Amostra demo'}</span></div>
+      `;
+      return;
+    }
+
+    const groups = new Map();
+    currentTftMatches().forEach(match => {
+      const rawName = String(match?.setName || '').trim();
+      const setNumber = Number(match?.setNumber || 0);
+      const key = rawName || (setNumber > 0 ? `Set ${setNumber}` : 'TFT');
+      const placement = Number(match?.placement || 0);
+      const current = groups.get(key) || { matches: 0, placements: [], top4: 0, firsts: 0 };
+      current.matches += 1;
+      if (placement >= 1 && placement <= 8) {
+        current.placements.push(placement);
+        if (placement <= 4) current.top4 += 1;
+        if (placement === 1) current.firsts += 1;
+      }
+      groups.set(key, current);
+    });
+
+    const rows = [...groups.entries()]
+      .map(([name, stat]) => ({
+        name,
+        ...stat,
+        average: stat.placements.length
+          ? stat.placements.reduce((sum, value) => sum + value, 0) / stat.placements.length
+          : null,
+        top4Rate: stat.placements.length
+          ? Math.round(stat.top4 / stat.placements.length * 100)
+          : null
+      }))
+      .sort((a, b) => b.matches - a.matches || (a.average ?? 99) - (b.average ?? 99) || a.name.localeCompare(b.name));
+
+    el.innerHTML = rows.length
+      ? rows.slice(0, 4).map(row => {
+          const average = row.average == null ? '—' : row.average.toLocaleString(locale(), { maximumFractionDigits: 2 });
+          const label = locale() === 'en'
+            ? `${row.matches} matches · avg ${average} · Top 4 ${row.top4Rate ?? '—'}% · ${row.firsts} wins`
+            : `${row.matches} partidas · média ${average} · Top 4 ${row.top4Rate ?? '—'}% · ${row.firsts} vitórias`;
+          return `<div class="set-chip"><strong>${escapeHtml(row.name)}</strong><span>${escapeHtml(label)}</span></div>`;
+        }).join('')
+      : `<p class="empty-inline">${locale() === 'en' ? 'No set information in this TFT sample.' : 'Sem informação de set nesta amostra de TFT.'}</p>`;
+  }
+
   function renderChampions() {
     const el = document.querySelector('#champion-list');
     const champions = live.lol && Array.isArray(live.lol.championSummaries) && live.lol.championSummaries.length
@@ -704,6 +755,7 @@
     renderBoard();
     renderTraits();
     renderPlacementBars();
+    renderSetRetrospective();
     renderTimeline();
     renderLiveProfileFacts();
   }
