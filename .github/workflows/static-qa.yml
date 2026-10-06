@@ -37,6 +37,9 @@ jobs:
           test -f RIOT_POLICY_COMPLIANCE.md
           test -f ads-config.js
           test -f ads.js
+          test -f privacy.html
+          test -f terms.html
+          test -f icons/riot-legacy.svg
           grep -qi 'lang="pt-BR"' index.html
           grep -qi 'data-language="en"' index.html
           grep -qi 'id="riot-form"' index.html
@@ -75,6 +78,9 @@ jobs:
           grep -qi 'data-recent-index' app.js
           grep -qi 'live-profile-facts' index.html
           grep -qi 'renderLiveProfileFacts' app.js
+          grep -qi 'privacy.html' index.html
+          grep -qi 'terms.html' index.html
+          grep -qi 'riot-legacy.svg' manifest.webmanifest
       - name: No secrets
         run: |
           ! grep -RniE 'RGAPI-[A-Za-z0-9_-]{20,}|SUPABASE_SERVICE_ROLE_KEY|service_role.*eyJ' . --exclude-dir=.git --include='*.js' --include='*.html' --include='*.json' --exclude='package*.json'
