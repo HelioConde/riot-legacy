@@ -120,6 +120,7 @@ a{color:inherit}
 .champion{padding:17px;border:1px solid var(--line);border-radius:14px;background:#0c1520}
 .champion .portrait{display:grid;place-items:center;height:100px;border-radius:11px;background:radial-gradient(circle,#4c3b6c,#172031);font:700 34px Georgia,serif;color:#ead9ff}
 .champion h3{margin:11px 0 2px}.champion span{color:var(--muted);font-size:10px}
+.identity-summary{margin:-10px 0 18px;padding:10px 12px;border:1px solid rgba(216,179,95,.15);border-radius:11px;background:rgba(216,179,95,.045);color:#c9d3dd;font-size:10px;line-height:1.45}
 .role-stack{display:grid;gap:13px;margin-top:20px}.role-row{display:grid;grid-template-columns:80px 1fr 38px;gap:8px;align-items:center;font-size:11px}.role-track{height:7px;border-radius:99px;background:#172433;overflow:hidden}.role-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--violet),var(--gold))}
 .tft-layout{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .tft-board-wrap{padding:26px}
