@@ -22,7 +22,7 @@ Atualizado em 06/10/2026.
 
 ## P0 — próximo
 
-- [ ] Criar repositório físico `HelioConde/riot-legacy`.
+- [x] Criar repositório físico `HelioConde/riot-legacy`.
 - [ ] Publicar GitHub Pages.
 - [ ] Registrar proposta no Riot Developer Portal.
 - [ ] Definir Production API key própria do produto quando elegível.
@@ -47,11 +47,11 @@ Atualizado em 06/10/2026.
 - [x] Mostrar primeira/mais antiga partida disponível quando os dados permitirem — a timeline exibe a janela da amostra Riot e deixa claro que ela pode não ser a primeira partida da conta.
 - [ ] Linha do tempo por temporadas/anos.
 - [ ] Top campeões com evolução de maestria.
-- [ ] Identidade por função.
+- [x] Identidade por função — função dominante e percentual derivados das partidas recentes com posição conhecida.
 - [ ] Marcos de ranked sem criar ranking alternativo.
 - [ ] TFT: comps mais recorrentes.
 - [ ] TFT: unidades/traits assinatura.
-- [ ] TFT: distribuição de colocações.
+- [x] TFT: distribuição de colocações — barras 1º–8º e resumo Top 4/1º/8º derivados da amostra recente.
 - [ ] TFT: retrospectiva por set.
 - [x] Cards exportáveis como imagem PNG gerada localmente no navegador.
 - [ ] Perfil público opcional.
