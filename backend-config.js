@@ -11,6 +11,7 @@
     legacySnapshots: existing.legacySnapshots || functionsBase + '/riot-legacy-snapshots',
     legacyEvents: existing.legacyEvents || functionsBase + '/riot-legacy-events',
     publicProfile: existing.publicProfile || functionsBase + '/riot-legacy-public-profile',
+    rsoStart: existing.rsoStart || functionsBase + '/riot-legacy-rso-start',
     features: {
       publicProfiles: false,
       ads: false,
