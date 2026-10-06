@@ -89,10 +89,29 @@ try {
       animations: 'disabled'
     });
 
+    const tabReviews = [];
+    if (target.name.startsWith('profile-')) {
+      for (const tab of ['league', 'tft', 'share']) {
+        await page.locator(`[data-tab="${tab}"]`).click();
+        await page.waitForTimeout(250);
+        const tabFile = path.join(outputDir, `review-${target.name}-${tab}.jpg`);
+        await page.screenshot({
+          path: tabFile,
+          fullPage: false,
+          type: 'jpeg',
+          quality: 72,
+          animations: 'disabled'
+        });
+        tabReviews.push({ tab, file: tabFile });
+      }
+      await page.locator('[data-tab="legacy"]').click();
+    }
+
     metadata.files.push({
       name: target.name,
       file,
       reviewFile,
+      tabReviews,
       url: target.url,
       viewport: target.viewport
     });
