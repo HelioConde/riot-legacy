@@ -23,6 +23,7 @@
   const FAVORITE_MILESTONES_KEY = 'riot-legacy-favorite-milestones';
   const LOCAL_MEMORY_LIMIT = 12;
   const RIOT_LEGACY_SESSION_KEY = 'riot-legacy-session-id';
+  const RIOT_LEGACY_VISITOR_KEY = 'riot-legacy-visitor-key';
 
   const demo = {
     mastery: 684210,
@@ -49,6 +50,19 @@
   let currentLookup = null;
   let lookupSequence = 0;
 
+  function telemetryVisitorKey() {
+    try {
+      let value = localStorage.getItem(RIOT_LEGACY_VISITOR_KEY);
+      if (!value) {
+        value = crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+        localStorage.setItem(RIOT_LEGACY_VISITOR_KEY, value);
+      }
+      return value;
+    } catch {
+      return '';
+    }
+  }
+
   function telemetrySessionId() {
     try {
       let value = sessionStorage.getItem(RIOT_LEGACY_SESSION_KEY);
@@ -67,6 +81,7 @@
     const payload = {
       eventName,
       sessionId: telemetrySessionId(),
+      visitorKey: telemetryVisitorKey(),
       pagePath: location.pathname,
       appVersion: String(window.RIOT_LEGACY_VERSION || ''),
       context: {
