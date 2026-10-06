@@ -13,7 +13,10 @@
   --danger:#ef7f7f;
   --shadow:0 28px 80px rgba(0,0,0,.36);
   --radius:22px;
+  --signature-accent:#d8b35f;
+  --signature-soft:#f2d996;
 }
+.profile-mode{--gold:var(--signature-accent);--gold-soft:var(--signature-soft)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:
@@ -177,3 +180,6 @@ a{color:inherit}
 
 .history-card{margin-top:14px}.history-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}.history-head h2{margin:4px 0 0}.history-count{padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:var(--gold-soft);font-size:9px;font-weight:900}.history-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.history-grid section{padding:16px;border:1px solid var(--line);border-radius:14px;background:#0a131d}.history-grid h3{margin:0 0 10px;font-size:13px}.history-facts{display:grid;gap:7px}.history-fact{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:10px}.history-fact:last-child{border-bottom:0}.history-fact span{color:var(--muted)}.history-fact b{color:#eef3f8;text-align:right}.history-delta.up{color:#a9f0d1}.history-delta.down{color:#f5b8b8}.history-delta.neutral{color:var(--muted)}
 @media(max-width:620px){.history-head{flex-direction:column}.history-grid{grid-template-columns:1fr}}
+
+.share-memory-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;text-align:left}.share-memory-grid section{padding:16px;border:1px solid var(--line);border-radius:14px;background:#0a131d}.share-memory-grid h3{margin:0 0 10px;font-size:13px}.memory-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.secondary.compact{min-height:32px;padding:6px 9px;font-size:9px}.memory-list{display:grid;gap:7px}.memory-item{display:grid;grid-template-columns:1fr auto;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)}.memory-item:last-child{border-bottom:0}.memory-item strong{font-size:10px}.memory-item span{color:var(--muted);font-size:9px}.memory-item time{color:var(--muted);font-size:8px;white-space:nowrap}
+@media(max-width:620px){.share-memory-grid{grid-template-columns:1fr}.memory-title-row{flex-direction:column}}
