@@ -23,7 +23,7 @@ O Riot Legacy não quer ser outro tracker cheio de tabelas. A proposta é transf
 - URL compartilhável por query string;
 - slots de anúncios reservados, sem anúncios reais;
 - SEO/Open Graph/manifest/robots/sitemap;
-- integração com `public-lol-profile` e `public-tft-profile` do backend gamer;
+- integração com `riot-legacy-lol-profile` e `riot-legacy-tft-profile` do backend gamer;
 - atualização manual dos dados sem recarregar a página;
 - buscas recentes de Riot ID + servidor salvas somente no navegador;
 - faixa compacta com servidor, nível da conta e ranks oficiais LoL/TFT quando disponíveis;
@@ -36,8 +36,8 @@ O Riot Legacy não quer ser outro tracker cheio de tabelas. A proposta é transf
 
 A busca já consulta o backend gamer real:
 
-- LoL: `public-lol-profile`;
-- TFT: `public-tft-profile`.
+- LoL: `riot-legacy-lol-profile`;
+- TFT: `riot-legacy-tft-profile`.
 
 As duas funções usam a Riot key somente no servidor. Quando respondem, o perfil troca automaticamente para dados Riot reais da amostra recente.
 
@@ -49,7 +49,7 @@ Com dados Riot ativos, a aba Legado troca a timeline fictícia por capítulos da
 
 O Riot Legacy **reutiliza o Supabase do ZeroTwo.gg** (`bieihhaobdztjyoweewa`), onde a Riot key já está protegida server-side. Não será criado outro banco e o projeto não usa `pizzaria-db`.
 
-As funções `public-lol-profile` e `public-tft-profile` já são consumidas pelo frontend do Riot Legacy.
+As funções `riot-legacy-lol-profile` e `riot-legacy-tft-profile` já são consumidas pelo frontend do Riot Legacy.
 
 ## Próximo estágio — dados Riot reais
 
@@ -58,7 +58,7 @@ A arquitetura usa:
 1. Riot ID (`gameName + tagLine`);
 2. ACCOUNT-V1 para obter PUUID;
 3. endpoints suportados de League/TFT por PUUID;
-4. Edge Functions `public-lol-profile` e `public-tft-profile` do backend gamer;
+4. Edge Functions `riot-legacy-lol-profile` e `riot-legacy-tft-profile` do backend gamer;
 5. chave Riot **somente no servidor**, nunca no JavaScript público;
 6. cache gamer existente para reduzir chamadas e respeitar rate limits.
 
