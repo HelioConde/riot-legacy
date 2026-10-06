@@ -24,7 +24,9 @@ jobs:
         run: |
           set -euo pipefail
           src_dir="$(find img -maxdepth 1 -type d -name '*Fantasia*' | head -n1)"
+          src_ui_dir="$(find img -maxdepth 1 -type d -name '*Assets UI Riot Legacy*' | head -n1)"
           test -n "$src_dir"
+          test -n "$src_ui_dir"
           mkdir -p assets/ui
           cp "$src_dir/element_001.png" assets/ui/hero.png
           cp "$src_dir/element_002.png" assets/ui/hero-mobile.png
@@ -55,6 +57,17 @@ jobs:
           cp "$src_dir/element_060.png" assets/ui/role-support.png
           cp "$src_dir/element_064.png" assets/ui/card-frame.png
           cp "$src_dir/element_065.png" assets/ui/panel-frame.png
+          cp "$src_ui_dir/element_016.png" assets/ui/icon-league-round.png
+          cp "$src_ui_dir/element_017.png" assets/ui/icon-tft-round.png
+          cp "$src_ui_dir/element_019.png" assets/ui/icon-mastery-crown.png
+          cp "$src_ui_dir/element_021.png" assets/ui/icon-stats-bars.png
+          cp "$src_ui_dir/element_022.png" assets/ui/icon-calendar.png
+          cp "$src_ui_dir/element_023.png" assets/ui/icon-trophy.png
+          cp "$src_ui_dir/element_024.png" assets/ui/icon-star.png
+          cp "$src_ui_dir/element_025.png" assets/ui/icon-heart.png
+          cp "$src_ui_dir/element_038.png" assets/ui/bg-history-blue.png
+          cp "$src_ui_dir/element_039.png" assets/ui/bg-history-gold.png
+          cp "$src_ui_dir/element_040.png" assets/ui/bg-history-violet.png
 
       - name: Commit aliases
         shell: bash
