@@ -5,6 +5,7 @@ Esta pasta é atualizada automaticamente pelo workflow **Visual Snapshots** depo
 Arquivos gerados:
 
 - `landing-desktop.png` — landing em desktop;
+- `landing-mobile.png` — landing em mobile;
 - `profile-desktop.png` — perfil real/cacheado de `AlchemyFlames#BR1` em desktop;
 - `profile-mobile.png` — perfil real/cacheado de `AlchemyFlames#BR1` em mobile;
 - `review-*.jpg` — previews leves do primeiro viewport para revisão visual automática;
