@@ -79,7 +79,10 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
     contentType: 'application/json',
     body: JSON.stringify({
       player: { gameName: 'RealPlayer', tagLine: 'BR1', level: 321, platform: 'BR1' },
-      ranked: [{ queue: 'SOLO/DUO', tier: 'GOLD', rank: 'II', lp: 42, wins: 20, losses: 15, winRate: 57 }],
+      ranked: [
+        { queue: 'FLEX', tier: 'SILVER', rank: 'III', lp: 11, wins: 8, losses: 10, winRate: 44 },
+        { queue: 'SOLO/DUO', tier: 'GOLD', rank: 'II', lp: 42, wins: 20, losses: 15, winRate: 57 }
+      ],
       mastery: [{ championId: 99, level: 7, points: 999999 }],
       championSummaries: [
         { name: 'Ahri', games: 4, avgKda: 3.3 },
@@ -199,6 +202,7 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
   await expect(page.locator('#signature-title')).toContainText('Lux');
   await expect(page.locator('#signature-text')).toContainText('maior frequência de partidas');
   await expect(page.locator('#signature-chip')).toContainText('6 JOGOS');
+  await expect(page.locator('#signature-chip')).toContainText('GOLD II');
   await expect(page.locator('#metric-mastery')).toContainText('999.999');
   await expect(page.locator('#metric-games')).toHaveText('12');
   await expect(page.locator('#metric-years')).toHaveText('58%');
