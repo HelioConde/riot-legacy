@@ -85,7 +85,7 @@ Static assets:
 ### Security
 
 - Riot API key is server-side only in Supabase Edge Functions.
-- The production product is prepared to use a dedicated `RIOT_LEGACY_API_KEY`.
+- The production product is prepared to use a dedicated `RIOT_LEGACY_LOL_API_KEY` / `RIOT_LEGACY_TFT_API_KEY`.
 - A shared key is not enabled by default.
 - No Riot credentials are committed to GitHub or sent to the browser.
 
@@ -113,3 +113,13 @@ Infrastructure already requires verified account ownership before a profile can 
 6. Review privacy and terms links in the footer.
 
 Automated desktop/mobile screenshots are also versioned in `visual-snapshots/`.
+
+
+### Application split by game
+
+Riot Legacy serves both League of Legends and Teamfight Tactics. Submit separate applications/keys for each game under the same product:
+
+- League application → `RIOT_LEGACY_LOL_API_KEY`
+- TFT application → `RIOT_LEGACY_TFT_API_KEY`
+
+The product can later use one approved RSO client across the linked applications, according to Riot's current FAQ guidance.
