@@ -20,5 +20,13 @@
       "short_name": "Buscar",
       "url": "./"
     }
+  ],
+  "icons": [
+    {
+      "src": "./icons/riot-legacy.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ]
 }
