@@ -52,7 +52,7 @@ Atualizado em 06/10/2026.
 - [ ] TFT: comps mais recorrentes.
 - [x] TFT: unidades/traits assinatura — recorrência derivada de toda a amostra recente, com desempate por força/estrelas.
 - [x] TFT: distribuição de colocações — barras 1º–8º e resumo Top 4/1º/8º derivados da amostra recente.
-- [ ] TFT: retrospectiva por set.
+- [x] TFT: retrospectiva por set — partidas agrupadas por set com média de colocação, Top 4 e vitórias na amostra disponível.
 - [x] Cards exportáveis como imagem PNG gerada localmente no navegador.
 - [ ] Perfil público opcional.
 - [ ] Tema visual baseado no campeão assinatura.
