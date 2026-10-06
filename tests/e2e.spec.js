@@ -149,6 +149,8 @@ test('carrega LoL e TFT reais pelo backend gamer e substitui o fallback', async 
   await expect(page.locator('#trait-list')).toContainText('Arcana');
   await expect(page.locator('#trait-list')).toContainText('Arcana · 2x');
   await expect(page.locator('#tft-signature')).toContainText('Assinaturas recentes: Arcana · Ahri');
+  await expect(page.locator('#comp-patterns')).toContainText('Arcana + Scholar');
+  await expect(page.locator('#comp-patterns')).toContainText('1x · média 1 · Top 4 100%');
   await expect(page.locator('#set-retrospective')).toContainText('Into the Arcane');
   await expect(page.locator('#set-retrospective')).toContainText('Cyber City');
   await expect(page.locator('#set-retrospective')).toContainText('2 partidas · média 1,5 · Top 4 100% · 1 vitórias');
