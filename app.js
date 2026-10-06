@@ -1342,6 +1342,12 @@
 
   renderRecentSearches();
 
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }, { once: true });
+  }
+
   const params = new URLSearchParams(location.search);
   const deepId = params.get('riotId');
   if (deepId && deepId.includes('#')) {
