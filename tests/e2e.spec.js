@@ -16,6 +16,11 @@ test.beforeEach(async ({ page }) => {
     contentType: 'application/json',
     body: JSON.stringify({ error: 'identity_not_cached' })
   }));
+  await page.route('**/riot-legacy-events', route => route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ ok: true })
+  }));
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
@@ -337,4 +342,15 @@ test('reserva espaço estável para anúncios sem controles internos', async ({ 
     expect(minHeight).toBeGreaterThanOrEqual(110);
     await expect(slot.locator('button,input,select,a')).toHaveCount(0);
   }
+});
+
+
+test('mantém monetização e perfil público bloqueados até aprovação', async ({ page }) => {
+  await expect(page.locator('#public-profile-panel')).toBeHidden();
+  const adsScript = await page.locator('script[src*="pagead2.googlesyndication.com"]').count();
+  expect(adsScript).toBe(0);
+  const flags = await page.evaluate(() => window.RIOT_LEGACY_BACKEND?.features);
+  expect(flags.publicProfiles).toBe(false);
+  expect(flags.ads).toBe(false);
+  expect(flags.retentionTelemetry).toBe(true);
 });
