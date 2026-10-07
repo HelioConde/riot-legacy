@@ -2,7 +2,7 @@
 
 **Seu histórico de League of Legends e Teamfight Tactics como uma experiência visual, emocional e compartilhável.**
 
-> Status: protótipo MVP navegável iniciado em 06/10/2026.
+> **Status:** MVP técnico concluído em 07/10/2026 · validação externa/compliance antes do crescimento.
 
 O Riot Legacy não quer ser outro tracker cheio de tabelas. A proposta é transformar um **Riot ID** em um "museu pessoal" da conta: campeão assinatura, trajetória, maestria, funções, retrospectiva de TFT, marcos e cards feitos para compartilhar.
 
@@ -43,7 +43,7 @@ As duas funções usam a Riot key somente no servidor. Quando respondem, o perfi
 
 Quando uma fonte não responde ou o jogador não possui dados naquele jogo, somente aquela parte mantém o fallback demonstrativo e a interface informa o estado claramente.
 
-Com dados Riot ativos, a aba Legado troca a timeline fictícia por capítulos da amostra recente. A trajetória histórica de temporadas/anos continua sendo uma etapa posterior baseada em snapshots reais.
+Com dados Riot ativos, a aba Legado usa capítulos da amostra recente e, quando existe histórico acumulado, complementa a experiência com snapshots server-side, comparações entre períodos, evolução de maestria/rank e retrospectivas por mês/ano. A interface continua diferenciando claramente janela recente da Riot de evolução realmente observada em snapshots.
 
 ## Backend gamer
 
@@ -149,3 +149,17 @@ Em 06/10/2026 o fluxo de produção foi validado com uma conta real BR1, cobrind
 - GitHub Pages publicado.
 
 O Riot ID usado no teste não é persistido nesta documentação para manter o repositório desacoplado de uma conta pessoal.
+
+
+## Gate pós-MVP
+
+O núcleo técnico do MVP está encerrado. Snapshots server-side, comparações históricas, timeline por períodos, LoL + TFT reais, QA e compartilhamento já fazem parte do produto.
+
+Antes de ampliar escopo:
+- validar vários Riot IDs reais, incluindo conta só LoL, só TFT e pouca/nenhuma atividade;
+- revisar cache/rate limit e fallback para último snapshot real em produção;
+- concluir QA mobile/snapshots visuais;
+- registrar/submeter o produto no Riot Developer Portal e revisar a credencial própria do produto;
+- ativar anúncios somente após aprovação Riot + AdSense.
+
+**Features históricas maiores ficam para V2. Não adicionar novos módulos antes de concluir a validação externa.**
