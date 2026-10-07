@@ -1,6 +1,6 @@
 # Melhorias — Riot Legacy
 
-Atualizado em 06/10/2026.
+Atualizado em 07/10/2026.
 
 ## P0 — protótipo visual
 
@@ -101,3 +101,8 @@ Não expandir para dezenas de estatísticas porque estão disponíveis na API. C
 - [x] Loader de anúncios protegido por feature flags.
 - [x] Screenshots automáticos desktop/mobile versionados no GitHub.
 - [x] Testes garantindo que ads/perfil público continuam desligados antes da aprovação.
+
+
+## Gate de encerramento do MVP
+
+**MVP técnico: concluído.** O backlog restante é de validação externa/compliance e V2. Novas features ficam congeladas até a rodada real de Riot IDs e o gate do Riot Developer Portal.
