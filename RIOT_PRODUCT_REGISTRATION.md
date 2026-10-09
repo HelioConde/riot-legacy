@@ -86,7 +86,7 @@ Static assets:
 
 - Riot API key is server-side only in Supabase Edge Functions.
 - The production product is prepared to use a dedicated `RIOT_LEGACY_LOL_API_KEY` / `RIOT_LEGACY_TFT_API_KEY`.
-- A shared key is not enabled by default.
+- **Current prototype state:** the dedicated LoL/TFT functions can still fall back to the shared server-side `RIOT_API_KEY` if the product-specific keys have not been configured. This is a temporary development fallback, **not authorization for public distribution**. Remove it or disable the public API route before launching; use only Riot-approved keys assigned to the registered applications.
 - No Riot credentials are committed to GitHub or sent to the browser.
 
 ### Monetization
