@@ -1,4 +1,6 @@
-const CACHE_NAME = 'riot-legacy-v5';
+// Riot Legacy operates on a GitHub Pages origin shared with other products.
+// Never cache Riot IDs, personal query URLs or other applications' resources.
+const CACHE_NAME = 'riot-legacy-v6';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,6 +8,9 @@ const APP_SHELL = [
   './app.js',
   './i18n.js',
   './backend-config.js',
+  './ads-config.js',
+  './ads.js',
+  './live-update.js',
   './manifest.webmanifest',
   './assets/ui/logo.png',
   './assets/ui/app-icon.png',
@@ -46,35 +51,59 @@ const APP_SHELL = [
   './assets/ui/card-frame.png',
   './assets/ui/panel-frame.png'
 ];
+const APP_SCOPE = new URL(self.registration.scope);
+const SHELL_PATHS = new Set(APP_SHELL.map(file => new URL(file, self.registration.scope).pathname));
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)));
-  self.skipWaiting();
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.addAll(APP_SHELL);
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))
-    )
-  );
-  self.clients.claim();
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys
+      .filter(key => key.startsWith('riot-legacy-v') && key !== CACHE_NAME)
+      .map(key => caches.delete(key)));
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
-
   const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return;
+  if (url.origin !== APP_SCOPE.origin || !url.pathname.startsWith(APP_SCOPE.pathname)) return;
 
-  event.respondWith(
-    fetch(request)
-      .then(response => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-        return response;
-      })
-      .catch(() => caches.match(request).then(hit => hit || caches.match('./index.html')))
-  );
+  const isNavigation = request.mode === 'navigate';
+  const canCache = !url.search && SHELL_PATHS.has(url.pathname);
+  if (!canCache && !isNavigation) return;
+
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    try {
+      const response = await fetch(request);
+      if (canCache && response.ok && response.type === 'basic') {
+        await cache.put(request, response.clone());
+      }
+      return response;
+    } catch {
+      if (canCache) {
+        const found = await cache.match(request);
+        if (found) return found;
+      }
+      // For offline profile deep links, serve only the static public application shell.
+      if (isNavigation) {
+        const pathname = SHELL_PATHS.has(url.pathname)
+          ? url.pathname
+          : new URL('./index.html', self.registration.scope).pathname;
+        const shell = await cache.match(APP_SCOPE.origin + pathname);
+        if (shell) return shell;
+      }
+      return Response.error();
+    }
+  })());
 });
