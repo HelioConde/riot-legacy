@@ -2,7 +2,7 @@
 
 **Seu histórico de League of Legends e Teamfight Tactics como uma experiência visual, emocional e compartilhável.**
 
-> **Status:** MVP técnico concluído em 07/10/2026 · validação externa/compliance antes do crescimento.
+> **Riot Legacy 1.0:** MVP técnico concluído, com auditoria de segurança e QA atualizada em 09/10/2026. **Ainda não liberado para distribuição pública ou anúncios sem registro/aprovação e chaves de produção aplicáveis da Riot.** Consulte o [relatório de encerramento técnico e gates externos](RELEASE_V1.md).
 
 O Riot Legacy não quer ser outro tracker cheio de tabelas. A proposta é transformar um **Riot ID** em um "museu pessoal" da conta: campeão assinatura, trajetória, maestria, funções, retrospectiva de TFT, marcos e cards feitos para compartilhar.
 
