@@ -31,8 +31,10 @@
 - [x] [Live Update QA após correções](https://github.com/HelioConde/riot-legacy/actions/runs/37931893144) aprovado.
 - [x] [E2E anterior](https://github.com/HelioConde/riot-legacy/actions/runs/37575260287) aprovado antes das correções PWA.
 - [x] [Capturas anteriores](https://github.com/HelioConde/riot-legacy/actions/runs/37575305453) aprovadas antes das correções PWA.
-- [ ] Confirmar último [E2E após correções](https://github.com/HelioConde/riot-legacy/actions/runs/37931893214) em estado `success`.
-- [ ] Confirmar último deploy e captura visual de código final; a automação roda após publicação.
+- [x] [Browser E2E — **15 de 15 testes aprovados** após correções](https://github.com/HelioConde/riot-legacy/actions/runs/37931893214). Inclui isolamento de cache, atualização do worker e modo offline.
+- [x] [GitHub Pages — publicação aprovada](https://github.com/HelioConde/riot-legacy/actions/runs/37932073667) após as mudanças funcionais.
+- [x] [Capturas visuais desktop e mobile após o deploy — aprovadas](https://github.com/HelioConde/riot-legacy/actions/runs/37932129087). A automação atualiza os PNGs em `visual-snapshots/`.
+- [ ] Verificar a execução do último deploy que inclui somente a documentação e as afirmações de compliance; não há mudança funcional nessa etapa.
 
 ## Gates externos para liberar usuários e anúncios
 
