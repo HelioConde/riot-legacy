@@ -20,6 +20,9 @@ jobs:
           node --check backend-config.js
           node --check ads-config.js
           node --check ads.js
+          node --check sw.js
+          node --check live-update.js
+          node --check tests/pwa-security.spec.js
       - name: Required product markers
         run: |
           test -f index.html
@@ -95,6 +98,10 @@ jobs:
           test -f assets/ui/hud-tft.png
           test -f assets/ui/status-live.png
           test -f assets/ui/status-cache.png
+          test -f tests/pwa-security.spec.js
+          grep -q 'riot-legacy-v6' sw.js
+          grep -q 'SHELL_PATHS.has(url.pathname)' sw.js
+          grep -q 'riot-legacy-v' live-update.js
       - name: No secrets
         run: |
           ! grep -RniE 'RGAPI-[A-Za-z0-9_-]{20,}|SUPABASE_SERVICE_ROLE_KEY|service_role.*eyJ' . --exclude-dir=.git --include='*.js' --include='*.html' --include='*.json' --exclude='package*.json'
