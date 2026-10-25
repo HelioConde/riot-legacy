@@ -1,4 +1,14 @@
-# Riot Legacy
+# Riot Legacy — Seu histórico como uma jornada
+
+**Experiência visual sobre o histórico pessoal de League of Legends e Teamfight Tactics, com marcos, campeões, partidas e cards compartilháveis.**
+
+[**Relatório técnico**](RELEASE_V1.md)
+
+**Diferencial:** em vez de apenas tabelas, o produto apresenta um retrato do jogador com contexto, períodos e retrospectivas.
+
+**Atenção ao acesso:** a documentação descreve MVP técnico e integração via backend; divulgação pública, chaves de produção e recursos comerciais continuam sujeitos às políticas e aprovações da Riot Games.
+
+---
 
 **Seu histórico de League of Legends e Teamfight Tactics como uma experiência visual, emocional e compartilhável.**
 
