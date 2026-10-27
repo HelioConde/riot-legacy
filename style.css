@@ -523,3 +523,14 @@ body.ads-disabled .ad-shell{font-size:0}
   .profile-actions>*{width:100%}
   .share-facts{margin-top:30px}
 }
+
+
+/* Fix tablet horizontal scrolling: the hero's decorative cards used
+   negative side offsets, placing the right card outside the viewport
+   between the 620px mobile and 920px stacking breakpoints. */
+@media (min-width:621px) and (max-width:920px) {
+  .hero-visual { min-width:0; }
+  .hero-visual .card-a { left:0; }
+  .hero-visual .card-b { right:0; }
+  .hero-copy, .riot-form { min-width:0; }
+}
