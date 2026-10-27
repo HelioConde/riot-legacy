@@ -364,3 +364,18 @@ test('mantém monetização e perfil público bloqueados até aprovação', asyn
   expect(flags.ads).toBe(false);
   expect(flags.retentionTelemetry).toBe(true);
 });
+
+
+test('landing não deve ultrapassar viewport no tablet 768 px', async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.goto('/');
+  await expect(page.locator('.hero-visual')).toBeVisible();
+  const bounds = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    content: document.documentElement.scrollWidth,
+    cardRight: document.querySelector('.hero-visual .card-b')?.getBoundingClientRect().right ?? 0
+  }));
+  expect(bounds.content).toBeLessThanOrEqual(bounds.viewport + 2);
+  expect(bounds.cardRight).toBeLessThanOrEqual(bounds.viewport + 2);
+  await page.screenshot({path:'test-results/riot-legacy-768.png', fullPage:true, animations:'disabled'});
+});
